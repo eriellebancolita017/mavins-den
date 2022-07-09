@@ -1,0 +1,94 @@
+/* React Swiper Carousel Custom css */
+.heightFull,
+.heightFull .carouselWrapper,
+.heightFull .carouselWrapper > .swiper,
+.heightFull .carouselWrapper > .swiper > .swiper-wrapper,
+.heightFull .carouselWrapper > .swiper > .swiper-wrapper .swiper-slide > div,
+.heightFull .carouselWrapper > .swiper > .swiper-wrapper .swiper-slide > a,
+.heightFull
+  .carouselWrapper
+  > .swiper
+  > .swiper-wrapper
+  .swiper-slide
+  > a
+  > .group {
+  height: 100%;
+}
+.heightFull .carouselWrapper > .swiper > .swiper-wrapper .swiper-slide > a {
+  display: inline-flex;
+}
+
+.swiper-wrapper .swiper-slide {
+  height: auto;
+}
+.swiper .swiper-button-prev,
+.swiper .swiper-button-next {
+  display: none;
+}
+
+.swiper-button-disabled {
+  cursor: not-allowed;
+  opacity: 0;
+  visibility: hidden;
+}
+.swiper-button-disabled:hover {
+  color: inherit;
+}
+
+.carouselWrapper .swiper .swiper-pagination-bullets .swiper-pagination-bullet {
+  width: 14px;
+  height: 8px;
+  border: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  opacity: 0.4;
+}
+.carouselWrapper .swiper .swiper-pagination-bullets {
+  bottom: 20px;
+}
+.carouselWrapper
+  .swiper
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  width: 18px;
+  opacity: 1;
+}
+.carouselWrapper.dotsCircleBlack
+  .swiper
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet {
+  background-color: #000;
+}
+#productGalleryThumbs {
+  margin-left: -6px;
+  margin-right: -6px;
+}
+#productGalleryThumbs .swiper-wrapper .swiper-slide {
+  margin-left: 6px;
+  margin-right: 6px;
+  width: calc(25% - 12px) !important;
+}
+
+@media screen and (min-width: 1280px) {
+  #productGalleryThumbs {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  #productGalleryThumbs .swiper-wrapper .swiper-slide {
+    margin-left: 8px;
+    margin-right: 8px;
+    width: calc(25% - 16px) !important;
+  }
+}
+@media screen and (min-width: 1536px) {
+  #productGalleryThumbs {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  #productGalleryThumbs .swiper-wrapper .swiper-slide {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: calc(25% - 20px) !important;
+  }
+}

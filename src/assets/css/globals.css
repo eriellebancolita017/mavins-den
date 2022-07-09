@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  html {
+    @apply text-dark-600;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html.dark {
+    @apply bg-dark-100 text-light-900;
+  }
+  html,
+  body {
+    @apply h-full font-body antialiased;
+  }
+  #__next {
+    @apply h-full text-13px;
+  }
+  p {
+    @apply mb-5;
+  }
+  p:last-of-type {
+    @apply mb-0;
+  }
+  p > strong {
+    @apply font-semibold;
+  }
+  p > a {
+    @apply transition;
+  }
+  .order-list-enable ol {
+    @apply list-decimal space-y-1.5 pl-4 lg:pl-8;
+  }
+  button {
+    @apply focus:outline-none;
+  }
+  /* custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply h-1.5 w-1.5;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-900;
+  }
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* custom utilities */
+@layer utilities {
+  .h-inherit {
+    height: inherit;
+  }
+  .active-text-dark {
+    text-shadow: 0 0 #181818;
+  }
+  .active-text-light {
+    text-shadow: 0 0 #e6e6e6;
+  }
+  .transition-fill-colors {
+    transition-property: background-color, fill;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+}
+
+/**
+ * Need these custom style
+ * for header & category filter bar
+ * special sticky control in mobile
+ */
+@media (max-width: 639px) {
+  .app-header.sticky,
+  .app-category-filter-bar.sticky,
+  .mobile-sticky-after-header {
+    transition: transform 0.3s ease-in-out;
+  }
+  .scroll-down .app-header.sticky,
+  .scroll-down .app-category-filter-bar.sticky {
+    transform: translate3d(0, -100%, 0);
+  }
+  /*  */
+  .scroll-up .mobile-sticky-after-header {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+/* cart tick animated icon styles */
+.circle {
+  opacity: 0;
+  stroke-dasharray: 130;
+  stroke-dashoffset: 130;
+  transition: all 0.7s;
+}
+.tick {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  transition: stroke-dashoffset 0.7s 0.3s ease-out;
+}
+.is-carting .path {
+  opacity: 1;
+  stroke-dashoffset: 0;
+}
+
+/* react phone input 2 */
+html .react-tel-input .form-control {
+  @apply h-11 w-full rounded border border-light-500 bg-transparent text-13px text-dark ring-[0.5px] ring-light-500 focus:border-brand focus:ring-[0.5px] focus:ring-brand md:h-12 xl:h-[50px];
+}
+html.dark .react-tel-input .form-control {
+  @apply border-dark-600 text-light ring-dark-600 focus:border-brand focus:ring-brand;
+}
+html .react-tel-input .flag-dropdown {
+  @apply top-[1px] left-[1px] rounded-tl-[3px] rounded-bl-[3px] border-0 bg-light-300;
+  height: calc(100% - 2px);
+}
+html .react-tel-input .flag-dropdown.open,
+html .react-tel-input .flag-dropdown.open .selected-flag {
+  @apply rounded-tl-[3px] rounded-bl-[3px] bg-light-300;
+}
+html .react-tel-input .selected-flag:hover,
+html .react-tel-input .selected-flag:focus {
+  @apply bg-light-300;
+}
+html .react-tel-input .country-list {
+  @apply text-13px;
+}
+html.dark .react-tel-input .flag-dropdown,
+html.dark .react-tel-input .flag-dropdown.open,
+html.dark .react-tel-input .flag-dropdown.open .selected-flag,
+html.dark .react-tel-input .selected-flag:hover,
+html.dark .react-tel-input .selected-flag:focus,
+html.dark .react-tel-input .country-list {
+  @apply bg-dark-500;
+}
+html.dark .react-tel-input .country-list .country.highlight,
+html.dark .react-tel-input .country-list .country:hover {
+  @apply bg-dark-400;
+}
+
+/* React Share button custom styles */
+.product-share .react-share__ShareButton > svg > circle {
+  @apply fill-transparent stroke-light-800 stroke-1 transition-all dark:stroke-dark-600;
+}
+.product-share .react-share__ShareButton > svg > path {
+  @apply translate-x-1 translate-y-1 scale-90 fill-dark-800 transition-all dark:fill-light;
+}
+.product-share .react-share__ShareButton:hover > svg > circle {
+  @apply fill-light-200 dark:fill-dark-600;
+}
+.product-share .react-share__ShareButton:hover > svg > path {
+  @apply fill-dark-300 dark:fill-light-300;
+}
+
+/* product gallery active status */
+#productGalleryThumbs .swiper-wrapper .swiper-slide.swiper-slide-thumb-active {
+  @apply border-brand;
+}
+#productGallery + div > .swiper-button-disabled {
+  @apply shadow-none;
+}
+#productGallery + div > .swiper-button-disabled:hover {
+  @apply bg-light text-dark/90;
+}
+
+/* StripeElement */
+.StripeElement {
+  @apply box-border h-[46px] rounded border border-light-500 bg-light py-4 pl-4 pr-2.5 text-13px text-dark ring-[0.5px] ring-light-500 hover:border-brand hover:ring-[0.5px] hover:ring-brand md:h-12;
+}
+html.dark .StripeElement {
+  @apply border-0 ring-0;
+}
+
+/* Checkbox component */
+.checkbox-component + span {
+  @apply h-5 w-5 cursor-pointer rounded border border-light-500 ring-[0.5px] ring-light-500 dark:border-dark-600 dark:ring-dark-600;
+}
+.checkbox-component:checked + span {
+  @apply border-brand bg-brand ring-brand;
+}
+.checkbox-component:checked + span::before {
+  @apply absolute inset-auto mt-[5px] ml-0.5 flex h-2 w-3 border-2 border-t-0 border-r-0 border-light content-[''];
+  transform: rotate(-45deg) translate(2px, -1px);
+}
