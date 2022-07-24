@@ -45,8 +45,6 @@ const PreppersPage: NextPageWithLayout = () => {
     code: 'EN',
   });
 
-  console.log('perppers', preppers);
-
   return (
     <>
       <Seo

@@ -63,8 +63,6 @@ function Products({
   //     ...(query.category && { categories: query.category }),
   //     ...(query.price && { price: query.price }),
   //   });
-
-  console.log('bundles', bundles, isLoading);
   return (
     // <div></div>
     <>

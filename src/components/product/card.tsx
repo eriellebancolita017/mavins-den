@@ -15,8 +15,15 @@ import { fadeInBottomWithScaleX } from '@/lib/framer-motion/fade-in-bottom';
 import { isFree } from '@/lib/is-free';
 
 export default function Card({ bundle }: { bundle: Bundle }) {
-  const { title, description, cover_photo, price, item_id, image } =
-    bundle ?? {};
+  const {
+    title,
+    description,
+    cover_photo,
+    price,
+    item_id,
+    image,
+    restaurant_name,
+  } = bundle ?? {};
   const { openModal } = useModalAction();
   const { isGridCompact } = useGridSwitcher();
   const { basePrice } = usePrice({
@@ -90,14 +97,14 @@ export default function Card({ bundle }: { bundle: Bundle }) {
             layout="fill"
             quality={100}
             objectFit="cover"
-            src={image || placeholder}
+            src={cover_photo || placeholder}
             className="rounded-full bg-light-500 dark:bg-dark-400"
           />
         </div>
         <div className="-mt-[1px] mr-auto flex flex-col truncate pl-2.5">
           <h3
             title={title}
-            className="mb-0.5 truncate font-medium text-dark-100 dark:text-light"
+            className="mb-0.5 whitespace-pre-wrap font-medium text-dark-100 dark:text-light"
           >
             <AnchorLink href={routes.productUrl(item_id)}>{title}</AnchorLink>
           </h3>
@@ -106,19 +113,14 @@ export default function Card({ bundle }: { bundle: Bundle }) {
             className="font-medium text-light-base hover:text-brand dark:text-dark-800 dark:hover:text-brand"
           >
             {/* <p dangerouslySetInnerHTML={{ __html: description }} className="truncate"></p> */}
-            {description}
+            {restaurant_name}
           </AnchorLink>
         </div>
 
         <div className="flex flex-shrink-0 flex-col items-end pl-2.5">
           <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-brand dark:bg-dark-300 dark:text-brand-dark">
-            {isFreeItem ? 'Free' : price}
+            {price} £
           </span>
-          {!isFreeItem && basePrice && (
-            <del className="px-1 text-13px font-medium text-dark-900 dark:text-dark-700">
-              {basePrice}
-            </del>
-          )}
         </div>
       </div>
     </motion.div>
