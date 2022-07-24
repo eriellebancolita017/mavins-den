@@ -39,8 +39,8 @@ export default function CategoryFilter({
   setIndex,
 }: {
   bundles: Bundles[];
-  index: number;
-  setIndex: (index: number) => void;
+  index: number | string;
+  setIndex: (index: number | string) => void;
 }) {
   const router = useRouter();
   // const { categories } = useCategories({
@@ -98,16 +98,17 @@ export default function CategoryFilter({
             isActive={Boolean(router.query.price)}
             onClick={handleFree}
           /> */}
-          {bundles
-            // .filter((category) => category.slug.toLowerCase() !== 'free')
-            .map((category, i) => (
-              <CategoryItem
-                key={category.restaurant_id}
-                categoryName={category.restaurant_name}
-                isActive={i === index}
-                onClick={() => setIndex(i)}
-              />
-            ))}
+          {!!bundles &&
+            bundles
+              // .filter((category) => category.slug.toLowerCase() !== 'free')
+              .map((category, i) => (
+                <CategoryItem
+                  key={category.restaurant_id}
+                  categoryName={category.restaurant_name}
+                  isActive={i === index}
+                  onClick={() => setIndex(i !== index ? i : 'all')}
+                />
+              ))}
         </div>
       </div>
       <button

@@ -53,7 +53,7 @@ function Products({
   bundles,
   isLoading,
 }: {
-  index: number;
+  index: number | string;
   bundles: Bundles[];
   isLoading: boolean;
 }) {
@@ -69,10 +69,17 @@ function Products({
     // <div></div>
     <>
       {!!bundles ? (
-        <Grid
-          bundles={(bundles as Bundles[])[index].data}
-          isLoading={isLoading}
-        />
+        index === 'all' ? (
+          <Grid
+            bundles={(bundles as Bundles[]).map((b) => b.data).flat()}
+            isLoading={isLoading}
+          />
+        ) : (
+          <Grid
+            bundles={(bundles as Bundles[])[index as number].data}
+            isLoading={isLoading}
+          />
+        )
       ) : (
         <></>
       )}
@@ -81,7 +88,7 @@ function Products({
 }
 
 const Home: NextPageWithLayout = () => {
-  const [index, setIndex] = useState(1);
+  const [index, setIndex] = useState<number | string>('all');
   const { bundles, isLoading } = useBundles({
     latitude: 52.2880064,
     longitude: 0.0522195,
