@@ -1,5 +1,65 @@
 import type { NextPage } from 'next';
 import type { ReactElement, ReactNode } from 'react';
+
+// real types
+export interface BundleQueryOptions {
+  latitude: number;
+  longitude: number;
+  code: string;
+  searchKeyword: string;
+  store_type: string;
+}
+
+export interface Bundles {
+  restaurant_name: 'Tastily';
+  restaurant_id: 'RES1642268117ZOH24189';
+  data: Bundle[];
+}
+
+export interface Bundle {
+  price: number;
+  preparation_time: string;
+  image: string;
+  cover_photo: string;
+  est_weight: string;
+  title: string;
+  description: string;
+  item_id: string;
+  restaurant_id: string;
+  restaurant_name: string;
+  location: {
+    type: string;
+    coordinates: number[];
+  };
+  avg_rating_by_consumer: number;
+  avg_rating_by_delivery_boy: number;
+  avg_rating: number;
+  discount_type: string;
+  discount_value: number;
+  range: number;
+  open_time: {
+    monday: string;
+    tuesday: string;
+    wednesday: string;
+    thursday: string;
+    friday: string;
+    saturday: string;
+    sunday: string;
+  };
+  close_time: {
+    monday: string;
+    tuesday: string;
+    wednesday: string;
+    thursday: string;
+    friday: string;
+    saturday: string;
+    sunday: string;
+  };
+  restaurant_longitude: number;
+  restaurant_latitude: number;
+}
+
+// template types
 export interface QueryOptions {
   page?: number;
   limit?: number;

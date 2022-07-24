@@ -1,4 +1,5 @@
 export const API_ENDPOINTS = {
+  // template
   PRODUCTS: '/products',
   PRODUCTS_POPULAR: '/popular-products',
   PRODUCTS_FREE_DOWNLOAD: '/free-downloads/digital-file',
@@ -22,4 +23,11 @@ export const API_ENDPOINTS = {
   SETTINGS: '/settings',
   SETTINGS_CONTACT_US: '/contact-us',
   UPLOADS: '/attachments',
+
+  // real api
+  // @Explore meal bundles
+  EXPLORE_MEAL_BUNDLES: 'explore/search',
+
+  // @Explore meal preppers
+  EXPLORE_MEAL_PREPPERS: 'explore/get-explore-data',
 };

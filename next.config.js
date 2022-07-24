@@ -17,6 +17,7 @@ module.exports = withPWA({
       'maps.googleapis.com',
       's3.amazonaws.com',
       'pixarlaravel.s3.ap-southeast-1.amazonaws.com',
+      'res.cloudinary.com',
     ],
   },
   ...(process.env.NODE_ENV === 'production' && {

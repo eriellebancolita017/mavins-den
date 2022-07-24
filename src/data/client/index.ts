@@ -32,11 +32,14 @@ import type {
   VerifiedCheckoutResponse,
   TopShopQueryOptions,
   Attachment,
+  BundleQueryOptions,
+  Bundles,
 } from '@/types';
 import { API_ENDPOINTS } from './endpoints';
 import { HttpClient } from './http-client';
 
 class Client {
+  // template
   products = {
     all: ({
       categories,
@@ -170,6 +173,15 @@ class Client {
         },
       });
     },
+  };
+
+  // real api
+  bundles = {
+    get: (query: BundleQueryOptions) =>
+      HttpClient.get<{ payload: Bundles[] }>(
+        API_ENDPOINTS.EXPLORE_MEAL_BUNDLES,
+        query
+      ),
   };
 }
 

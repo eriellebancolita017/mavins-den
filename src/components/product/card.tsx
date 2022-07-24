@@ -1,4 +1,4 @@
-import type { Product } from '@/types';
+import type { Bundle, Product } from '@/types';
 import Router from 'next/router';
 import cn from 'classnames';
 import { motion } from 'framer-motion';
@@ -14,32 +14,34 @@ import { useGridSwitcher } from '@/components/product/grid-switcher';
 import { fadeInBottomWithScaleX } from '@/lib/framer-motion/fade-in-bottom';
 import { isFree } from '@/lib/is-free';
 
-export default function Card({ product }: { product: Product }) {
-  const { name, slug, image, shop } = product ?? {};
+export default function Card({ bundle }: { bundle: Bundle }) {
+  const { title, description, cover_photo, price, item_id, image } =
+    bundle ?? {};
   const { openModal } = useModalAction();
   const { isGridCompact } = useGridSwitcher();
-  const { price, basePrice } = usePrice({
-    amount: product.sale_price ? product.sale_price : product.price,
-    baseAmount: product.price,
+  const { basePrice } = usePrice({
+    amount: price,
+    baseAmount: price,
   });
   const goToDetailsPage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    Router.push(routes.productUrl(slug));
+    // Router.push(routes.productUrl(slug));
   };
-  const isFreeItem = isFree(product?.sale_price ?? product?.price);
+  const isFreeItem = isFree(price);
   return (
-    <motion.div variants={fadeInBottomWithScaleX()} title={name}>
+    // <div>{bundle.restaurant_name}</div>
+    <motion.div variants={fadeInBottomWithScaleX()} title={title}>
       <div className="group relative flex aspect-[3/2] w-full justify-center overflow-hidden">
         <Image
-          alt={name}
+          alt={title}
           layout="fill"
           quality={100}
           objectFit="cover"
-          src={image?.thumbnail ?? placeholder}
+          src={cover_photo ?? placeholder}
           className="bg-light-500 dark:bg-dark-400"
         />
         <div
-          onClick={() => openModal('PRODUCT_DETAILS', { slug })}
+          onClick={() => openModal('PRODUCT_DETAILS', { item_id })}
           className="absolute top-0 left-0 z-10 flex h-full w-full cursor-pointer items-center justify-center gap-9 bg-dark/60 p-4 opacity-0 backdrop-blur-sm transition-all group-hover:gap-5 group-hover:opacity-100 dark:bg-dark/70"
         >
           <button
@@ -84,26 +86,27 @@ export default function Card({ product }: { product: Product }) {
       <div className="flex items-start justify-between pt-3.5">
         <div className="relative flex h-8 w-8 flex-shrink-0 4xl:h-9 4xl:w-9">
           <Image
-            alt={shop?.name}
+            alt={title}
             layout="fill"
             quality={100}
             objectFit="cover"
-            src={shop?.logo?.thumbnail ?? placeholder}
+            src={image || placeholder}
             className="rounded-full bg-light-500 dark:bg-dark-400"
           />
         </div>
         <div className="-mt-[1px] mr-auto flex flex-col truncate pl-2.5">
           <h3
-            title={name}
+            title={title}
             className="mb-0.5 truncate font-medium text-dark-100 dark:text-light"
           >
-            <AnchorLink href={routes.productUrl(slug)}>{name}</AnchorLink>
+            <AnchorLink href={routes.productUrl(item_id)}>{title}</AnchorLink>
           </h3>
           <AnchorLink
-            href={routes.shopUrl(shop?.slug)}
+            href={routes.shopUrl(item_id)}
             className="font-medium text-light-base hover:text-brand dark:text-dark-800 dark:hover:text-brand"
           >
-            {shop?.name}
+            {/* <p dangerouslySetInnerHTML={{ __html: description }} className="truncate"></p> */}
+            {description}
           </AnchorLink>
         </div>
 

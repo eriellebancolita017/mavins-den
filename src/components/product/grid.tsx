@@ -1,4 +1,4 @@
-import type { Product } from '@/types';
+import type { Bundle, Product } from '@/types';
 import { motion } from 'framer-motion';
 import cn from 'classnames';
 import Button from '@/components/ui/button';
@@ -10,28 +10,18 @@ import rangeMap from '@/lib/range-map';
 import { staggerTransition } from '@/lib/framer-motion/stagger-transition';
 
 interface GridProps {
-  products: Product[];
-  onLoadMore?: () => void;
-  hasNextPage?: boolean;
-  isLoadingMore?: boolean;
+  bundles?: Bundle[];
   isLoading?: boolean;
-  limit?: number;
 }
 
-export default function Grid({
-  products,
-  onLoadMore,
-  hasNextPage,
-  isLoadingMore,
-  isLoading,
-  limit = 15,
-}: GridProps) {
+export default function Grid({ bundles, isLoading }: GridProps) {
+  console.log(bundles);
   const { isGridCompact } = useGridSwitcher();
-  if (!isLoading && !products.length) {
+  if (!isLoading && !bundles?.length) {
     return (
       <ItemNotFound
-        title="No products found!"
-        message="Sorry, we don’t found any product"
+        title="No bundles found!"
+        message="Sorry, we don’t found any bundles"
         className="px-4 pt-5 pb-10 md:px-6 md:pt-6 lg:px-7 lg:pb-12 3xl:px-8"
       />
     );
@@ -50,26 +40,14 @@ export default function Grid({
           }
         )}
       >
-        {isLoading && !products.length
-          ? rangeMap(limit, (i) => (
+        {isLoading && !bundles?.length
+          ? rangeMap(10, (i) => (
               <ProductCardLoader key={i} uniqueKey={`product-${i}`} />
             ))
-          : products.map((product) => (
-              <Card key={product.id} product={product} />
+          : bundles?.map((bundle) => (
+              <Card key={bundle.item_id} bundle={bundle} />
             ))}
       </motion.div>
-
-      {hasNextPage && (
-        <div className="mt-8 grid place-content-center md:mt-10">
-          <Button
-            onClick={onLoadMore}
-            disabled={isLoadingMore}
-            isLoading={isLoadingMore}
-          >
-            Load more
-          </Button>
-        </div>
-      )}
     </div>
   );
 }

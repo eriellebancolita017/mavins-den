@@ -4,6 +4,7 @@ import { ChevronLeft } from '@/components/icons/chevron-left';
 import { ChevronRight } from '@/components/icons/chevron-right';
 import { useScrollableSlider } from '@/lib/hooks/use-scrollable-slider';
 import { useCategories } from '@/data/category';
+import { Bundles } from '@/types';
 
 function CategoryItem({
   categoryName,
@@ -33,14 +34,20 @@ function CategoryItem({
 }
 
 export default function CategoryFilter({
-  defaultActivePath = '/',
+  bundles,
+  index,
+  setIndex,
 }: {
-  defaultActivePath?: string;
+  bundles: Bundles[];
+  index: number;
+  setIndex: (index: number) => void;
 }) {
   const router = useRouter();
-  const { categories } = useCategories({
-    limit: 100,
-  });
+  // const { categories } = useCategories({
+  //   limit: 100,
+  // });
+
+  const defaultActivePath = '/';
   const {
     sliderEl,
     sliderPrevBtn,
@@ -81,7 +88,7 @@ export default function CategoryFilter({
           className="-mb-7 flex w-full gap-3 overflow-x-auto scroll-smooth pb-7"
           ref={sliderEl}
         >
-          <CategoryItem
+          {/* <CategoryItem
             categoryName={'All'}
             isActive={defaultActivePath === router.asPath}
             onClick={() => handleClick(defaultActivePath)}
@@ -90,15 +97,15 @@ export default function CategoryFilter({
             categoryName={'Free'}
             isActive={Boolean(router.query.price)}
             onClick={handleFree}
-          />
-          {categories
-            .filter((category) => category.slug.toLowerCase() !== 'free')
-            .map((category) => (
+          /> */}
+          {bundles
+            // .filter((category) => category.slug.toLowerCase() !== 'free')
+            .map((category, i) => (
               <CategoryItem
-                key={category.id}
-                categoryName={category.name}
-                isActive={category.slug === router.query.category}
-                onClick={() => handleClick(category.slug)}
+                key={category.restaurant_id}
+                categoryName={category.restaurant_name}
+                isActive={i === index}
+                onClick={() => setIndex(i)}
               />
             ))}
         </div>

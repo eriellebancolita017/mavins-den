@@ -2,7 +2,7 @@ import type { SearchParamOptions } from '@/types';
 import axios from 'axios';
 import Router from 'next/router';
 import { getAuthToken, removeAuthToken } from './token.utils';
-
+console.log('base api url', process.env.NEXT_PUBLIC_REST_API_ENDPOINT);
 const Axios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT,
   timeout: 5000,

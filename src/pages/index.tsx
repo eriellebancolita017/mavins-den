@@ -1,4 +1,5 @@
 import type {
+  Bundles,
   CategoryQueryOptions,
   NextPageWithLayout,
   ProductQueryOptions,
@@ -14,57 +15,80 @@ import client from '@/data/client';
 import { dehydrate, QueryClient } from 'react-query';
 import { API_ENDPOINTS } from '@/data/client/endpoints';
 import CategoryFilter from '@/components/product/category-filter';
+import { useBundles } from '@/data/explore';
+import { useState } from 'react';
 
-export const getStaticProps: GetStaticProps = async () => {
-  const queryClient = new QueryClient();
-  try {
-    await Promise.all([
-      queryClient.prefetchQuery([API_ENDPOINTS.SETTINGS], client.settings.all),
-      queryClient.prefetchInfiniteQuery(
-        [API_ENDPOINTS.PRODUCTS, {}],
-        ({ queryKey }) =>
-          client.products.all(queryKey[1] as ProductQueryOptions)
-      ),
-      queryClient.prefetchInfiniteQuery(
-        [API_ENDPOINTS.CATEGORIES, { limit: 100 }],
-        ({ queryKey }) =>
-          client.categories.all(queryKey[1] as CategoryQueryOptions)
-      ),
-    ]);
-    return {
-      props: {
-        dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
-      },
-      revalidate: 60, // In seconds
-    };
-  } catch (error) {
-    //* if we get here, the product doesn't exist or something else went wrong
-    return {
-      notFound: true,
-    };
-  }
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//   const queryClient = new QueryClient();
+//   try {
+//     await Promise.all([
+//       queryClient.prefetchQuery([API_ENDPOINTS.SETTINGS], client.settings.all),
+//       queryClient.prefetchInfiniteQuery(
+//         [API_ENDPOINTS.PRODUCTS, {}],
+//         ({ queryKey }) =>
+//           client.products.all(queryKey[1] as ProductQueryOptions)
+//       ),
+//       queryClient.prefetchInfiniteQuery(
+//         [API_ENDPOINTS.CATEGORIES, { limit: 100 }],
+//         ({ queryKey }) =>
+//           client.categories.all(queryKey[1] as CategoryQueryOptions)
+//       ),
+//     ]);
+//     return {
+//       props: {
+//         dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+//       },
+//       revalidate: 60, // In seconds
+//     };
+//   } catch (error) {
+//     //* if we get here, the product doesn't exist or something else went wrong
+//     return {
+//       notFound: true,
+//     };
+//   }
+// };
 
-function Products() {
-  const { query } = useRouter();
-  const { products, loadMore, hasNextPage, isLoadingMore, isLoading } =
-    useProducts({
-      ...(query.category && { categories: query.category }),
-      ...(query.price && { price: query.price }),
-    });
+function Products({
+  index,
+  bundles,
+  isLoading,
+}: {
+  index: number;
+  bundles: Bundles[];
+  isLoading: boolean;
+}) {
+  // const { query } = useRouter();
+  // const { products, loadMore, hasNextPage, isLoadingMore, isLoading } =
+  //   useProducts({
+  //     ...(query.category && { categories: query.category }),
+  //     ...(query.price && { price: query.price }),
+  //   });
+
+  console.log('bundles', bundles, isLoading);
   return (
-    <Grid
-      products={products}
-      limit={30}
-      onLoadMore={loadMore}
-      hasNextPage={hasNextPage}
-      isLoadingMore={isLoadingMore}
-      isLoading={isLoading}
-    />
+    // <div></div>
+    <>
+      {!!bundles ? (
+        <Grid
+          bundles={(bundles as Bundles[])[index].data}
+          isLoading={isLoading}
+        />
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 
 const Home: NextPageWithLayout = () => {
+  const [index, setIndex] = useState(1);
+  const { bundles, isLoading } = useBundles({
+    latitude: 52.2880064,
+    longitude: 0.0522195,
+    code: 'EN',
+    searchKeyword: 'bundle',
+    store_type: 'restaurant',
+  });
   return (
     <>
       <Seo
@@ -72,8 +96,20 @@ const Home: NextPageWithLayout = () => {
         description="Fastest digital download template built with React, NextJS, TypeScript, React-Query and Tailwind CSS."
         url={routes.home}
       />
-      <CategoryFilter />
-      <Products />
+      {!!bundles && (
+        <>
+          <CategoryFilter
+            bundles={bundles as Bundles[]}
+            index={index}
+            setIndex={setIndex}
+          />
+          <Products
+            index={index}
+            bundles={bundles as Bundles[]}
+            isLoading={isLoading}
+          />
+        </>
+      )}
     </>
   );
 };
