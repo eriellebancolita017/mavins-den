@@ -1,4 +1,5 @@
 import { useSettings } from '@/data/settings';
+import { Settings } from '@/types';
 import { DefaultSeo as NextDefaultSeo } from 'next-seo';
 
 const DefaultSeo = () => {

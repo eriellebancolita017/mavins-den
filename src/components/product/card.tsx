@@ -26,15 +26,11 @@ export default function Card({ bundle }: { bundle: Bundle }) {
   } = bundle ?? {};
   const { openModal } = useModalAction();
   const { isGridCompact } = useGridSwitcher();
-  const { basePrice } = usePrice({
-    amount: price,
-    baseAmount: price,
-  });
+
   const goToDetailsPage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     // Router.push(routes.productUrl(slug));
   };
-  const isFreeItem = isFree(price);
   return (
     // <div>{bundle.restaurant_name}</div>
     <motion.div variants={fadeInBottomWithScaleX()} title={title}>
