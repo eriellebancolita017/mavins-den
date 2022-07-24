@@ -7,6 +7,7 @@ import routes from '@/config/routes';
 import { useTopShops } from '@/data/shop';
 import ButtonGroup from '@/components/ui/button-group';
 import { SearchIcon } from '@/components/icons/search-icon';
+import { usePreppers } from '@/data/explore';
 
 const MAP_RANGE_FILTER = [
   {
@@ -63,6 +64,15 @@ function Shops() {
 }
 
 const AuthorsPage: NextPageWithLayout = () => {
+  const [index, setIndex] = useState<number | string>('all');
+  const { preppers, isLoading } = usePreppers({
+    latitude: 52.2880064,
+    longitude: 0.0522195,
+    code: 'EN',
+  });
+
+  console.log('perppers', preppers);
+
   return (
     <>
       <Seo
@@ -70,7 +80,7 @@ const AuthorsPage: NextPageWithLayout = () => {
         description="Fastest digital download template built with React, NextJS, TypeScript, React-Query and Tailwind CSS."
         url={routes.authors}
       />
-      <Shops />
+      {/* <Shops /> */}
     </>
   );
 };

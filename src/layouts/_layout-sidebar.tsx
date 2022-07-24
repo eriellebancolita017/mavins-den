@@ -85,8 +85,8 @@ export function Sidebar({
               icon={<ProductIcon className="h-4 w-4 text-current" />}
             />
             <NavLink
-              title={'Top Authors'}
-              href={routes.authors}
+              title={'Preppers'}
+              href={routes.preppers}
               isCollapse={isCollapse}
               icon={<PeopleIcon className="h-[18px] w-[18px] text-current" />}
             />

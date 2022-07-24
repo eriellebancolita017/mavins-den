@@ -1,6 +1,7 @@
 import type {
   BundleQueryOptions,
   Bundles,
+  Preppers,
   ShopPaginator,
   TopShopQueryOptions,
 } from '@/types';
@@ -16,6 +17,18 @@ export function useBundles(slug: BundleQueryOptions) {
   );
   return {
     bundles: data?.payload,
+    isLoading,
+    error,
+  };
+}
+
+export function usePreppers(slug: BundleQueryOptions) {
+  const { data, isLoading, error } = useQuery<{ payload: Preppers[] }, Error>(
+    [API_ENDPOINTS.EXPLORE_MEAL_PREPPERS, slug],
+    () => client.preppers.get(slug)
+  );
+  return {
+    preppers: data?.payload,
     isLoading,
     error,
   };

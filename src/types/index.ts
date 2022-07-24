@@ -6,8 +6,8 @@ export interface BundleQueryOptions {
   latitude: number;
   longitude: number;
   code: string;
-  searchKeyword: string;
-  store_type: string;
+  searchKeyword?: string;
+  store_type?: string;
 }
 
 export interface Bundles {
@@ -57,6 +57,49 @@ export interface Bundle {
   };
   restaurant_longitude: number;
   restaurant_latitude: number;
+}
+
+export interface Prepper {
+  restaurant_id: string;
+  store_type: string;
+  availability_status: string;
+  name: string;
+  avg_rating: number;
+  avg_rating_by_consumer: number;
+  avg_rating_by_delivery_boy: number;
+  address: string;
+  logo: string;
+  cover_photo: string;
+  discount_type: string;
+  discount_value: number;
+  range: number;
+  preparation_time: string;
+  delivery_charge: number;
+  _id: string;
+  timing: {
+    sunday: string;
+    monday: string;
+    tuesday: string;
+    wednesday: string;
+    thursday: string;
+    friday: string;
+    saturday: string;
+  };
+  restaurant_longitude: number;
+  restaurant_latitude: number;
+  distance: number;
+  est_order_time: number;
+  total_item: number;
+  order_pickup_date: string;
+}
+
+export interface Preppers {
+  type: string;
+  title: string;
+  count: number;
+  restaurant_type_id: string;
+  currency: string;
+  data: Prepper[];
 }
 
 // template types
