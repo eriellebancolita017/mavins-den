@@ -22,6 +22,7 @@ export default function Card({ prepper }: { prepper: Prepper }) {
     avg_rating_by_consumer,
     _id,
     logo,
+    restaurant_id,
   } = prepper ?? {};
   const { openModal } = useModalAction();
   const { isGridCompact } = useGridSwitcher();
@@ -43,7 +44,7 @@ export default function Card({ prepper }: { prepper: Prepper }) {
           className="bg-light-500 dark:bg-dark-400"
         />
         <div
-          onClick={() => openModal('PRODUCT_DETAILS', { _id })}
+          onClick={() => Router.push(routes.prepperUrl(restaurant_id))}
           className="absolute top-0 left-0 z-10 flex h-full w-full cursor-pointer items-center justify-center gap-9 bg-dark/60 p-4 opacity-0 backdrop-blur-sm transition-all group-hover:gap-5 group-hover:opacity-100 dark:bg-dark/70"
         >
           <button

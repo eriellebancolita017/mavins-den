@@ -35,6 +35,8 @@ import type {
   BundleQueryOptions,
   Bundles,
   Preppers,
+  Prepper,
+  Bundle,
 } from '@/types';
 import { API_ENDPOINTS } from './endpoints';
 import { HttpClient } from './http-client';
@@ -183,12 +185,21 @@ class Client {
         API_ENDPOINTS.EXPLORE_MEAL_BUNDLES,
         query
       ),
+
+    getDetails: (query: BundleQueryOptions) =>
+      HttpClient.get<{ payload: Bundle }>(API_ENDPOINTS.ITEM_DETAILS, query),
   };
 
   preppers = {
     get: (query: BundleQueryOptions) =>
       HttpClient.get<{ payload: Preppers[] }>(
         API_ENDPOINTS.EXPLORE_MEAL_PREPPERS,
+        query
+      ),
+
+    getDetails: (query: BundleQueryOptions) =>
+      HttpClient.get<{ payload: Prepper }>(
+        API_ENDPOINTS.PREPPER_DETAILS,
         query
       ),
   };

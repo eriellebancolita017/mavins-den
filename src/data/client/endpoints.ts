@@ -30,4 +30,10 @@ export const API_ENDPOINTS = {
 
   // @Explore meal preppers
   EXPLORE_MEAL_PREPPERS: 'explore/get-explore-data',
+
+  // get prepper details
+  PREPPER_DETAILS: 'restaurant/restaurant',
+
+  // get item details
+  ITEM_DETAILS: 'item/get-item-details',
 };

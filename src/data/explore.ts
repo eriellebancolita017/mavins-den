@@ -1,6 +1,8 @@
 import type {
+  Bundle,
   BundleQueryOptions,
   Bundles,
+  Prepper,
   Preppers,
   ShopPaginator,
   TopShopQueryOptions,
@@ -29,6 +31,30 @@ export function usePreppers(slug: BundleQueryOptions) {
   );
   return {
     preppers: data?.payload,
+    isLoading,
+    error,
+  };
+}
+
+export function usePrepperDetails(slug: BundleQueryOptions) {
+  const { data, isLoading, error } = useQuery<{ payload: Prepper }, Error>(
+    [API_ENDPOINTS.PREPPER_DETAILS, slug],
+    () => client.preppers.getDetails(slug)
+  );
+  return {
+    prepper: data?.payload,
+    isLoading,
+    error,
+  };
+}
+
+export function useBundleDetails(slug: BundleQueryOptions) {
+  const { data, isLoading, error } = useQuery<{ payload: Bundle }, Error>(
+    [API_ENDPOINTS.ITEM_DETAILS, slug],
+    () => client.bundles.getDetails(slug)
+  );
+  return {
+    bundle: data?.payload,
     isLoading,
     error,
   };

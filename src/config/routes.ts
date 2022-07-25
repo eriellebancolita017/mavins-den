@@ -20,5 +20,6 @@ const routes = {
   shopUrl: (slug: string) => `/authors/${slug}`,
 
   preppers: '/preppers',
+  prepperUrl: (id: string) => `/preppers/${id}`,
 };
 export default routes;

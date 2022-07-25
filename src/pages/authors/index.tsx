@@ -71,7 +71,7 @@ const AuthorsPage: NextPageWithLayout = () => {
     code: 'EN',
   });
 
-  console.log('perppers', preppers);
+  console.log('preppers', preppers);
 
   return (
     <>

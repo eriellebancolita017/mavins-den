@@ -3,11 +3,14 @@ import type { ReactElement, ReactNode } from 'react';
 
 // real types
 export interface BundleQueryOptions {
-  latitude: number;
-  longitude: number;
-  code: string;
+  latitude?: number;
+  longitude?: number;
+  code?: string;
   searchKeyword?: string;
   store_type?: string;
+  restaurant_id?: string;
+  consumer_id?: string;
+  searchKey?: string;
 }
 
 export interface Bundles {
@@ -17,27 +20,33 @@ export interface Bundles {
 }
 
 export interface Bundle {
-  price: number;
-  preparation_time: string;
-  image: string;
-  cover_photo: string;
-  est_weight: string;
-  title: string;
-  description: string;
-  item_id: string;
-  restaurant_id: string;
-  restaurant_name: string;
-  location: {
+  price: 30;
+  cover_photo: 'http://res.cloudinary.com/tiffineat/image/upload/v1642376853/marvinsden/items/16423768538468.jpg';
+  status?: 'active';
+  item_options?: [];
+  title: 'Taster Package - 4 Meals Bundle';
+  description: "We pick 4 meals so that you can save. We'll follow your guidance, dietary reqs & preferences in the notes";
+  ingredients?: 'x';
+  item_id: 'ITM1642376854MMN50389';
+  sort_id?: 0;
+  avg_rating: 0;
+  badge_count?: 0;
+
+  preparation_time?: string;
+  image?: string;
+  est_weight?: string;
+  restaurant_id?: string;
+  restaurant_name?: string;
+  location?: {
     type: string;
     coordinates: number[];
   };
-  avg_rating_by_consumer: number;
-  avg_rating_by_delivery_boy: number;
-  avg_rating: number;
-  discount_type: string;
-  discount_value: number;
-  range: number;
-  open_time: {
+  avg_rating_by_consumer?: number;
+  avg_rating_by_delivery_boy?: number;
+  discount_type?: string;
+  discount_value?: number;
+  range?: number;
+  open_time?: {
     monday: string;
     tuesday: string;
     wednesday: string;
@@ -46,7 +55,7 @@ export interface Bundle {
     saturday: string;
     sunday: string;
   };
-  close_time: {
+  close_time?: {
     monday: string;
     tuesday: string;
     wednesday: string;
@@ -55,8 +64,11 @@ export interface Bundle {
     saturday: string;
     sunday: string;
   };
-  restaurant_longitude: number;
-  restaurant_latitude: number;
+  restaurant_longitude?: number;
+  restaurant_latitude?: number;
+  banner?: string[];
+  availability_status?: string;
+  currency?: string;
 }
 
 export interface Prepper {
@@ -91,6 +103,53 @@ export interface Prepper {
   est_order_time: number;
   total_item: number;
   order_pickup_date: string;
+
+  email?: string;
+  mobile?: string;
+  mobile_country_code?: string;
+  description?: string;
+  minimum_order_amount?: number;
+  nick_name?: string;
+  restaurant_category_id?: string[];
+  is_free_delivery?: boolean;
+  delivery_areas?: Area[];
+  banner?: Banner[];
+  couisionList?: Couision[];
+  is_favorite?: boolean;
+  currency?: string;
+  is_mobile_update?: boolean;
+  itemCategoryDetails?: ItemCategory[];
+}
+
+export interface Area {
+  latitude: string;
+  longitude: string;
+}
+
+export interface Banner {
+  banner_id: string;
+  type: string;
+  url: string;
+  thumbnail: string;
+}
+
+export interface Couision {
+  _id: string;
+  status: string;
+  photo: string;
+  title: string;
+  description: string;
+  cuisine_id: string;
+  created_at: string;
+  updated_at: string;
+  __v: number;
+}
+
+export interface ItemCategory {
+  categoryTitle: 'Mystery Meal Bundles (1-2 Day Delivery)';
+  category_status: 'active';
+  item_category_id: 'ITC1642372865TAU26853';
+  itemList: Bundle[];
 }
 
 export interface Preppers {

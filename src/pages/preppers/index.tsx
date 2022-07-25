@@ -21,12 +21,12 @@ function Preppers({
       {!!preppers ? (
         index === 'all' ? (
           <Grid
-            preppers={(preppers as Preppers[]).map((b) => b.data).flat()}
+            preppers={preppers.map((b) => b.data).flat()}
             isLoading={isLoading}
           />
         ) : (
           <Grid
-            preppers={(preppers as Preppers[])[index as number].data}
+            preppers={preppers[index as number].data}
             isLoading={isLoading}
           />
         )
