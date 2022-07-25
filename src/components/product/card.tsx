@@ -13,6 +13,7 @@ import placeholder from '@/assets/images/placeholders/product.svg';
 import { useGridSwitcher } from '@/components/product/grid-switcher';
 import { fadeInBottomWithScaleX } from '@/lib/framer-motion/fade-in-bottom';
 import { isFree } from '@/lib/is-free';
+import { CartIcon } from '../icons/cart-icon';
 
 export default function Card({ bundle }: { bundle: Bundle }) {
   const {
@@ -49,7 +50,7 @@ export default function Card({ bundle }: { bundle: Bundle }) {
         >
           <button
             className={cn(
-              'text-center font-medium text-light',
+              'flex flex-col items-center text-center font-medium text-light',
               isGridCompact ? 'text-xs' : 'text-13px'
             )}
           >
@@ -59,11 +60,9 @@ export default function Card({ bundle }: { bundle: Bundle }) {
                 isGridCompact ? 'h-11 w-11' : 'h-[50px] w-[50px]'
               )}
             >
-              <PreviewIcon
-                className={cn(isGridCompact ? 'h-4 w-4' : 'h-5 w-5')}
-              />
+              <CartIcon className={cn(isGridCompact ? 'h-4 w-4' : 'h-5 w-5')} />
             </div>
-            Preview
+            Add to basket
           </button>
           <button
             onClick={goToDetailsPage}

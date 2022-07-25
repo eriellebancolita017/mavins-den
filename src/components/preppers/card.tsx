@@ -48,7 +48,7 @@ export default function Card({ prepper }: { prepper: Prepper }) {
         >
           <button
             className={cn(
-              'text-center font-medium text-light',
+              'flex flex-col items-center text-center font-medium text-light',
               isGridCompact ? 'text-xs' : 'text-13px'
             )}
           >
@@ -62,7 +62,7 @@ export default function Card({ prepper }: { prepper: Prepper }) {
                 className={cn(isGridCompact ? 'h-4 w-4' : 'h-5 w-5')}
               />
             </div>
-            Preview
+            Explore meals
           </button>
           <button
             onClick={goToDetailsPage}
@@ -108,13 +108,13 @@ export default function Card({ prepper }: { prepper: Prepper }) {
             className="font-medium text-light-base hover:text-brand dark:text-dark-800 dark:hover:text-brand"
           >
             {/* <p dangerouslySetInnerHTML={{ __html: description }} className="truncate"></p> */}
-            {order_pickup_date}
+            Next Delivery: {order_pickup_date}
           </AnchorLink>
         </div>
 
         <div className="flex flex-shrink-0 flex-col items-end pl-2.5">
           <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-brand dark:bg-dark-300 dark:text-brand-dark">
-            {avg_rating_by_consumer}
+            {avg_rating_by_consumer} ⭐
           </span>
         </div>
       </div>

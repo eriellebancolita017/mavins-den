@@ -67,7 +67,13 @@ export function Sidebar({
         <div className="flex h-full w-full flex-col">
           <nav className="flex flex-col">
             <NavLink
-              title={'Bundles'}
+              title={'Meal Preppers'}
+              href={routes.preppers}
+              isCollapse={isCollapse}
+              icon={<PeopleIcon className="h-[18px] w-[18px] text-current" />}
+            />
+            <NavLink
+              title={'Meal Bundles'}
               href={routes.home}
               isCollapse={isCollapse}
               icon={<HomeIcon className="h-[18px] w-[18px] text-current" />}
@@ -83,12 +89,6 @@ export function Sidebar({
               href={routes.popularProducts}
               isCollapse={isCollapse}
               icon={<ProductIcon className="h-4 w-4 text-current" />}
-            />
-            <NavLink
-              title={'Preppers'}
-              href={routes.preppers}
-              isCollapse={isCollapse}
-              icon={<PeopleIcon className="h-[18px] w-[18px] text-current" />}
             />
             <NavLink
               title={'Contact'}
