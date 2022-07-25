@@ -106,8 +106,8 @@ export default function CategoryFilter({
                   key={category.restaurant_type_id + 1}
                   categoryName={category.title}
                   isActive={i === index}
-                  // onClick={() => setIndex(i !== index ? i : 'all')}
-                  onClick={() => setIndex(i)}
+                  onClick={() => setIndex(i !== index ? i : 'all')}
+                  // onClick={() => setIndex(i)}
                 />
               ))}
         </div>

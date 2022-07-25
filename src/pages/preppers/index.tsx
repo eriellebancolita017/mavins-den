@@ -38,7 +38,7 @@ function Preppers({
 }
 
 const PreppersPage: NextPageWithLayout = () => {
-  const [index, setIndex] = useState<number | string>(0);
+  const [index, setIndex] = useState<number | string>('all');
   const { preppers, isLoading } = usePreppers({
     latitude: 52.2880064,
     longitude: 0.0522195,

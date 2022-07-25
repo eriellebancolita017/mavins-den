@@ -15,7 +15,6 @@ interface GridProps {
 }
 
 export default function Grid({ bundles, isLoading }: GridProps) {
-  console.log(bundles);
   const { isGridCompact } = useGridSwitcher();
   if (!isLoading && !bundles?.length) {
     return (

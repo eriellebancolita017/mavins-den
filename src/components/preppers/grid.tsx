@@ -43,8 +43,8 @@ export default function Grid({ preppers, isLoading }: GridProps) {
           ? rangeMap(10, (i) => (
               <ProductCardLoader key={i} uniqueKey={`product-${i}`} />
             ))
-          : preppers?.map((prepper) => (
-              <Card key={prepper._id} prepper={prepper} />
+          : preppers?.map((prepper, i) => (
+              <Card key={prepper._id + i} prepper={prepper} />
             ))}
       </motion.div>
     </div>

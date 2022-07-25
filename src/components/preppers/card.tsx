@@ -86,12 +86,12 @@ export default function Card({ prepper }: { prepper: Prepper }) {
         </div>
       </div>
       <div className="flex items-start justify-between pt-3.5">
-        <div className="relative flex h-8 w-8 flex-shrink-0 4xl:h-9 4xl:w-9">
+        <div className="relative flex h-10 w-10 flex-shrink-0 4xl:h-9 4xl:w-9">
           <Image
             alt={name}
             layout="fill"
             quality={100}
-            objectFit="cover"
+            objectFit="contain"
             src={logo || placeholder}
             className="rounded-full bg-light-500 dark:bg-dark-400"
           />

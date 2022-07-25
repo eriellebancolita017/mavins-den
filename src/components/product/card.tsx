@@ -87,12 +87,12 @@ export default function Card({ bundle }: { bundle: Bundle }) {
         </div>
       </div>
       <div className="flex items-start justify-between pt-3.5">
-        <div className="relative flex h-8 w-8 flex-shrink-0 4xl:h-9 4xl:w-9">
+        <div className="relative flex h-10 w-10 flex-shrink-0 4xl:h-9 4xl:w-9">
           <Image
             alt={title}
             layout="fill"
             quality={100}
-            objectFit="cover"
+            objectFit="contain"
             src={cover_photo || placeholder}
             className="rounded-full bg-light-500 dark:bg-dark-400"
           />
@@ -115,7 +115,7 @@ export default function Card({ bundle }: { bundle: Bundle }) {
 
         <div className="flex flex-shrink-0 flex-col items-end pl-2.5">
           <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-brand dark:bg-dark-300 dark:text-brand-dark">
-            {price} £
+            £ {price}
           </span>
         </div>
       </div>
