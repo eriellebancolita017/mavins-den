@@ -115,10 +115,7 @@ export default function ProductPopupDetails() {
         <div className="flex shrink-0 flex-col justify-between text-13px lg:w-[400px] xl:w-[520px] 3xl:w-[555px]">
           <div className="pb-7 xs:pb-8 lg:pb-10">
             <div className="pb-5 leading-[1.9em] dark:text-light-600 xl:pb-6 3xl:pb-8">
-              <p
-                dangerouslySetInnerHTML={{ __html: description }}
-                className="truncate"
-              ></p>
+              <div dangerouslySetInnerHTML={{ __html: description }}></div>
             </div>
             <div className="flex space-x-6 border-t border-light-500 py-3 dark:border-dark-500 md:py-4 3xl:py-5">
               <div className="flex items-center tracking-[.1px] text-dark dark:text-light">
