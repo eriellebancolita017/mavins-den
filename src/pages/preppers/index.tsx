@@ -1,5 +1,5 @@
 import { usePreppers } from '@/data/explore';
-import type { NextPageWithLayout, Preppers } from '@/types';
+import type { NextPageWithLayout, Preppers, Prepper } from '@/types';
 import { useState } from 'react';
 import Seo from '@/layouts/_seo';
 import Layout from '@/layouts/_layout';
@@ -16,14 +16,25 @@ function Preppers({
   preppers: Preppers[];
   isLoading: boolean;
 }) {
+  const uniquePreppers = (): Prepper[] => {
+    let unique: Prepper[] = [];
+    preppers
+      .map((b) => b.data)
+      .flat()
+      .forEach((c) => {
+        if (!unique.find((i) => i.restaurant_id === c.restaurant_id)) {
+          unique.push(c);
+        }
+      });
+
+    return unique;
+  };
+
   return (
     <>
       {!!preppers ? (
         index === 'all' ? (
-          <Grid
-            preppers={preppers.map((b) => b.data).flat()}
-            isLoading={isLoading}
-          />
+          <Grid preppers={uniquePreppers()} isLoading={isLoading} />
         ) : (
           <Grid
             preppers={preppers[index as number].data}
