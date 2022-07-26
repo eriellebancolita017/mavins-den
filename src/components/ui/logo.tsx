@@ -22,8 +22,12 @@ export default function Logo({
       )}
       {...props}
     >
-      {isMounted && isDarkMode && <Image src={darkLogo} alt="Logo" />}
-      {isMounted && !isDarkMode && <Image src={lightLogo} alt="Logo" />}
+      {isMounted && isDarkMode && (
+        <Image src={darkLogo} alt="Logo" width={30} height={30} />
+      )}
+      {isMounted && !isDarkMode && (
+        <Image src={lightLogo} alt="Logo" width={30} height={30} />
+      )}
     </AnchorLink>
   );
 }

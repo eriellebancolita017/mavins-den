@@ -30,7 +30,7 @@ const DefaultSeo = () => {
           href: '/manifest.json',
         },
       ]}
-      title={settings?.seo?.metaTitle}
+      title={settings?.seo?.metaTitle || "Marvin's Den App"}
       titleTemplate={`${
         settings?.seo?.metaTitle || settings?.siteTitle || 'Digital Download'
       } | %s`}

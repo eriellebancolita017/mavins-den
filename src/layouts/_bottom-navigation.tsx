@@ -6,6 +6,7 @@ import CartButton from '@/components/cart/cart-button';
 import Hamburger from '@/components/ui/hamburger';
 import { HomeIcon } from '@/components/icons/home-icon';
 import { useDrawer } from '@/components/drawer-views/context';
+import { PeopleIcon } from '@/components/icons/people-icon';
 
 export default function BottomNavigation() {
   const router = useRouter();
@@ -15,13 +16,20 @@ export default function BottomNavigation() {
       <Button
         variant="icon"
         aria-label="Home"
+        onClick={() => router.push(routes.preppers)}
+      >
+        <PeopleIcon className="h-5 w-5" />
+      </Button>
+      <Button
+        variant="icon"
+        aria-label="Home"
         onClick={() => router.push(routes.home)}
       >
         <HomeIcon className="h-5 w-5" />
       </Button>
-      <SearchButton />
+      {/* <SearchButton />
       {router.asPath !== routes.checkout && <CartButton className="mt-1.5" />}
-      <Hamburger onClick={() => openDrawer('MOBILE_MENU')} />
+      <Hamburger onClick={() => openDrawer('MOBILE_MENU')} /> */}
     </nav>
   );
 }

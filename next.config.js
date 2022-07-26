@@ -18,6 +18,7 @@ module.exports = withPWA({
       's3.amazonaws.com',
       'pixarlaravel.s3.ap-southeast-1.amazonaws.com',
       'res.cloudinary.com',
+      'uploads-ssl.webflow.com',
     ],
   },
   ...(process.env.NODE_ENV === 'production' && {

@@ -97,8 +97,8 @@ const Home: NextPageWithLayout = () => {
   return (
     <>
       <Seo
-        title="UI Design Resources, UI Kits, Wireframes, Icons and More"
-        description="Fastest digital download template built with React, NextJS, TypeScript, React-Query and Tailwind CSS."
+        title="Meal Bundles"
+        description="We partnered up with the best meal prep providers and meal delivery companies in the UK."
         url={routes.home}
       />
       {!!bundles && (

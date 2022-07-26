@@ -8,8 +8,10 @@ import promoImg5 from '@/assets/images/promo/image-5.png';
 import promoImg6 from '@/assets/images/promo/image-6.png';
 
 export const siteSettings = {
-  lightLogo: lightModeLogo,
-  darkLogo: darkModeLogo,
+  lightLogo:
+    'https://uploads-ssl.webflow.com/620ad29fb46ac6596379e3a5/620d0dde8482383154cce5b6_Less%20Background%20Logo.png',
+  darkLogo:
+    'https://uploads-ssl.webflow.com/620ad29fb46ac6596379e3a5/620d0dde8482383154cce5b6_Less%20Background%20Logo.png',
   promoCarouselImages: [
     promoImg1,
     promoImg2,

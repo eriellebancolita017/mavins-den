@@ -7,58 +7,59 @@ import AnchorLink from '@/components/ui/links/anchor-link';
 import classNames from 'classnames';
 import { Tag } from '@/types';
 import routes from '@/config/routes';
+import { PurchaseIcon } from '../icons/purchase-icon';
 
 interface Props {
   className?: string;
-  updated_at: string;
-  created_at: string;
-  tags: Tag[];
-  layoutType: string;
+  preparation_time: string;
+  availability_status: string;
+  // tags: Tag[];
+  price: number;
+  currency: string;
 }
 
 export default function ProductInformation({
   className,
-  updated_at,
-  created_at,
-  tags,
-  layoutType,
+  preparation_time,
+  availability_status,
+  // tags,
+  price,
+  currency,
 }: Props) {
   return (
     <div className={classNames('space-y-4 text-13px', className)}>
       <div className="flex items-start text-dark dark:text-light">
-        <strong className="flex w-36 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
+        <strong className="flex w-44 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
+          <span className="w-8 flex-shrink-0 text-dark-900 dark:text-light-900">
+            <PurchaseIcon className="h-[18px] w-[18px]" />
+          </span>
+          Price:
+        </strong>
+        <span className="font-medium">
+          {currency} {price}
+        </span>
+      </div>
+      <div className="flex items-start text-dark dark:text-light">
+        <strong className="flex w-44 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
           <span className="w-8 flex-shrink-0 text-dark-900 dark:text-light-900">
             <UpdateIcon className="h-[18px] w-[18px]" />
           </span>
-          Last Update:
+          Prepareation Time:
         </strong>
-        <span className="font-medium">
-          {dayjs(updated_at).format('MMM D, YYYY')}
-        </span>
+        <span className="font-medium">{preparation_time} minutes</span>
       </div>
       <div className="flex items-start text-dark dark:text-light">
-        <strong className="flex w-36 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
+        <strong className="flex w-44 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
           <span className="w-8 flex-shrink-0 text-dark-900 dark:text-light-900">
             <CalenderIcon className="h-[18px] w-[18px]" />
           </span>
-          Published:
+          Availability Status:
         </strong>
-        <span className="font-medium">
-          {dayjs(created_at).format('MMM D, YYYY')}
-        </span>
+        <span className="font-medium">{availability_status}</span>
       </div>
-      <div className="flex items-start text-dark dark:text-light">
-        <strong className="flex w-36 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
-          <span className="w-8 flex-shrink-0 text-dark-900 dark:text-light-900">
-            <LayoutIcon className="h-[18px] w-[18px]" />
-          </span>
-          Layout:
-        </strong>
-        <span className="font-medium">{layoutType}</span>
-      </div>
-      {!!tags?.length && (
+      {/* {!!tags?.length && (
         <div className="flex items-start text-dark dark:text-light">
-          <strong className="flex w-36 flex-shrink-0 items-center pt-0.5 font-normal text-dark-600 dark:text-light-600">
+          <strong className="flex w-44 flex-shrink-0 items-center pt-0.5 font-normal text-dark-600 dark:text-light-600">
             <span className="w-8 flex-shrink-0 text-dark-900 dark:text-light-900">
               <LabelIcon className="h-5 w-5" />
             </span>
@@ -76,7 +77,7 @@ export default function ProductInformation({
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

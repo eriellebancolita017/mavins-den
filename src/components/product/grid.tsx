@@ -43,8 +43,8 @@ export default function Grid({ bundles, isLoading }: GridProps) {
           ? rangeMap(10, (i) => (
               <ProductCardLoader key={i} uniqueKey={`product-${i}`} />
             ))
-          : bundles?.map((bundle) => (
-              <Card key={bundle.item_id} bundle={bundle} />
+          : bundles?.map((bundle, index) => (
+              <Card key={bundle.item_id + index} bundle={bundle} />
             ))}
       </motion.div>
     </div>

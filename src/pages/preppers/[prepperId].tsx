@@ -90,47 +90,78 @@ export const getStaticProps: GetStaticProps<
 };
 
 function AboutShop({ prepper }: { prepper: Prepper }) {
-  const { description, name, address } = prepper;
+  const {
+    description,
+    name,
+    address,
+    email,
+    minimum_order_amount,
+    itemCategoryDetails,
+  } = prepper;
+
+  const socials = [
+    {
+      url: 'https://www.facebook.com/MarvinsDen/',
+      icon: 'FacebookIcon',
+    },
+    {
+      url: 'https://instagram.com/marvinsden',
+      icon: 'InstagramIcon',
+    },
+    {
+      url: 'https://www.youtube.com/channel/UCkwDI1i7FNj9YVAWa--6YmQ',
+      icon: 'YouTubeIcon',
+    },
+  ];
+
+  const itemNumber = () => {
+    return itemCategoryDetails!.reduce((r, a) => {
+      r += a.itemList.length;
+      return r;
+    }, 0);
+  };
   return (
     <motion.div
       variants={fadeInBottom()}
       className="mx-auto flex max-w-[480px] flex-col justify-between md:max-w-[1000px] md:flex-row 2xl:max-w-[1280px]"
     >
-      {/* <div className="flex-shrink-0 md:w-6/12 lg:w-7/12 xl:w-5/12">
+      <div className="flex-shrink-0 md:w-6/12 lg:w-7/12 xl:w-7/12">
         <h2 className="mb-3 text-sm font-medium text-dark dark:text-light lg:text-15px">
           {name}
         </h2>
-        <p className="leading-6">{description}</p>
+        <p className="leading-6">
+          <div dangerouslySetInnerHTML={{ __html: description! }} />
+        </p>
         <div className="space-y-3.5 pt-4 text-dark/80 dark:text-light/80 md:pt-6 xl:pt-7">
           <address className="flex max-w-sm items-start not-italic leading-[1.8]">
             <span className="mt-[3px] w-7 shrink-0 text-dark-800 dark:text-light-900">
               <MapPinIcon className="h-4 w-4" />
             </span>
-            {formatAddress(address)}
+            {address}
           </address>
           <div className="flex items-center">
             <span className="w-7 shrink-0 text-dark-800 dark:text-light-900">
               <AtIcon className="h-4 w-4" />
             </span>
-            <a href={`mailto:${owner?.email}`} className="hover:text-brand">
-              {owner?.email}
+            <a href={`mailto:${email}`} className="hover:text-brand">
+              {email}
             </a>
           </div>
         </div>
       </div>
-      <div className="mt-7 flex-shrink-0 rounded-md bg-light p-6 shadow-card dark:bg-dark-250 md:mt-0 md:w-72 lg:p-8">
+      <div className="mt-7 flex-shrink-0 rounded-md bg-light p-6 shadow-card dark:bg-dark-250 md:mt-0 md:w-[400px] lg:p-8">
         <div className="-mx-2 flex pb-6 lg:pb-7">
-          <div className="flex flex-shrink-0 flex-col px-2 pr-10 text-13px capitalize text-dark-500 dark:text-light-900 lg:w-1/2 lg:pr-0">
-            <span className="mb-0.5 text-2xl text-dark dark:text-light">
-              {orders_count}
-            </span>
-            Total Sales
-          </div>
           <div className="flex flex-shrink-0 flex-col px-2 pr-10 text-13px capitalize text-dark-500 dark:text-light-900 xl:w-1/2 xl:pr-0">
             <span className="mb-0.5 text-2xl text-dark dark:text-light">
-              {products_count}
+              {itemNumber()}
             </span>
             Products
+          </div>
+          <div className="flex flex-shrink-0 flex-col px-2 pr-10 text-13px capitalize text-dark-500 dark:text-light-900 lg:w-1/2 lg:pr-0">
+            <span className="mb-0.5 text-2xl text-dark dark:text-light">
+              {minimum_order_amount}
+            </span>
+            Minimum Order Amount
           </div>
         </div>
         <div className="space-y-3 border-t border-light-300 pt-5 dark:border-dark-500">
@@ -154,23 +185,16 @@ function AboutShop({ prepper }: { prepper: Prepper }) {
             </a>
           ))}
         </div>
-      </div> */}
+      </div>
     </motion.div>
   );
 }
 
-function ShopProducts({ shopId }: { shopId: string }) {
-  const { products, isLoading, loadMore, isLoadingMore, hasNextPage } =
-    useProducts({
-      shop_id: shopId,
-    });
+function ShopProducts({ prepper }: { prepper: Prepper }) {
   return (
     <Grid
-      // products={products}
-      isLoading={isLoading}
-      // onLoadMore={loadMore}
-      // isLoadingMore={isLoadingMore}
-      // hasNextPage={hasNextPage}
+      bundles={prepper.itemCategoryDetails?.map((i) => i.itemList).flat()}
+      isLoading={false}
     />
   );
 }
@@ -229,7 +253,7 @@ const ShopPage: NextPageWithLayout<
               )
             }
           >
-            Meals
+            About
           </Tab>
           <Tab
             className={({ selected }) =>
@@ -243,15 +267,15 @@ const ShopPage: NextPageWithLayout<
               )
             }
           >
-            About
+            Meals
           </Tab>
         </Tab.List>
         <Tab.Panels>
-          <Tab.Panel className="focus:outline-none lg:pt-3 xl:pt-4">
-            {/* <ShopProducts shopId={shop.id} /> */}
-          </Tab.Panel>
           <Tab.Panel className="px-4 py-6 focus:outline-none md:px-6 md:py-8 lg:py-10 lg:px-8">
-            {/* <AboutShop shop={shop} /> */}
+            <AboutShop prepper={prepper} />
+          </Tab.Panel>
+          <Tab.Panel className="focus:outline-none lg:pt-3 xl:pt-4">
+            <ShopProducts prepper={prepper} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

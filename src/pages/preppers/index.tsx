@@ -48,8 +48,8 @@ const PreppersPage: NextPageWithLayout = () => {
   return (
     <>
       <Seo
-        title="Shops"
-        description="Fastest digital download template built with React, NextJS, TypeScript, React-Query and Tailwind CSS."
+        title="Meal Preppers"
+        description="We partnered up with the best meal prep providers and meal delivery companies in the UK."
         url={routes.preppers}
       />
       {!!preppers && (

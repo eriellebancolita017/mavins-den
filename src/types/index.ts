@@ -11,6 +11,7 @@ export interface BundleQueryOptions {
   restaurant_id?: string;
   consumer_id?: string;
   searchKey?: string;
+  item_id?: string;
 }
 
 export interface Bundles {
