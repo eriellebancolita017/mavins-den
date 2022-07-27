@@ -30,7 +30,7 @@ export default function CartDrawerView() {
     <>
       <div className="flex h-[70px] items-center justify-between py-2 px-5 sm:px-7">
         <h2 className="text-sm font-medium capitalize text-dark dark:text-light">
-          Shopping cart
+          Basket
         </h2>
         <div className="ml-3 flex h-7 items-center">
           <button
@@ -44,7 +44,7 @@ export default function CartDrawerView() {
         </div>
       </div>
       <Scrollbar className="cart-scrollbar w-full flex-1 py-6 px-6 sm:px-7">
-        {!isEmpty ? <CartItemList /> : <CartEmpty />}
+        {!isEmpty ? <CartItemList closeDrawer={closeDrawer} /> : <CartEmpty />}
       </Scrollbar>
       <div className="border-t border-light-300 px-5 py-6 dark:border-dark-500 sm:px-7 sm:pb-8 sm:pt-7">
         <div className="flex justify-between text-sm font-medium text-dark dark:text-light">

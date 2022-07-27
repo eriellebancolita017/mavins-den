@@ -1,5 +1,6 @@
 import type { Bundle, Product } from '@/types';
 import Router from 'next/router';
+import { useState } from 'react';
 import cn from 'classnames';
 import { motion } from 'framer-motion';
 import Image from '@/components/ui/image';
@@ -14,6 +15,9 @@ import { useGridSwitcher } from '@/components/product/grid-switcher';
 import { fadeInBottomWithScaleX } from '@/lib/framer-motion/fade-in-bottom';
 import { isFree } from '@/lib/is-free';
 import { CartIcon } from '../icons/cart-icon';
+import { generateCartItem } from '../cart/lib/generate-cart-item';
+import toast from 'react-hot-toast';
+import { useCart } from '@/components/cart/lib/cart.context';
 
 export default function Card({ bundle }: { bundle: Bundle }) {
   const {
@@ -28,11 +32,33 @@ export default function Card({ bundle }: { bundle: Bundle }) {
   const { openModal } = useModalAction();
   const { isGridCompact } = useGridSwitcher();
 
-  const addToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const { addItemToCart } = useCart();
+  const [addToCartLoader, setAddToCartLoader] = useState(false);
+  const [cartingSuccess, setCartingSuccess] = useState(false);
+  // const { price } = usePrice({
+  //   amount: item?.sale_price ? item?.sale_price : item?.price,
+  //   baseAmount: item?.price,
+  // });
+  function addToBasket(e: React.MouseEvent<HTMLButtonElement>) {
+    console.log('item clicked to add to basket:', item_id);
     e.stopPropagation();
-    // Router.push(routes.productUrl(slug));
-    console.log('item clicked to add basket:', item_id);
-  };
+    setAddToCartLoader(true);
+    setTimeout(() => {
+      setAddToCartLoader(false);
+      addSuccessfully();
+    }, 650);
+  }
+  function addSuccessfully() {
+    setCartingSuccess(true);
+    addItemToCart(generateCartItem(bundle), 1);
+    toast.success(<b>Successfully added to the basket!</b>, {
+      className: '-mt-10 xs:mt-0',
+    });
+    setTimeout(() => {
+      setCartingSuccess(false);
+    }, 800);
+  }
+
   return (
     // <div>{bundle.restaurant_name}</div>
     <motion.div variants={fadeInBottomWithScaleX()} title={title}>

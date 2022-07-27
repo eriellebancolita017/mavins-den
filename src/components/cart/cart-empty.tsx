@@ -8,8 +8,8 @@ interface Props {
 }
 
 export default function CartEmpty({
-  title = 'Your cart is empty',
-  description = 'Please add product to your cart list',
+  title = 'Your basket is empty',
+  description = 'Please add meals to your basket',
   className,
 }: Props) {
   return (

@@ -4,7 +4,13 @@ import { useCart } from '@/components/cart/lib/cart.context';
 import { CloseIcon } from '@/components/icons/close-icon';
 import CartItem from '@/components/cart/cart-item';
 
-export default function CartItemList({ className }: { className?: string }) {
+export default function CartItemList({
+  className,
+  closeDrawer,
+}: {
+  className?: string;
+  closeDrawer: () => void;
+}) {
   const { items, clearItemFromCart, verifiedResponse } = useCart();
   function handleClearItemFromCart(id: number | string) {
     clearItemFromCart(id);
@@ -28,7 +34,11 @@ export default function CartItemList({ className }: { className?: string }) {
             >
               <CloseIcon className="h-3.5 w-3.5" />
             </button>
-            <CartItem item={item} notAvailable={!!notAvailable} />
+            <CartItem
+              item={item}
+              notAvailable={!!notAvailable}
+              closeDrawer={closeDrawer}
+            />
           </li>
         );
       })}

@@ -4,18 +4,22 @@ import AnchorLink from '@/components/ui/links/anchor-link';
 import routes from '@/config/routes';
 import type { Item } from '@/components/cart/lib/cart.utils';
 import placeholder from '@/assets/images/placeholders/product.svg';
+import { useModalAction } from '@/components/modal-views/context';
 
 export default function CartItem({
   item,
   notAvailable,
+  closeDrawer,
 }: {
   item: Item;
   notAvailable?: boolean;
+  closeDrawer: () => void;
 }) {
   const { name, image, slug, price, shop, quantity } = item;
   const { price: itemPrice } = usePrice({
     amount: price,
   });
+  const { openModal } = useModalAction();
   return (
     <div className="flex w-full items-start gap-4 py-3">
       <div className="relative aspect-[5/3.4] w-28 flex-shrink-0 border border-light-300 bg-light-300 dark:border-0 dark:bg-dark-500 xs:w-32">
@@ -33,16 +37,21 @@ export default function CartItem({
           </span>
         )}
         <h3 className="truncate text-dark dark:text-light">
-          <AnchorLink
-            href={routes.productUrl(slug)}
-            className="transition-colors hover:text-brand-dark"
+          <span
+            onClick={() => {
+              () => closeDrawer();
+              openModal('PRODUCT_DETAILS', {
+                item_id: 'ITM1642451622JYT25521',
+              });
+            }}
+            className="cursor-pointer transition-colors hover:text-brand-dark"
           >
             {name}
-          </AnchorLink>
+          </span>
         </h3>
         <p className="mt-1 mb-2.5">
           <AnchorLink
-            href={routes.shopUrl(shop.slug)}
+            href={routes.prepperUrl(shop.slug)}
             className="text-light-base transition-colors hover:text-brand-dark dark:text-dark-base"
           >
             {shop.name}
