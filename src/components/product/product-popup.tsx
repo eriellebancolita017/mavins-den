@@ -48,6 +48,8 @@ export default function ProductPopupDetails() {
     preparation_time,
     availability_status,
     currency,
+    ingredients,
+    item_options,
   } = bundle ?? {};
 
   const gallery = banner?.map((item, index) => {
@@ -117,18 +119,13 @@ export default function ProductPopupDetails() {
             <div className="pb-5 leading-[1.9em] dark:text-light-600 xl:pb-6 3xl:pb-8">
               <div dangerouslySetInnerHTML={{ __html: description }}></div>
             </div>
-            <div className="flex space-x-6 border-t border-light-500 py-3 dark:border-dark-500 md:py-4 3xl:py-5">
-              <div className="flex items-center tracking-[.1px] text-dark dark:text-light">
-                <ShoppingCartIcon className="mr-2.5 h-[18px] w-[18px] text-dark-900 dark:text-light-800" />
-                {
-                  pluralize('Sale', 0, true) // replace 0 to number of orders
-                }
+            {item_options!.length > 0 && (
+              <div className="flex space-x-6 border-t border-light-500 py-3 dark:border-dark-500 md:py-4 3xl:py-5">
+                <div className="flex items-center tracking-[.1px] text-dark dark:text-light">
+                  Meal Options:
+                </div>
               </div>
-              {/* <div className="flex items-center tracking-[.1px] text-dark dark:text-light">
-                <DownloadIcon className="mr-2.5 h-[18px] w-[18px] text-dark-900 dark:text-light-800" />
-                {pluralize('Download', total_downloads, true)}
-              </div> */}
-            </div>
+            )}
             <ProductInformation
               preparation_time={preparation_time!}
               availability_status={availability_status!}
@@ -137,35 +134,16 @@ export default function ProductPopupDetails() {
               className="border-t border-light-500 py-5 dark:border-dark-500 lg:py-6 3xl:py-10"
             />
             <div className="border-t border-light-500 pt-5 dark:border-dark-500">
-              <ProductSocialShare productSlug={slug} />
+              <ProductSocialShare productSlug={restaurant_id!} />
             </div>
           </div>
-          {/* <div className="flex flex-col-reverse items-center xs:flex-row xs:gap-2.5 xs:pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
-            {!isFreeItem ? (
-              <AddToCart
-                item={product}
-                toastClassName="-mt-10 xs:mt-0"
-                className="mt-2.5 w-full flex-1 xs:mt-0"
-              />
-            ) : (
-              <FreeDownloadButton
-                productId={id}
-                productSlug={slug}
-                productName={name}
-                className="mt-2.5 w-full flex-1 xs:mt-0"
-              />
-            )}
-            {Boolean(preview_url) && (
-              <a
-                href={preview_url}
-                rel="noreferrer"
-                target="_blank"
-                className="transition-fill-colors flex min-h-[46px] w-full flex-1 items-center justify-center gap-2 rounded border border-light-500 bg-transparent py-3 px-4 font-semibold text-dark duration-200 hover:bg-light-400 hover:text-brand focus:bg-light-500 dark:border-dark-600 dark:text-light dark:hover:bg-dark-600 dark:focus:bg-dark-600 sm:h-12 md:px-5"
-              >
-                Live Preview
-              </a>
-            )}
-          </div> */}
+          <div className="flex flex-col-reverse items-center xs:flex-row xs:gap-2.5 xs:pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
+            <AddToCart
+              item={bundle}
+              toastClassName="-mt-10 xs:mt-0"
+              className="mt-2.5 w-full flex-1 xs:mt-0"
+            />
+          </div>
         </div>
       </div>
     </div>

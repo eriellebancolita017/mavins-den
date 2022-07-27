@@ -97,6 +97,7 @@ function AboutShop({ prepper }: { prepper: Prepper }) {
     email,
     minimum_order_amount,
     itemCategoryDetails,
+    currency,
   } = prepper;
 
   const socials = [
@@ -159,7 +160,7 @@ function AboutShop({ prepper }: { prepper: Prepper }) {
           </div>
           <div className="flex flex-shrink-0 flex-col px-2 pr-10 text-13px capitalize text-dark-500 dark:text-light-900 lg:w-1/2 lg:pr-0">
             <span className="mb-0.5 text-2xl text-dark dark:text-light">
-              {minimum_order_amount}
+              {currency} {minimum_order_amount}
             </span>
             Minimum Order Amount
           </div>
@@ -253,7 +254,7 @@ const ShopPage: NextPageWithLayout<
               )
             }
           >
-            About
+            Meals
           </Tab>
           <Tab
             className={({ selected }) =>
@@ -267,15 +268,15 @@ const ShopPage: NextPageWithLayout<
               )
             }
           >
-            Meals
+            About
           </Tab>
         </Tab.List>
         <Tab.Panels>
           <Tab.Panel className="px-4 py-6 focus:outline-none md:px-6 md:py-8 lg:py-10 lg:px-8">
-            <AboutShop prepper={prepper} />
+            <ShopProducts prepper={prepper} />
           </Tab.Panel>
           <Tab.Panel className="focus:outline-none lg:pt-3 xl:pt-4">
-            <ShopProducts prepper={prepper} />
+            <AboutShop prepper={prepper} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

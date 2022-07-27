@@ -27,7 +27,11 @@ function Preppers({
         }
       });
 
-    return unique;
+    return unique.sort((a, b) =>
+      (a.avg_rating_by_consumer + a.restaurant_id).localeCompare(
+        a.avg_rating_by_consumer + b.restaurant_id
+      )
+    );
   };
 
   return (
@@ -37,7 +41,11 @@ function Preppers({
           <Grid preppers={uniquePreppers()} isLoading={isLoading} />
         ) : (
           <Grid
-            preppers={preppers[index as number].data}
+            preppers={preppers[index as number].data.sort((a, b) =>
+              (a.avg_rating_by_consumer + a.restaurant_id).localeCompare(
+                a.avg_rating_by_consumer + b.restaurant_id
+              )
+            )}
             isLoading={isLoading}
           />
         )
@@ -55,7 +63,7 @@ const PreppersPage: NextPageWithLayout = () => {
     longitude: 0.0522195,
     code: 'EN',
   });
-
+  console.log('==================');
   return (
     <>
       <Seo

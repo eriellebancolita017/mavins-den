@@ -39,7 +39,7 @@ export default function ProductInformation({
           {currency} {price}
         </span>
       </div>
-      <div className="flex items-start text-dark dark:text-light">
+      {/* <div className="flex items-start text-dark dark:text-light">
         <strong className="flex w-44 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
           <span className="w-8 flex-shrink-0 text-dark-900 dark:text-light-900">
             <UpdateIcon className="h-[18px] w-[18px]" />
@@ -56,7 +56,7 @@ export default function ProductInformation({
           Availability Status:
         </strong>
         <span className="font-medium">{availability_status}</span>
-      </div>
+      </div> */}
       {/* {!!tags?.length && (
         <div className="flex items-start text-dark dark:text-light">
           <strong className="flex w-44 flex-shrink-0 items-center pt-0.5 font-normal text-dark-600 dark:text-light-600">

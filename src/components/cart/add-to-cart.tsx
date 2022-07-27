@@ -4,44 +4,41 @@ import toast from 'react-hot-toast';
 import Button from '@/components/ui/button';
 import { useCart } from '@/components/cart/lib/cart.context';
 import usePrice from '@/lib/hooks/use-price';
-import type { Product } from '@/types';
+import type { Bundle, Product } from '@/types';
 import { generateCartItem } from './lib/generate-cart-item';
 
 interface Props {
-  item: Product;
+  item: Bundle;
   className?: string;
   toastClassName?: string;
 }
 
 export default function AddToCart({ item, className, toastClassName }: Props) {
-  const { addItemToCart } = useCart();
-  const [addToCartLoader, setAddToCartLoader] = useState(false);
+  const { price, currency, item_id } = item;
+  // const { addItemToCart } = useCart();
+  // const [addToCartLoader, setAddToCartLoader] = useState(false);
   const [cartingSuccess, setCartingSuccess] = useState(false);
-  const { price } = usePrice({
-    amount: item?.sale_price ? item?.sale_price : item?.price,
-    baseAmount: item?.price,
-  });
+  // const { price } = usePrice({
+  //   amount: item?.sale_price ? item?.sale_price : item?.price,
+  //   baseAmount: item?.price,
+  // });
   function handleAddToCart() {
-    setAddToCartLoader(true);
-    setTimeout(() => {
-      setAddToCartLoader(false);
-      addSuccessfully();
-    }, 650);
+    console.log('item clicked to add to basket:', item_id);
   }
-  function addSuccessfully() {
-    setCartingSuccess(true);
-    addItemToCart(generateCartItem(item), 1);
-    toast.success(<b>Successfully added to the cart!</b>, {
-      className: toastClassName,
-    });
-    setTimeout(() => {
-      setCartingSuccess(false);
-    }, 800);
-  }
+  // function addSuccessfully() {
+  //   setCartingSuccess(true);
+  //   addItemToCart(generateCartItem(item), 1);
+  //   toast.success(<b>Successfully added to the cart!</b>, {
+  //     className: toastClassName,
+  //   });
+  //   setTimeout(() => {
+  //     setCartingSuccess(false);
+  //   }, 800);
+  // }
   return (
     <Button
       onClick={() => handleAddToCart()}
-      isLoading={addToCartLoader}
+      // isLoading={addToCartLoader}
       className={cn(
         'relative',
         cartingSuccess
@@ -50,7 +47,7 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
         className
       )}
     >
-      Add to Cart {price}
+      Add to Basket ( {currency} {price} )
       <svg
         viewBox="0 0 37 37"
         xmlns="http://www.w3.org/2000/svg"

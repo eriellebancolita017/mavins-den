@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function ProductSocialShare({ productSlug, className }: Props) {
-  const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${routes.productUrl(
+  const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${routes.prepperUrl(
     productSlug
   )}`;
   let [copyButtonStatus, setCopyButtonStatus] = useState('Copy link');
