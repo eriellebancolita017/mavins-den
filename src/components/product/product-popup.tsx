@@ -120,10 +120,25 @@ export default function ProductPopupDetails() {
               <div dangerouslySetInnerHTML={{ __html: description }}></div>
             </div>
             {item_options!.length > 0 && (
-              <div className="flex space-x-6 border-t border-light-500 py-3 dark:border-dark-500 md:py-4 3xl:py-5">
+              <div className="flex flex-col space-x-6 border-t border-light-500 py-3 dark:border-dark-500 md:py-4 3xl:py-5">
                 <div className="flex items-center tracking-[.1px] text-dark dark:text-light">
                   Meal Options:
                 </div>
+                {item_options!.map((option) => (
+                  <div key={option.item_option_category_id}>
+                    <p className="my-2 text-sm font-semibold">
+                      {option.title_cat}
+                    </p>
+                    <ul className="list-disc pl-6">
+                      {option.item_option_list?.map((item: any) => (
+                        <li key={item.item_option_id} className="my-1">
+                          {item.title} - {currency}
+                          {item.price}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             )}
             <ProductInformation

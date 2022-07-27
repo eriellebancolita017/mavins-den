@@ -24,7 +24,7 @@ export interface Bundle {
   price: 30;
   cover_photo: 'http://res.cloudinary.com/tiffineat/image/upload/v1642376853/marvinsden/items/16423768538468.jpg';
   status?: 'active';
-  item_options?: [];
+  item_options?: any[];
   title: 'Taster Package - 4 Meals Bundle';
   description: "We pick 4 meals so that you can save. We'll follow your guidance, dietary reqs & preferences in the notes";
   ingredients?: 'x';
