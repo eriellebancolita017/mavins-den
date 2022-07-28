@@ -3,20 +3,22 @@ import useAuth from '@/components/auth/use-auth';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import client from './client';
 import { API_ENDPOINTS } from './client/endpoints';
+import { useUserContext } from '@/components/preppers/context';
 
 export function useMe() {
   const { isAuthorized } = useAuth();
-  const { data, isLoading, error } = useQuery<User, Error>(
-    [API_ENDPOINTS.USERS_ME],
-    client.users.me,
-    {
-      enabled: isAuthorized,
-    }
-  );
+  const { location, userInfo } = useUserContext();
+  // const { data, isLoading, error } = useQuery<User, Error>(
+  //   [API_ENDPOINTS.USERS_ME],
+  //   client.users.me,
+  //   {
+  //     enabled: isAuthorized,
+  //   }
+  // );
   return {
-    me: data,
-    isLoading,
-    error,
+    me: { ...userInfo, ...location },
+    isLoading: false,
+    error: null,
     isAuthorized,
   };
 }

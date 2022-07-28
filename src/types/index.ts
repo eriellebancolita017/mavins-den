@@ -289,17 +289,32 @@ export interface Shop {
   };
 }
 export interface User {
-  id: string;
+  id?: string;
   name: string;
-  profile: {
+  profile?: {
     id: string;
     bio: string;
     contact: string;
     avatar: Attachment;
   };
-  role: string;
-  created_at: string;
-  updated_at: string;
+  role?: string;
+  created_at?: string;
+  updated_at?: string;
+
+  consumer_id: string;
+  register_type: string;
+  email: string;
+  mobile: string;
+  mobile_country_code: string;
+  password: string;
+  credit: number;
+  profile_photo: string;
+  device_id: string | null;
+  device_token: string | null;
+  device_type: string | null;
+  device_name: string | null;
+  login_address: string;
+  status: string;
 }
 export interface UpdateProfileInput {
   id: string;
@@ -326,6 +341,10 @@ export interface ContactInput {
 export interface LoginUserInput {
   email: string;
   password: string;
+  user_type?: string;
+  login_latitude?: number;
+  login_longitude?: number;
+  login_address?: string;
 }
 export interface RegisterUserInput {
   name: string;
@@ -350,8 +369,25 @@ export interface PasswordChangeResponse {
   message: string;
 }
 export interface AuthResponse {
-  token: string;
-  permissions: string[];
+  erorr: string | null;
+  payload: {
+    consumer_id: string;
+    register_type: string;
+    name: string;
+    email: string;
+    mobile: string;
+    mobile_country_code: string;
+    password: string;
+    credit: number;
+    profile_photo: string;
+    device_id: string | null;
+    device_token: string | null;
+    device_type: string | null;
+    device_name: string | null;
+    login_address: string;
+    status: string;
+  };
+  status: number;
 }
 export interface CreateContactUsInput {
   name: string;

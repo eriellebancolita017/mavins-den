@@ -12,6 +12,8 @@ import Button from '@/components/ui/button';
 import { RegisterBgPattern } from '@/components/auth/register-bg-pattern';
 import { useState } from 'react';
 import useAuth from './use-auth';
+import PhoneInput from '@/components/ui/forms/phone-input';
+import { useUserContext } from '../preppers/context';
 
 const registerUserValidationSchema = yup.object().shape({
   name: yup.string().max(20).required(),
@@ -22,16 +24,19 @@ const registerUserValidationSchema = yup.object().shape({
 export default function RegisterUserForm() {
   const { openModal, closeModal } = useModalAction();
   const { authorize } = useAuth();
+  const { location, setUserInfo } = useUserContext();
+
   let [serverError, setServerError] = useState<RegisterUserInput | null>(null);
   const { mutate } = useMutation(client.users.register, {
     onSuccess: (res) => {
-      if (!res.token) {
+      if (!res.payload.consumer_id) {
         toast.error(<b>Something went wrong</b>, {
           className: '-mt-10 xs:mt-0',
         });
         return;
       }
-      authorize(res.token);
+      authorize(res.payload.consumer_id);
+      setUserInfo(res.payload);
       closeModal();
     },
     onError: (err: any) => {
@@ -77,6 +82,12 @@ export default function RegisterUserForm() {
                   {...register('name')}
                   error={errors.name?.message}
                 />
+                <div>
+                  <span className="block cursor-pointer pb-2.5 text-13px font-normal text-dark/70 dark:text-light/70">
+                    Phone Number
+                  </span>
+                  <PhoneInput />
+                </div>
                 <Input
                   label="Email"
                   inputClassName="bg-light dark:bg-dark-300"

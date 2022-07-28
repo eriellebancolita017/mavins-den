@@ -13,18 +13,11 @@ export const API_ENDPOINTS = {
   GENERATE_DOWNLOADABLE_PRODUCT_LINK: '/downloads/digital-file',
   USERS: '/users',
   USERS_ME: '/me',
-  USERS_LOGIN: '/token',
-  USERS_REGISTER: '/register',
-  USERS_FORGOT_PASSWORD: '/forget-password',
-  USERS_VERIFY_FORGOT_PASSWORD_TOKEN: '/verify-forget-password-token',
-  USERS_RESET_PASSWORD: '/reset-password',
-  USERS_CHANGE_PASSWORD: '/change-password',
-  USERS_LOGOUT: '/logout',
+
   SETTINGS: '/settings',
   SETTINGS_CONTACT_US: '/contact-us',
   UPLOADS: '/attachments',
 
-  // real api
   // @Explore meal bundles
   EXPLORE_MEAL_BUNDLES: 'explore/search',
 
@@ -36,4 +29,13 @@ export const API_ENDPOINTS = {
 
   // get item details
   ITEM_DETAILS: 'item/get-item-details',
+
+  // auth
+  USERS_LOGIN: 'auth/consumer/sign-in',
+  USERS_REGISTER: 'auth/consumer/sign-up',
+  USERS_FORGOT_PASSWORD: '/forget-password',
+  USERS_VERIFY_FORGOT_PASSWORD_TOKEN: '/verify-forget-password-token',
+  USERS_RESET_PASSWORD: '/reset-password',
+  USERS_CHANGE_PASSWORD: '/change-password',
+  USERS_LOGOUT: '/logout',
 };

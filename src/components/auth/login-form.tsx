@@ -12,29 +12,42 @@ import useAuth from '@/components/auth/use-auth';
 import CheckBox from '@/components/ui/forms/checkbox';
 import { RegisterBgPattern } from '@/components/auth/register-bg-pattern';
 import client from '@/data/client';
+import { useUserContext } from '../preppers/context';
 
 const loginValidationSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
+  user_type: yup.string(),
+  login_latitude: yup.number(),
+  login_longitude: yup.number(),
+  login_address: yup.string(),
 });
 
 export default function LoginUserForm() {
   const { openModal, closeModal } = useModalAction();
   const { authorize } = useAuth();
-  const { mutate: login } = useMutation(client.users.login, {
+  const { location, setUserInfo } = useUserContext();
+  const { mutate: login, isLoading } = useMutation(client.users.login, {
     onSuccess: (data) => {
-      if (!data.token) {
+      if (!data.payload.consumer_id) {
         toast.error(<b>Wrong username or password</b>, {
           className: '-mt-10 xs:mt-0',
         });
         return;
       }
-      authorize(data.token);
+      authorize(data.payload.consumer_id);
+      setUserInfo(data.payload);
       closeModal();
     },
   });
   const onSubmit: SubmitHandler<LoginUserInput> = (data) => {
-    login(data);
+    login({
+      ...data,
+      user_type: 'consumer',
+      login_latitude: location.latitude,
+      login_longitude: location.longitude,
+      login_address: location.address,
+    });
   };
   return (
     <div className="px-6 pt-10 pb-8 sm:px-8 lg:p-12">
@@ -91,6 +104,7 @@ export default function LoginUserForm() {
                 <Button
                   type="submit"
                   className="!mt-5 w-full text-sm tracking-[0.2px] lg:!mt-7"
+                  disabled={isLoading}
                 >
                   Get Login
                 </Button>

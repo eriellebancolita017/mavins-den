@@ -166,7 +166,7 @@ export default function ProductPopupDetails() {
               <ProductSocialShare productSlug={restaurant_id!} />
             </div>
           </div>
-          <div className="flex flex-col-reverse items-center xs:flex-row-reverse xs:gap-2.5 xs:pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
+          <div className="flex flex-col-reverse items-center gap-3 xs:flex-row-reverse xs:gap-2.5 xs:pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
             <Button
               isLoading={loading}
               onClick={() => handleCheckout()}

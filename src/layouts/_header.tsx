@@ -44,7 +44,7 @@ function AuthorizedMenu({ user }: { user: User }) {
           round={true}
           name={user.name}
           textSizeRatio={2}
-          src={user?.profile?.avatar?.thumbnail}
+          src={user?.profile_photo}
         />
       </Menu.Button>
       <Transition
