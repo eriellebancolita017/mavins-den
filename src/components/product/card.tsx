@@ -28,6 +28,7 @@ export default function Card({ bundle }: { bundle: Bundle }) {
     item_id,
     image,
     restaurant_name,
+    restaurant_id,
   } = bundle ?? {};
   const { openModal } = useModalAction();
   const { isGridCompact } = useGridSwitcher();
@@ -126,12 +127,14 @@ export default function Card({ bundle }: { bundle: Bundle }) {
         <div className="-mt-[1px] mr-auto flex flex-col truncate pl-2.5">
           <h3
             title={title}
-            className="mb-0.5 whitespace-pre-wrap font-medium text-dark-100 dark:text-light"
+            className="mb-0.5 cursor-pointer whitespace-pre-wrap font-medium text-dark-100 dark:text-light"
           >
-            <AnchorLink href={routes.productUrl(item_id)}>{title}</AnchorLink>
+            <p onClick={() => openModal('PRODUCT_DETAILS', { item_id })}>
+              {title}
+            </p>
           </h3>
           <AnchorLink
-            href={routes.shopUrl(item_id)}
+            href={routes.prepperUrl(restaurant_id!)}
             className="font-medium text-light-base hover:text-brand dark:text-dark-800 dark:hover:text-brand"
           >
             {/* <p dangerouslySetInnerHTML={{ __html: description }} className="truncate"></p> */}
@@ -140,7 +143,7 @@ export default function Card({ bundle }: { bundle: Bundle }) {
         </div>
 
         <div className="flex flex-shrink-0 flex-col items-end pl-2.5">
-          <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-brand dark:bg-dark-300 dark:text-brand-dark">
+          <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-oldBrand dark:bg-dark-300 dark:text-oldBrand-dark">
             £ {price}
           </span>
         </div>

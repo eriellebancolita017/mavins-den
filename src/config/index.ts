@@ -6,4 +6,5 @@ export const ConfigValue = {
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   NEXT_PUBLIC_WEBSITE_URL: process.env.NEXT_PUBLIC_WEBSITE_URL,
   AUTH_TOKEN_KEY: 'pixer-auth-token',
+  NEXT_PUBLIC_GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
 };

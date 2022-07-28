@@ -159,7 +159,8 @@ class Client {
         API_ENDPOINTS.USERS_CHANGE_PASSWORD,
         input
       ),
-    logout: () => HttpClient.post<boolean>(API_ENDPOINTS.USERS_LOGOUT, {}),
+    logout: (payload: any) =>
+      HttpClient.post<boolean>(API_ENDPOINTS.USERS_LOGOUT, payload),
   };
   settings = {
     all: () => HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS),

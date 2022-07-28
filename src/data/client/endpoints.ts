@@ -37,5 +37,5 @@ export const API_ENDPOINTS = {
   USERS_VERIFY_FORGOT_PASSWORD_TOKEN: '/verify-forget-password-token',
   USERS_RESET_PASSWORD: '/reset-password',
   USERS_CHANGE_PASSWORD: '/change-password',
-  USERS_LOGOUT: '/logout',
+  USERS_LOGOUT: 'auth/consumer-logout',
 };

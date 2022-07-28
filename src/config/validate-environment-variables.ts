@@ -9,6 +9,7 @@ const environmentVariablesSchema = yup.object().shape({
   NEXT_PUBLIC_REST_API_ENDPOINT: yup.string().required(),
   NEXT_PUBLIC_WEBSITE_URL: yup.string().required(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: yup.string().required(),
+  NEXT_PUBLIC_GOOGLE_API_KEY: yup.string().required(),
 });
 
 export function validateEnvironmentVariables() {

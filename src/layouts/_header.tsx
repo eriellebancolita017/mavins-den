@@ -18,6 +18,7 @@ import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import { useSwapBodyClassOnScrollDirection } from '@/lib/hooks/use-swap-body-class';
 import { useModalAction } from '@/components/modal-views/context';
 import Button from '@/components/ui/button';
+import { useUserContext } from '@/components/preppers/context';
 
 const AuthorizedMenuItems = [
   {
@@ -35,6 +36,7 @@ const AuthorizedMenuItems = [
 ];
 
 function AuthorizedMenu({ user }: { user: User }) {
+  const { userInfo } = useUserContext();
   const { mutate: logout } = useLogout();
   return (
     <Menu>
@@ -71,7 +73,13 @@ function AuthorizedMenu({ user }: { user: User }) {
             <button
               type="button"
               className="transition-fill-colors w-full px-5 py-2.5 text-left hover:bg-light-400 dark:hover:bg-dark-600"
-              onClick={() => logout()}
+              onClick={() =>
+                logout({
+                  user_id: userInfo.consumer_id,
+                  device_token: userInfo.device_token || 'xxx',
+                  code: 'EN',
+                })
+              }
             >
               Logout
             </button>

@@ -67,10 +67,15 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                 ',' +
                 position.coords.longitude +
                 '&key=' +
-                'API_KEY'
+                process.env.NEXT_PUBLIC_GOOGLE_API_KEY
             )
               .then((response) => response.json())
               .then((responseJson) => {
+                console.log(
+                  '====',
+                  responseJson,
+                  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+                );
                 setLocation({
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,

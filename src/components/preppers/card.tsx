@@ -29,7 +29,7 @@ export default function Card({ prepper }: { prepper: Prepper }) {
 
   const goToDetailsPage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // Router.push(routes.productUrl(slug));
+    Router.push(routes.prepperUrl(restaurant_id));
   };
   return (
     // <div>{bundle.restaurant_name}</div>
@@ -102,10 +102,12 @@ export default function Card({ prepper }: { prepper: Prepper }) {
             title={name}
             className="mb-0.5 truncate font-medium text-dark-100 dark:text-light"
           >
-            <AnchorLink href={routes.productUrl(_id)}>{name}</AnchorLink>
+            <AnchorLink href={routes.prepperUrl(restaurant_id)}>
+              {name}
+            </AnchorLink>
           </h3>
           <AnchorLink
-            href={routes.shopUrl(_id)}
+            href={routes.prepperUrl(restaurant_id)}
             className="font-medium text-light-base hover:text-brand dark:text-dark-800 dark:hover:text-brand"
           >
             {/* <p dangerouslySetInnerHTML={{ __html: description }} className="truncate"></p> */}
@@ -114,7 +116,7 @@ export default function Card({ prepper }: { prepper: Prepper }) {
         </div>
 
         <div className="flex flex-shrink-0 flex-col items-end pl-2.5">
-          <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-brand dark:bg-dark-300 dark:text-brand-dark">
+          <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-oldBrand dark:bg-dark-300 dark:text-oldBrand-dark">
             {avg_rating_by_consumer} ⭐
           </span>
         </div>

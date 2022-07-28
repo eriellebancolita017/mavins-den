@@ -25,11 +25,13 @@ export function useMe() {
 
 export function useLogout() {
   const { unauthorize } = useAuth();
+  const { setUserInfo } = useUserContext();
   const queryClient = useQueryClient();
   return useMutation(client.users.logout, {
     onSuccess: () => {
       unauthorize();
-      queryClient.resetQueries(API_ENDPOINTS.USERS_ME);
+      setUserInfo(null);
+      // queryClient.resetQueries(API_ENDPOINTS.USERS_ME);
     },
   });
 }
