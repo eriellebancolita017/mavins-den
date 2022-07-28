@@ -15,9 +15,15 @@ import pluralize from 'pluralize';
 import { useProduct } from '@/data/product';
 import ProductPopupLoader from '@/components/product/product-popup-loader';
 import { useBundleDetails } from '@/data/explore';
+import Button from '@/components/ui/button';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function ProductPopupDetails() {
+  const [loading, setLoading] = useState(false);
   const { data } = useModalState();
+  const router = useRouter();
+
   // const { product, isLoading } = useProduct(data.slug);
   const { bundle, isLoading } = useBundleDetails({
     item_id: data.item_id,
@@ -59,6 +65,14 @@ export default function ProductPopupDetails() {
       thumbnail: item,
     };
   });
+
+  function handleCheckout() {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      router.push(routes.checkout);
+    }, 600);
+  }
 
   return (
     <div className="flex max-w-full flex-col bg-light text-left dark:bg-dark-250 xs:max-w-[430px] sm:max-w-[550px] md:max-w-[600px] lg:max-w-[960px] xl:max-w-[1200px] 3xl:max-w-[1460px]">
@@ -152,7 +166,15 @@ export default function ProductPopupDetails() {
               <ProductSocialShare productSlug={restaurant_id!} />
             </div>
           </div>
-          <div className="flex flex-col-reverse items-center xs:flex-row xs:gap-2.5 xs:pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
+          <div className="flex flex-col-reverse items-center xs:flex-row-reverse xs:gap-2.5 xs:pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
+            <Button
+              isLoading={loading}
+              onClick={() => handleCheckout()}
+              className="w-full flex-1 text-sm md:h-[52px]"
+              variant="outline"
+            >
+              Proceed to checkout
+            </Button>
             <AddToCart
               item={bundle}
               toastClassName="-mt-10 xs:mt-0"

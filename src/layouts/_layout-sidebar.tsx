@@ -124,24 +124,30 @@ export function Sidebar({
         )}
       >
         <nav className="flex items-center justify-center gap-5 pb-1.5 text-13px font-medium capitalize tracking-[0.2px]">
-          <ActiveLink
-            href={routes.terms}
+          <a
+            href="https://www.marvinsden.com/terms-and-conditions"
             className="block py-2 text-dark-700 hover:text-dark-100 dark:hover:text-brand"
+            target="_blank"
+            rel="noreferrer"
           >
             Terms
-          </ActiveLink>
-          <ActiveLink
-            href={routes.privacy}
+          </a>
+          <a
+            href="https://www.marvinsden.com/privacy"
             className="block py-2 text-dark-700 hover:text-dark-100 dark:hover:text-brand"
+            target="_blank"
+            rel="noreferrer"
           >
             Privacy
-          </ActiveLink>
-          <ActiveLink
-            href={routes.help}
+          </a>
+          <a
+            href="https://www.marvinsden.com/support"
             className="block py-2 text-dark-700 hover:text-dark-100 dark:hover:text-brand"
+            target="_blank"
+            rel="noreferrer"
           >
             Help
-          </ActiveLink>
+          </a>
         </nav>
         <Copyright className="text-xs font-medium text-dark-800/80 dark:text-dark-700" />
       </footer>
