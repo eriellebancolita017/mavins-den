@@ -156,7 +156,7 @@ export default function ProductPopupDetails() {
               </div>
             )}
             <ProductInformation
-              preparation_time={preparation_time!}
+              ingredients={ingredients!}
               availability_status={availability_status!}
               price={price}
               currency={currency!}

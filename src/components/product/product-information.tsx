@@ -11,7 +11,7 @@ import { PurchaseIcon } from '../icons/purchase-icon';
 
 interface Props {
   className?: string;
-  preparation_time: string;
+  ingredients: string;
   availability_status: string;
   // tags: Tag[];
   price: number;
@@ -20,7 +20,7 @@ interface Props {
 
 export default function ProductInformation({
   className,
-  preparation_time,
+  ingredients,
   availability_status,
   // tags,
   price,
@@ -39,16 +39,16 @@ export default function ProductInformation({
           {currency} {price}
         </span>
       </div>
-      {/* <div className="flex items-start text-dark dark:text-light">
+      <div className="flex items-start text-dark dark:text-light">
         <strong className="flex w-44 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
           <span className="w-8 flex-shrink-0 text-dark-900 dark:text-light-900">
             <UpdateIcon className="h-[18px] w-[18px]" />
           </span>
-          Prepareation Time:
+          Ingredients:
         </strong>
-        <span className="font-medium">{preparation_time} minutes</span>
+        <span className="font-medium">{ingredients}</span>
       </div>
-      <div className="flex items-start text-dark dark:text-light">
+      {/* <div className="flex items-start text-dark dark:text-light">
         <strong className="flex w-44 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">
           <span className="w-8 flex-shrink-0 text-dark-900 dark:text-light-900">
             <CalenderIcon className="h-[18px] w-[18px]" />
