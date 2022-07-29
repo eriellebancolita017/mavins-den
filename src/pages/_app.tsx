@@ -18,7 +18,7 @@ import '@/assets/css/scrollbar.css';
 import '@/assets/css/swiper-carousel.css';
 import '@/assets/css/globals.css';
 import { useRouter } from 'next/router';
-import Layout from '@/layouts/_layout';
+import Layout from '@/layouts/_general-layout';
 import UserContextProvider from '@/components/preppers/context';
 import { SpinnerIcon } from '@/components/icons/spinner-icon';
 
@@ -116,7 +116,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                 >
                   {pageLoading ? (
                     <Layout>
-                      <div className="flex h-full items-center justify-center">
+                      <div className="flex h-full min-h-[calc(100vh-200px)] items-center justify-center">
                         {/* <svg
                           className="text-grey-200 -ml-1 mr-3 h-12 w-12 animate-spin"
                           xmlns="http://www.w3.org/2000/svg"
