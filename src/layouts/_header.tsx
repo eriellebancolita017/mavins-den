@@ -19,6 +19,7 @@ import { useSwapBodyClassOnScrollDirection } from '@/lib/hooks/use-swap-body-cla
 import { useModalAction } from '@/components/modal-views/context';
 import Button from '@/components/ui/button';
 import { useUserContext } from '@/components/preppers/context';
+import toast from 'react-hot-toast';
 
 const AuthorizedMenuItems = [
   {
@@ -73,13 +74,16 @@ function AuthorizedMenu({ user }: { user: User }) {
             <button
               type="button"
               className="transition-fill-colors w-full px-5 py-2.5 text-left hover:bg-light-400 dark:hover:bg-dark-600"
-              onClick={() =>
-                logout({
+              onClick={async () => {
+                await logout({
                   user_id: userInfo.consumer_id,
                   device_token: userInfo.device_token || 'xxx',
                   code: 'EN',
-                })
-              }
+                });
+                toast.success(<b>Successfully Signed up.</b>, {
+                  className: '-mt-10 xs:mt-0',
+                });
+              }}
             >
               Logout
             </button>

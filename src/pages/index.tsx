@@ -17,6 +17,7 @@ import { API_ENDPOINTS } from '@/data/client/endpoints';
 import CategoryFilter from '@/components/product/category-filter';
 import { useBundles } from '@/data/explore';
 import { useState } from 'react';
+import { useUserContext } from '@/components/preppers/context';
 
 // export const getStaticProps: GetStaticProps = async () => {
 //   const queryClient = new QueryClient();
@@ -87,9 +88,10 @@ function Products({
 
 const Home: NextPageWithLayout = () => {
   const [index, setIndex] = useState<number | string>('all');
+  const { location } = useUserContext();
   const { bundles, isLoading } = useBundles({
-    latitude: 52.2880064,
-    longitude: 0.0522195,
+    latitude: location.latitude,
+    longitude: location.longitude,
     code: 'EN',
     searchKeyword: 'bundle',
     store_type: 'restaurant',

@@ -350,6 +350,17 @@ export interface RegisterUserInput {
   name: string;
   email: string;
   password: string;
+
+  register_type?: string;
+  mobile?: string;
+  mobile_country_code?: string;
+  otp?: number;
+  code?: string;
+  device_id?: string;
+  device_token?: string;
+  device_type?: string;
+  device_name?: string;
+  user_type?: string;
 }
 export interface ForgetPasswordInput {
   email: string;

@@ -36,10 +36,11 @@ export default function PrivateRoute({
     return <>{children}</>;
   }
   return (
-    <div className="grid min-h-full w-full place-content-center">
-      <div className="flex items-center gap-3 text-lg">
-        <SpinnerIcon className="h-auto w-6 animate-spin" /> Loading...
-      </div>
-    </div>
+    // <div className="grid min-h-full w-full place-content-center">
+    //   <div className="flex items-center gap-3 text-lg">
+    //     <SpinnerIcon className="h-auto w-6 animate-spin" /> Loading...
+    //   </div>
+    // </div>
+    <UnAuthorizedView />
   );
 }

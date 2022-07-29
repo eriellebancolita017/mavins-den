@@ -124,7 +124,7 @@ function AboutShop({ prepper }: { prepper: Prepper }) {
   return (
     <motion.div
       variants={fadeInBottom()}
-      className="mx-auto flex max-w-[480px] flex-col justify-between p-4 md:max-w-[1000px] md:flex-row 2xl:max-w-[1280px]"
+      className="mx-auto flex max-w-[480px] flex-col justify-between md:max-w-[1000px] md:flex-row 2xl:max-w-[1280px]"
     >
       <div className="flex-shrink-0 md:w-6/12 lg:w-7/12 xl:w-7/12">
         <h2 className="mb-3 text-sm font-medium text-dark dark:text-light lg:text-15px">
@@ -207,7 +207,7 @@ const ShopPage: NextPageWithLayout<
   console.log('preper details', prepper);
 
   const router = useRouter();
-
+  console.log('router => ', router.query);
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
@@ -240,7 +240,7 @@ const ShopPage: NextPageWithLayout<
           </h1>
         </div>
       </div>
-      <Tab.Group>
+      <Tab.Group defaultIndex={router.query.details ? 1 : 0}>
         <Tab.List className="relative z-10 -mt-[34px] space-x-6 px-4 text-center text-13px lg:space-x-8">
           <Tab
             className={({ selected }) =>

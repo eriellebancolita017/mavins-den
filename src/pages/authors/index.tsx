@@ -8,6 +8,7 @@ import { useTopShops } from '@/data/shop';
 import ButtonGroup from '@/components/ui/button-group';
 import { SearchIcon } from '@/components/icons/search-icon';
 import { usePreppers } from '@/data/explore';
+import { useUserContext } from '@/components/preppers/context';
 
 const MAP_RANGE_FILTER = [
   {
@@ -65,9 +66,10 @@ function Shops() {
 
 const AuthorsPage: NextPageWithLayout = () => {
   const [index, setIndex] = useState<number | string>('all');
+  const { location } = useUserContext();
   const { preppers, isLoading } = usePreppers({
-    latitude: 52.2880064,
-    longitude: 0.0522195,
+    latitude: location.latitude,
+    longitude: location.longitude,
     code: 'EN',
   });
 

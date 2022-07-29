@@ -29,7 +29,12 @@ export default function Card({ prepper }: { prepper: Prepper }) {
 
   const goToDetailsPage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    Router.push(routes.prepperUrl(restaurant_id));
+    Router.push({
+      pathname: routes.prepperUrl(restaurant_id),
+      query: {
+        details: true,
+      },
+    });
   };
   return (
     // <div>{bundle.restaurant_name}</div>

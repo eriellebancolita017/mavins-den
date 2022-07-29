@@ -161,6 +161,11 @@ class Client {
       ),
     logout: (payload: any) =>
       HttpClient.post<boolean>(API_ENDPOINTS.USERS_LOGOUT, payload),
+
+    getOpt: (payload: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.GET_OPT, payload),
+    getProfile: (payload: any) =>
+      HttpClient.get<any>(API_ENDPOINTS.GET_PROFILE, payload),
   };
   settings = {
     all: () => HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS),

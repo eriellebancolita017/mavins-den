@@ -38,4 +38,8 @@ export const API_ENDPOINTS = {
   USERS_RESET_PASSWORD: '/reset-password',
   USERS_CHANGE_PASSWORD: '/change-password',
   USERS_LOGOUT: 'auth/consumer-logout',
+
+  GET_PROFILE: 'account/display-profile',
+
+  GET_OPT: 'auth/send-otp',
 };

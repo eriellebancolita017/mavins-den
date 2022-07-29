@@ -35,9 +35,21 @@ export default function LoginUserForm() {
         });
         return;
       }
+
+      toast.success(<b>Successfully logged in.</b>, {
+        className: '-mt-10 xs:mt-0',
+      });
+
       authorize(data.payload.consumer_id);
       setUserInfo(data.payload);
       closeModal();
+    },
+    onError: (error) => {
+      console.log('error ==>', error);
+      toast.error(<b>Wrong username or password</b>, {
+        className: '-mt-10 xs:mt-0',
+      });
+      return;
     },
   });
   const onSubmit: SubmitHandler<LoginUserInput> = (data) => {

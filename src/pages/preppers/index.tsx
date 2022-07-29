@@ -6,6 +6,7 @@ import Layout from '@/layouts/_layout';
 import routes from '@/config/routes';
 import CategoryFilter from '@/components/preppers/category-filter';
 import Grid from '@/components/preppers/grid';
+import { useUserContext } from '@/components/preppers/context';
 
 function Preppers({
   index,
@@ -58,9 +59,14 @@ function Preppers({
 
 const PreppersPage: NextPageWithLayout = () => {
   const [index, setIndex] = useState<number | string>('all');
+  const { location } = useUserContext();
   const { preppers, isLoading } = usePreppers({
+    // latitude: location.latitude,
+    // longitude: location.longitude,
+
     latitude: 52.2880064,
     longitude: 0.0522195,
+
     code: 'EN',
   });
   console.log('==================');

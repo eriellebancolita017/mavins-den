@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 
-type ServerErrors<T> = {
+export type ServerErrors<T> = {
   [Property in keyof T]: string;
 };
 type FormProps<TFormValues> = {
