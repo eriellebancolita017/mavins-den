@@ -42,4 +42,14 @@ export const API_ENDPOINTS = {
   GET_PROFILE: 'account/display-profile',
 
   GET_OPT: 'auth/send-otp',
+
+  // cart apis
+  GET_CART_STATUS: 'cart/get-current-cart-status/',
+  GET_ALL_IN_CART: 'cart/list-cart-items/',
+  CHECK_CART: 'cart/check-item-exists-in-cart/',
+  DELETE_ALL_FROM_CART: 'cart/remove-all-from-cart/',
+  DELETE_FROM_CART: 'cart/remove-from-cart/',
+
+  ADD_TO_CART: 'cart/add-to-cart/',
+  MOVE_CART_GUEST: 'cart/move-cart-from-guest/',
 };

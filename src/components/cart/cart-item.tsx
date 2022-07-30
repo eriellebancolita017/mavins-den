@@ -15,18 +15,19 @@ export default function CartItem({
   notAvailable?: boolean;
   closeDrawer: () => void;
 }) {
-  const { name, image, slug, price, shop, quantity } = item;
+  const { item_name, item_cover_photo, item_id, price, qty, restaurant_id } =
+    item;
   const { price: itemPrice } = usePrice({
-    amount: price,
+    amount: price!,
   });
   const { openModal } = useModalAction();
   return (
     <div className="flex w-full items-start gap-4 py-3">
       <div className="relative aspect-[5/3.4] w-28 flex-shrink-0 border border-light-300 bg-light-300 dark:border-0 dark:bg-dark-500 xs:w-32">
         <Image
-          alt={name}
+          alt={item_name}
           layout="fill"
-          src={image ?? placeholder}
+          src={item_cover_photo ?? placeholder}
           objectFit="cover"
         />
       </div>
@@ -46,24 +47,22 @@ export default function CartItem({
             }}
             className="cursor-pointer transition-colors hover:text-brand-dark"
           >
-            {name}
+            {item_name}
           </span>
         </h3>
         <p className="mt-1 mb-2.5">
           <AnchorLink
-            href={routes.prepperUrl(shop.slug)}
+            href={routes.prepperUrl(restaurant_id!)}
             className="text-light-base transition-colors hover:text-brand-dark dark:text-dark-base"
           >
-            {shop.name}
+            {restaurant_id}
           </AnchorLink>
         </p>
         <p className="flex items-center gap-1">
           <span className="rounded-2xl bg-light-300 p-1.5 font-semibold uppercase leading-none text-brand-dark dark:bg-dark-500">
             {itemPrice}
           </span>
-          <span className="text-light-base dark:text-dark-base">
-            X {quantity}
-          </span>
+          <span className="text-light-base dark:text-dark-base">X {qty}</span>
         </p>
       </div>
     </div>

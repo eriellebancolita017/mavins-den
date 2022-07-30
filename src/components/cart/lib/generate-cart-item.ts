@@ -1,15 +1,12 @@
+import { Item } from './cart.utils';
+
 export function generateCartItem(item: any) {
   return {
-    id: item.item_id || item.cover_photo,
-    name: item.title,
-    slug: item.item_id || item.cover_photo,
-    unit: item.unit || '',
-    image: item.cover_photo,
+    item_id: item.item_id || item.cover_photo,
+    item_name: item.title,
+    item_cover_photo: item.cover_photo,
     stock: item.quantity,
     price: Number(item.sale_price ? item.sale_price : item.price),
-    shop: {
-      slug: item.restaurant_id,
-      name: item.restaurant_name,
-    },
+    restaurant_id: item.restaurant_id,
   };
 }

@@ -204,10 +204,9 @@ const ShopPage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ prepper }) => {
   const { name, logo, cover_photo } = prepper;
-  console.log('preper details', prepper);
 
   const router = useRouter();
-  console.log('router => ', router.query);
+
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {

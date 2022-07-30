@@ -21,15 +21,16 @@ interface Metadata {
 type Action =
   | {
       type: 'ADD_ITEM_WITH_QUANTITY';
-      item: Optional<Item, 'quantity'>;
+      item: Optional<Item, 'qty'>;
       quantity: number;
     }
-  | { type: 'REMOVE_ITEM_OR_QUANTITY'; id: Item['id']; quantity?: number }
-  | { type: 'ADD_ITEM'; id: Item['id']; item: Item }
-  | { type: 'UPDATE_ITEM'; id: Item['id']; item: UpdateItemInput }
-  | { type: 'REMOVE_ITEM'; id: Item['id'] }
+  | { type: 'REMOVE_ITEM_OR_QUANTITY'; id: Item['item_id']; quantity?: number }
+  | { type: 'ADD_ITEM'; id: Item['item_id']; item: Item }
+  | { type: 'UPDATE_ITEM'; id: Item['item_id']; item: UpdateItemInput }
+  | { type: 'REMOVE_ITEM'; id: Item['item_id'] }
   | { type: 'SET_VERIFIED_RESPONSE'; response: VerifiedResponse }
-  | { type: 'RESET_CART' };
+  | { type: 'RESET_CART' }
+  | { type: 'READ_FROM_API'; allItems: any[] };
 
 export interface State {
   items: Item[];
@@ -87,6 +88,10 @@ export function cartReducer(state: State, action: Action): State {
     }
     case 'RESET_CART':
       return initialState;
+
+    case 'READ_FROM_API':
+      const items = action.allItems;
+      return generateFinalState(state, items);
     default:
       return state;
   }

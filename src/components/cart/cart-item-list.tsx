@@ -13,24 +13,24 @@ export default function CartItemList({
 }) {
   const { items, clearItemFromCart, verifiedResponse } = useCart();
   function handleClearItemFromCart(id: number | string) {
-    clearItemFromCart(id);
+    clearItemFromCart(id as string);
     toast.success(<b>Successfully remove from the cart!</b>);
   }
   return (
     <ul role="list" className={cn('-my-6 w-full', className)}>
       {items.map((item) => {
         const notAvailable = verifiedResponse?.unavailable_products?.find(
-          (id) => id === item.id
+          (id) => id === item.item_id
         );
         return (
           <li
-            key={item.id}
+            key={item.item_id}
             className="relative ml-4 flex border-b border-light-300 last-of-type:border-b-0 dark:border-dark-500 xs:ml-6"
           >
             <button
               type="button"
               className="absolute -left-8 top-1/2 -mt-3.5 flex-shrink-0 p-2 font-medium text-dark-900 hover:text-dark dark:text-dark-800 dark:hover:text-light-900 xs:-left-10"
-              onClick={() => handleClearItemFromCart(item.id)}
+              onClick={() => handleClearItemFromCart(item.item_id as string)}
             >
               <CloseIcon className="h-3.5 w-3.5" />
             </button>

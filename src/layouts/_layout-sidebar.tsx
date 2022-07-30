@@ -92,7 +92,7 @@ export function Sidebar({
             />
             <NavLink
               title={'Contact'}
-              href={routes.contact}
+              href={'https://www.marvinsden.com/contact'}
               isCollapse={isCollapse}
               icon={
                 <PaperPlaneIcon className="h-[18px] w-[18px] text-current" />

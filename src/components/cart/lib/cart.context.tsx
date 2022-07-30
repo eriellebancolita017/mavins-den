@@ -10,16 +10,23 @@ import {
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 import { CART_KEY } from '@/lib/constants';
 import { isEmpty } from 'lodash';
+import { useUserContext } from '@/components/preppers/context';
+import { useMutation, useQuery } from 'react-query';
+import client from '@/data/client';
+import toast from 'react-hot-toast';
+import { API_ENDPOINTS } from '@/data/client/endpoints';
+import useAuth from '@/components/auth/use-auth';
 
 interface CartProviderState extends State {
-  addItemToCart: (item: Optional<Item, 'quantity'>, quantity: number) => void;
-  removeItemFromCart: (id: Item['id']) => void;
-  clearItemFromCart: (id: Item['id']) => void;
-  getItemFromCart: (id: Item['id']) => any | undefined;
-  isInCart: (id: Item['id']) => boolean;
-  isInStock: (id: Item['id']) => boolean;
+  addItemToCart: (item: Optional<Item, 'qty'>, quantity: number) => void;
+  removeItemFromCart: (id: Item['item_id']) => void;
+  clearItemFromCart: (id: Item['item_id']) => void;
+  getItemFromCart: (id: Item['item_id']) => any | undefined;
+  isInCart: (id: Item['item_id']) => boolean;
+  isInStock: (id: Item['item_id']) => boolean;
   resetCart: () => void;
   setVerifiedResponse: (response: VerifiedResponse) => void;
+  adding: boolean;
 }
 export const cartContext = React.createContext<CartProviderState | undefined>(
   undefined
@@ -44,34 +51,114 @@ export const CartProvider: React.FC = (props) => {
     cartReducer,
     JSON.parse(savedCart!)
   );
+  const { location, userInfo } = useUserContext();
+  const { isAuthorized } = useAuth();
 
   React.useEffect(() => {
     if (state.isEmpty) {
       resetCart();
     }
   }, [state.isEmpty]);
+
+  const { data, refetch } = useQuery<any>(
+    [API_ENDPOINTS.EXPLORE_MEAL_BUNDLES, userInfo, location],
+    () => {
+      return client.cart.getAllInCart(
+        isAuthorized
+          ? `${userInfo.consumer_id}/consumer/EN`
+          : `${location.address}/guest/EN`
+      );
+    },
+    {
+      enabled: false,
+    }
+  );
+
   React.useEffect(() => {
     saveCart(JSON.stringify(state));
-  }, [state, saveCart]);
+  }, [state, saveCart, data]);
 
-  const addItemToCart = (item: Optional<Item, 'quantity'>, quantity: number) =>
-    dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', item, quantity });
-  const removeItemFromCart = (id: Item['id']) =>
+  React.useEffect(() => {
+    dispatch({
+      type: 'READ_FROM_API',
+      allItems: data?.payload.cartItems || [],
+    });
+  }, [data]);
+
+  React.useEffect(() => {
+    refetch();
+  }, [refetch, userInfo, isAuthorized]);
+
+  const { mutate: addingItemToCart, isLoading: adding } = useMutation(
+    client.cart.addItemToCart
+  );
+
+  const addItemToCart = (item: Optional<Item, 'qty'>, quantity: number) => {
+    addingItemToCart(
+      {
+        consumer_id: userInfo?.consumer_id || null,
+        device_id: userInfo ? null : location.address,
+        item_id: item.item_id,
+        qty: quantity,
+        item_options: [],
+        restaurant_id: item.restaurant_id,
+        item_instruction: null,
+        code: 'EN',
+      },
+      {
+        onSuccess: (res) => {
+          if (res.error) {
+            toast.error(<b>Something went wrong</b>, {
+              className: '-mt-10 xs:mt-0',
+            });
+            return;
+          }
+          dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', item, quantity });
+          refetch();
+
+          toast.success(<b>Successfully added to the basket!</b>, {
+            className: '-mt-10 xs:mt-0',
+          });
+        },
+        onError: (error: any) => {
+          console.log('error', error, error.response);
+          if (error.response.status === 406) {
+            toast.error(
+              <b>
+                You have already added from other restaurant. Do you want to
+                replace it?
+              </b>,
+              {
+                duration: 4000,
+                className: '-mt-10 xs:mt-0 w-2xl',
+              }
+            );
+            return;
+          }
+          toast.error(<b>Something went wrong</b>, {
+            className: '-mt-10 xs:mt-0',
+          });
+        },
+      }
+    );
+  };
+
+  const removeItemFromCart = (id: Item['item_id']) =>
     dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id });
-  const clearItemFromCart = (id: Item['id']) =>
+  const clearItemFromCart = (id: Item['item_id']) =>
     dispatch({ type: 'REMOVE_ITEM', id });
   const setVerifiedResponse = (response: any) =>
     dispatch({ type: 'SET_VERIFIED_RESPONSE', response });
   const isInCart = useCallback(
-    (id: Item['id']) => !!getItem(state.items, id),
+    (id: Item['item_id']) => !!getItem(state.items, id),
     [state.items]
   );
   const getItemFromCart = useCallback(
-    (id: Item['id']) => getItem(state.items, id),
+    (id: Item['item_id']) => getItem(state.items, id),
     [state.items]
   );
   const isInStock = useCallback(
-    (id: Item['id']) => inStock(state.items, id),
+    (id: Item['item_id']) => inStock(state.items, id),
     [state.items]
   );
   const resetCart = () => dispatch({ type: 'RESET_CART' });
@@ -86,6 +173,7 @@ export const CartProvider: React.FC = (props) => {
       isInCart,
       isInStock,
       resetCart,
+      adding,
     }),
     [getItemFromCart, isInCart, isInStock, state]
   );

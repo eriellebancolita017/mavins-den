@@ -73,8 +73,6 @@ const AuthorsPage: NextPageWithLayout = () => {
     code: 'EN',
   });
 
-  console.log('preppers', preppers);
-
   return (
     <>
       <Seo

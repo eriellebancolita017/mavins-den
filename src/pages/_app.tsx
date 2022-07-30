@@ -72,11 +72,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             )
               .then((response) => response.json())
               .then((responseJson) => {
-                console.log(
-                  '====',
-                  responseJson,
-                  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-                );
                 setLocation({
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,

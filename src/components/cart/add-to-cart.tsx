@@ -18,27 +18,12 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
   const { addItemToCart } = useCart();
   const [addToCartLoader, setAddToCartLoader] = useState(false);
   const [cartingSuccess, setCartingSuccess] = useState(false);
-  // const { price } = usePrice({
-  //   amount: item?.sale_price ? item?.sale_price : item?.price,
-  //   baseAmount: item?.price,
-  // });
+
   function handleAddToCart() {
-    console.log('item clicked to add to basket:', item_id);
-    setAddToCartLoader(true);
-    setTimeout(() => {
-      setAddToCartLoader(false);
-      addSuccessfully();
-    }, 650);
+    addSuccessfully();
   }
   function addSuccessfully() {
-    setCartingSuccess(true);
     addItemToCart(generateCartItem(item), 1);
-    toast.success(<b>Successfully added to the cart!</b>, {
-      className: toastClassName,
-    });
-    setTimeout(() => {
-      setCartingSuccess(false);
-    }, 800);
   }
   return (
     <Button

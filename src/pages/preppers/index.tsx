@@ -69,7 +69,7 @@ const PreppersPage: NextPageWithLayout = () => {
 
     code: 'EN',
   });
-  console.log('==================');
+
   return (
     <>
       <Seo

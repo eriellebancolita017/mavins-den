@@ -1,6 +1,6 @@
 import type { Bundle, Product } from '@/types';
 import Router from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { motion } from 'framer-motion';
 import Image from '@/components/ui/image';
@@ -33,32 +33,22 @@ export default function Card({ bundle }: { bundle: Bundle }) {
   const { openModal } = useModalAction();
   const { isGridCompact } = useGridSwitcher();
 
-  const { addItemToCart } = useCart();
+  const { addItemToCart, adding } = useCart();
   const [addToCartLoader, setAddToCartLoader] = useState(false);
   const [cartingSuccess, setCartingSuccess] = useState(false);
-  // const { price } = usePrice({
-  //   amount: item?.sale_price ? item?.sale_price : item?.price,
-  //   baseAmount: item?.price,
-  // });
+
   function addToBasket(e: React.MouseEvent<HTMLButtonElement>) {
-    console.log('item clicked to add to basket:', item_id);
     e.stopPropagation();
-    setAddToCartLoader(true);
-    setTimeout(() => {
-      setAddToCartLoader(false);
-      addSuccessfully();
-    }, 650);
+
+    addSuccessfully();
   }
   function addSuccessfully() {
-    setCartingSuccess(true);
     addItemToCart(generateCartItem(bundle), 1);
-    toast.success(<b>Successfully added to the basket!</b>, {
-      className: '-mt-10 xs:mt-0',
-    });
-    setTimeout(() => {
-      setCartingSuccess(false);
-    }, 800);
   }
+
+  useEffect(() => {
+    setAddToCartLoader(adding);
+  }, [adding]);
 
   return (
     // <div>{bundle.restaurant_name}</div>

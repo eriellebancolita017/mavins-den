@@ -1,17 +1,17 @@
 export type Optional<T, K extends keyof T> = Partial<T> & Omit<T, K>;
 export interface Item {
-  id: string | number;
-  name: string;
-  slug: string;
-  image: string;
-  unit: string;
-  price: number;
-  quantity: number;
-  stock: number;
-  shop: {
-    slug: string;
-    name: string;
-  };
+  cart_id?: string;
+  item_name?: string;
+  item_cover_photo?: string;
+  restaurant_id?: string;
+  price?: number;
+  qty?: number;
+  cart_item_options?: [];
+  item_id?: string;
+  item_ingredients?: string;
+  total_price?: number;
+
+  stock?: number;
 }
 export interface VerifiedResponse {
   total_tax: number;
@@ -24,19 +24,19 @@ export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
 
 export function addItemWithQuantity(
   items: Item[],
-  item: Optional<Item, 'quantity'>,
+  item: Optional<Item, 'qty'>,
   quantity: number
 ) {
   if (quantity <= 0) {
     throw new Error("cartQuantity can't be zero or less than zero");
   }
   const existingItemIndex = items.findIndex(
-    (existingItem) => existingItem.id === item.id
+    (existingItem) => existingItem.item_id === item.item_id
   );
 
   if (existingItemIndex > -1) {
     const newItems = [...items];
-    newItems[existingItemIndex].quantity += quantity;
+    newItems[existingItemIndex].qty! += quantity;
     return newItems;
   }
   return [...items, { ...item, quantity }];
@@ -44,12 +44,12 @@ export function addItemWithQuantity(
 
 export function removeItemOrQuantity(
   items: Item[],
-  id: Item['id'],
+  id: Item['item_id'],
   quantity: number
 ) {
   return items.reduce((acc: Item[], item) => {
-    if (item.id === id) {
-      const newQuantity = item.quantity - quantity;
+    if (item.item_id === id) {
+      const newQuantity = item.qty! - quantity;
 
       return newQuantity > 0
         ? [...acc, { ...item, quantity: newQuantity }]
@@ -63,39 +63,39 @@ export function addItem(items: Item[], item: Item) {
   return [...items, item];
 }
 
-export function getItem(items: Item[], id: Item['id']) {
-  return items.find((item) => item.id === id);
+export function getItem(items: Item[], id: Item['item_id']) {
+  return items.find((item) => item.item_id === id);
 }
 
 export function updateItem(
   items: Item[],
-  id: Item['id'],
+  id: Item['item_id'],
   item: UpdateItemInput
 ) {
   return items.map((existingItem) =>
-    existingItem.id === id ? { ...existingItem, ...item } : existingItem
+    existingItem.item_id === id ? { ...existingItem, ...item } : existingItem
   );
 }
 
-export function removeItem(items: Item[], id: Item['id']) {
-  return items.filter((existingItem) => existingItem.id !== id);
+export function removeItem(items: Item[], id: Item['item_id']) {
+  return items.filter((existingItem) => existingItem.item_id !== id);
 }
-export function inStock(items: Item[], id: Item['id']) {
+export function inStock(items: Item[], id: Item['item_id']) {
   const item = getItem(items, id);
-  if (item) return item['quantity'] < item['stock'];
+  if (item) return item['qty']! < item['stock']!;
   return false;
 }
 export const calculateItemTotals = (items: Item[]) =>
   items.map((item) => ({
     ...item,
-    itemTotal: item.price * item.quantity,
+    itemTotal: item.price! * item.qty!,
   }));
 
 export const calculateTotal = (items: Item[]) =>
-  items.reduce((total, item) => total + item.quantity * item.price, 0);
+  items.reduce((total, item) => total + item.qty! * item.price!, 0);
 
 export const calculateTotalItems = (items: Item[]) =>
-  items.reduce((sum, item) => sum + item.quantity, 0);
+  items.reduce((sum, item) => sum + item.qty!, 0);
 
 export const calculateUniqueItems = (items: Item[]) => items.length;
 

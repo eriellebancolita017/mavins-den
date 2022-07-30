@@ -184,7 +184,6 @@ class Client {
     },
   };
 
-  // real api
   bundles = {
     get: (query: BundleQueryOptions) =>
       HttpClient.get<{ payload: Bundles[] }>(
@@ -208,6 +207,31 @@ class Client {
         API_ENDPOINTS.PREPPER_DETAILS,
         query
       ),
+  };
+
+  cart = {
+    addItemToCart: (query: any) => {
+      let formData = new FormData();
+      Object.keys(query).forEach((key: any) => {
+        if (key === 'item_options') {
+          formData.append(key, JSON.stringify([]));
+        } else formData.append(key, query[key]);
+      });
+      return HttpClient.post<any>(
+        `${API_ENDPOINTS.ADD_TO_CART}${
+          query.consumer_id ? 'consumer' : 'guest'
+        }`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+    },
+    getAllInCart: (user_code: string) => {
+      return HttpClient.get(`${API_ENDPOINTS.GET_ALL_IN_CART}${user_code}`);
+    },
   };
 }
 

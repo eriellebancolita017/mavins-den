@@ -81,12 +81,7 @@ export default function ProductPopupDetails() {
           title={title}
           className="truncate px-2.5 py-1 text-base font-medium text-dark dark:text-light md:text-lg lg:pl-4 lg:pr-5 3xl:text-xl"
         >
-          <AnchorLink
-            href={routes.productUrl(slug)}
-            className="transition-colors hover:text-brand"
-          >
-            {title}
-          </AnchorLink>
+          <span className="transition-colors hover:text-brand">{title}</span>
         </h2>
         <div className="flex flex-shrink-0 items-center px-2.5 py-1">
           <div className="relative flex h-5 w-5 flex-shrink-0 md:h-6 md:w-6">
@@ -176,7 +171,7 @@ export default function ProductPopupDetails() {
               Proceed to checkout
             </Button>
             <AddToCart
-              item={bundle}
+              item={{ ...bundle, item_id: data?.item_id }}
               toastClassName="-mt-10 xs:mt-0"
               className="mt-2.5 w-full flex-1 xs:mt-0"
             />

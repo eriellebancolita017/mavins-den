@@ -20,7 +20,6 @@ export function useMe() {
       enabled: isAuthorized,
     }
   );
-
   setUserInfo(data?.payload || null);
   return {
     me: !!userInfo
