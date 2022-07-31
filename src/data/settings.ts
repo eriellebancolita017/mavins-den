@@ -10,8 +10,8 @@ export const useSettings = () => {
   // );
   return {
     settings: {
-      siteTitle: "Marvin's Den",
-      siteSubtitle: 'Meal Prep & Healthy Ready Meals Marketplace',
+      siteTitle: "Marvin's Den - healthy meals marketplace",
+      siteSubtitle: 'healthy meals marketplace',
       currency: 'GBP',
       logo: 'https://uploads-ssl.webflow.com/620ad29fb46ac6596379e3a5/620d0dde8482383154cce5b6_Less%20Background%20Logo.png',
       seo: {} as SEO,

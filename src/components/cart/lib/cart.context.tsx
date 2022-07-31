@@ -61,7 +61,7 @@ export const CartProvider: React.FC = (props) => {
   }, [state.isEmpty]);
 
   const { data, refetch } = useQuery<any>(
-    [API_ENDPOINTS.EXPLORE_MEAL_BUNDLES, userInfo, location],
+    [API_ENDPOINTS.GET_ALL_IN_CART, userInfo, location],
     () => {
       return client.cart.getAllInCart(
         isAuthorized
@@ -71,6 +71,8 @@ export const CartProvider: React.FC = (props) => {
     },
     {
       enabled: false,
+      cacheTime: 0,
+      staleTime: 0,
     }
   );
 
@@ -90,7 +92,13 @@ export const CartProvider: React.FC = (props) => {
   }, [refetch, userInfo, isAuthorized]);
 
   const { mutate: addingItemToCart, isLoading: adding } = useMutation(
-    client.cart.addItemToCart
+    [API_ENDPOINTS.ADD_TO_CART, userInfo, location],
+    client.cart.addItemToCart,
+    {}
+  );
+
+  const { mutate: deleteItemFromCart } = useMutation(
+    client.cart.removeFromCart
   );
 
   const addItemToCart = (item: Optional<Item, 'qty'>, quantity: number) => {
@@ -143,9 +151,32 @@ export const CartProvider: React.FC = (props) => {
     );
   };
 
+  const clearItemFromCart = (id: Item['item_id']) => {
+    deleteItemFromCart(
+      `${
+        isAuthorized
+          ? `consumer/${userInfo.consumer_id}/`
+          : `guest/${location.address}/`
+      }${state.items.find((i) => i.item_id === id)?.cart_id!}`,
+      {
+        onSuccess: () => {
+          dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id });
+          toast.success(<b>Successfully removed from basket!</b>, {
+            className: '-mt-10 xs:mt-0',
+          });
+          refetch();
+        },
+        onError: (error: any) => {
+          console.log('error', error, error.response);
+          toast.error(<b>Something went wrong</b>, {
+            className: '-mt-10 xs:mt-0',
+          });
+        },
+      }
+    );
+  };
+
   const removeItemFromCart = (id: Item['item_id']) =>
-    dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id });
-  const clearItemFromCart = (id: Item['item_id']) =>
     dispatch({ type: 'REMOVE_ITEM', id });
   const setVerifiedResponse = (response: any) =>
     dispatch({ type: 'SET_VERIFIED_RESPONSE', response });

@@ -232,6 +232,14 @@ class Client {
     getAllInCart: (user_code: string) => {
       return HttpClient.get(`${API_ENDPOINTS.GET_ALL_IN_CART}${user_code}`);
     },
+    removeFromCart: (user_cart_code: string) => {
+      return HttpClient.delete(
+        `${API_ENDPOINTS.DELETE_FROM_CART}${user_cart_code}`
+      );
+    },
+    removeAllFromCart: (user_code: string) => {
+      return HttpClient.delete(`${API_ENDPOINTS}${user_code}`);
+    },
   };
 }
 

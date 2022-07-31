@@ -30,7 +30,9 @@ const DefaultSeo = () => {
           href: '/manifest.json',
         },
       ]}
-      title={settings?.seo?.metaTitle || "Marvin's Den App"}
+      title={
+        settings?.seo?.metaTitle || "Marvin's Den - healthy meals marketplace"
+      }
       titleTemplate={`${
         settings?.seo?.metaTitle || settings?.siteTitle || 'Digital Download'
       } | %s`}

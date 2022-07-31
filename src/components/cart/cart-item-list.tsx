@@ -14,7 +14,7 @@ export default function CartItemList({
   const { items, clearItemFromCart, verifiedResponse } = useCart();
   function handleClearItemFromCart(id: number | string) {
     clearItemFromCart(id as string);
-    toast.success(<b>Successfully remove from the cart!</b>);
+    // toast.success(<b>Successfully remove from the cart!</b>);
   }
   return (
     <ul role="list" className={cn('-my-6 w-full', className)}>
