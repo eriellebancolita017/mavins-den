@@ -80,16 +80,24 @@ export const CartProvider: React.FC = (props) => {
     saveCart(JSON.stringify(state));
   }, [state, saveCart, data]);
 
-  React.useEffect(() => {
-    dispatch({
-      type: 'READ_FROM_API',
-      allItems: data?.payload.cartItems || [],
-    });
-  }, [data]);
+  // React.useEffect(() => {
+  //   dispatch({
+  //     type: 'READ_FROM_API',
+  //     allItems: data?.payload.cartItems || [],
+  //   });
+  // }, [data]);
 
   React.useEffect(() => {
-    refetch();
-  }, [refetch, userInfo, isAuthorized]);
+    if ((isAuthorized && !!userInfo) || !isAuthorized) {
+      refetch();
+      setTimeout(() => {
+        dispatch({
+          type: 'READ_FROM_API',
+          allItems: data?.payload.cartItems || [],
+        });
+      }, 500);
+    }
+  }, [refetch, userInfo, isAuthorized, data]);
 
   const { mutate: addingItemToCart, isLoading: adding } = useMutation(
     [API_ENDPOINTS.ADD_TO_CART, userInfo, location],
@@ -105,13 +113,13 @@ export const CartProvider: React.FC = (props) => {
     addingItemToCart(
       {
         consumer_id: userInfo?.consumer_id || null,
-        device_id: userInfo ? null : location.address,
         item_id: item.item_id,
         qty: quantity,
         item_options: [],
         restaurant_id: item.restaurant_id,
         item_instruction: null,
         code: 'EN',
+        ...(isAuthorized ? { device_id: location.address } : {}),
       },
       {
         onSuccess: (res) => {

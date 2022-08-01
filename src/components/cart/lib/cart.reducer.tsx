@@ -90,6 +90,7 @@ export function cartReducer(state: State, action: Action): State {
       return initialState;
 
     case 'READ_FROM_API':
+      console.log('all items', action.allItems);
       const items = action.allItems;
       return generateFinalState(state, items);
     default:
