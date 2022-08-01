@@ -214,7 +214,7 @@ class Client {
       let formData = new FormData();
       Object.keys(query).forEach((key: any) => {
         if (key === 'item_options') {
-          formData.append(key, JSON.stringify([]));
+          formData.append(key, JSON.stringify(query[key]));
         } else formData.append(key, query[key]);
       });
       return HttpClient.post<any>(

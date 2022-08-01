@@ -115,7 +115,7 @@ export const CartProvider: React.FC = (props) => {
         consumer_id: userInfo?.consumer_id || null,
         item_id: item.item_id,
         qty: quantity,
-        item_options: [],
+        item_options: item.item_options || [],
         restaurant_id: item.restaurant_id,
         item_instruction: null,
         code: 'EN',

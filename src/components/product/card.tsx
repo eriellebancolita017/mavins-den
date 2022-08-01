@@ -18,6 +18,7 @@ import { CartIcon } from '../icons/cart-icon';
 import { generateCartItem } from '../cart/lib/generate-cart-item';
 import toast from 'react-hot-toast';
 import { useCart } from '@/components/cart/lib/cart.context';
+import { useBundleDetails } from '@/data/explore';
 
 export default function Card({ bundle }: { bundle: Bundle }) {
   const {
@@ -36,14 +37,36 @@ export default function Card({ bundle }: { bundle: Bundle }) {
   const { addItemToCart, adding } = useCart();
   const [addToCartLoader, setAddToCartLoader] = useState(false);
   const [cartingSuccess, setCartingSuccess] = useState(false);
+  const { bundle: bundleDetail, isLoading } = useBundleDetails({
+    item_id: item_id,
+    code: 'EN',
+  });
 
   function addToBasket(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
 
-    addSuccessfully();
+    if (bundleDetail?.item_options?.length! > 0) {
+      openModal('OPTION_VIEW', {
+        bundle: {
+          ...bundle,
+          item_options: bundleDetail?.item_options,
+          restaurant_id: bundleDetail?.restaurant_id,
+        },
+        item_id,
+      });
+    } else addSuccessfully();
   }
   function addSuccessfully() {
-    addItemToCart(generateCartItem(bundle), 1);
+    if (bundle.restaurant_id) addItemToCart(generateCartItem(bundle), 1);
+    else if (Router.query.prepperId)
+      addItemToCart(
+        generateCartItem({ ...bundle, restaurant_id: Router.query.prepperId }),
+        1
+      );
+    else
+      toast.error(<b>Something went wrong</b>, {
+        className: '-mt-10 xs:mt-0',
+      });
   }
 
   useEffect(() => {

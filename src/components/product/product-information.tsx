@@ -46,7 +46,12 @@ export default function ProductInformation({
           </span>
           Ingredients:
         </strong>
-        <span className="font-medium">{ingredients}</span>
+        <span
+          className="font-medium"
+          dangerouslySetInnerHTML={{
+            __html: ingredients,
+          }}
+        ></span>
       </div>
       {/* <div className="flex items-start text-dark dark:text-light">
         <strong className="flex w-44 flex-shrink-0 items-center font-normal text-dark-600 dark:text-light-600">

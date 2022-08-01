@@ -4,7 +4,8 @@ export type MODAL_VIEWS =
   | 'REGISTER'
   | 'LOGIN_VIEW'
   | 'FORGOT_PASSWORD_VIEW'
-  | 'PRODUCT_DETAILS';
+  | 'PRODUCT_DETAILS'
+  | 'OPTION_VIEW';
 
 interface State {
   view: MODAL_VIEWS | undefined;

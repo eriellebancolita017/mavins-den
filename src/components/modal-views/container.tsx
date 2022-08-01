@@ -19,6 +19,7 @@ const RegisterUserForm = dynamic(
 const ForgotUserPassword = dynamic(
   () => import('@/components/auth/forgot-password')
 );
+const OptionModal = dynamic(() => import('@/components/product/option-popup'));
 
 function renderModalContent(view: MODAL_VIEWS) {
   switch (view) {
@@ -30,6 +31,8 @@ function renderModalContent(view: MODAL_VIEWS) {
       return <ForgotUserPassword />;
     case 'PRODUCT_DETAILS':
       return <ProductPopupDetails />;
+    case 'OPTION_VIEW':
+      return <OptionModal />;
     default:
       return null;
   }

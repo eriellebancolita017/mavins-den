@@ -12,6 +12,8 @@ export interface Item {
   total_price?: number;
 
   stock?: number;
+
+  item_options?: any[];
 }
 export interface VerifiedResponse {
   total_tax: number;

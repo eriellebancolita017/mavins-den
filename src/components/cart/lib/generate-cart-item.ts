@@ -8,5 +8,6 @@ export function generateCartItem(item: any) {
     stock: item.quantity,
     price: Number(item.sale_price ? item.sale_price : item.price),
     restaurant_id: item.restaurant_id,
+    item_options: item.item_options || [],
   };
 }
