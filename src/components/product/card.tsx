@@ -18,7 +18,7 @@ import { CartIcon } from '../icons/cart-icon';
 import { generateCartItem } from '../cart/lib/generate-cart-item';
 import toast from 'react-hot-toast';
 import { useCart } from '@/components/cart/lib/cart.context';
-import { useBundleDetails } from '@/data/explore';
+import client from '@/data/client';
 
 export default function Card({ bundle }: { bundle: Bundle }) {
   const {
@@ -36,14 +36,14 @@ export default function Card({ bundle }: { bundle: Bundle }) {
 
   const { addItemToCart, adding } = useCart();
   const [addToCartLoader, setAddToCartLoader] = useState(false);
-  const [cartingSuccess, setCartingSuccess] = useState(false);
-  const { bundle: bundleDetail, isLoading } = useBundleDetails({
-    item_id: item_id,
-    code: 'EN',
-  });
 
-  function addToBasket(e: React.MouseEvent<HTMLButtonElement>) {
+  async function addToBasket(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
+    const bundleRes = await client.bundles.getDetails({
+      item_id: item_id,
+      code: 'EN',
+    });
+    const bundleDetail = bundleRes.payload;
 
     if (bundleDetail?.item_options?.length! > 0) {
       openModal('OPTION_VIEW', {

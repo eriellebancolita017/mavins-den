@@ -89,15 +89,15 @@ export const CartProvider: React.FC = (props) => {
 
   React.useEffect(() => {
     if ((isAuthorized && !!userInfo) || !isAuthorized) {
-      refetch();
       setTimeout(() => {
+        refetch();
         dispatch({
           type: 'READ_FROM_API',
           allItems: data?.payload.cartItems || [],
         });
       }, 500);
     }
-  }, [refetch, userInfo, isAuthorized, data]);
+  }, [refetch, userInfo, location, isAuthorized, data]);
 
   const { mutate: addingItemToCart, isLoading: adding } = useMutation(
     [API_ENDPOINTS.ADD_TO_CART, userInfo, location],
@@ -109,7 +109,12 @@ export const CartProvider: React.FC = (props) => {
     client.cart.removeFromCart
   );
 
+  const { mutate: deleteAllFromCart } = useMutation(
+    client.cart.removeAllFromCart
+  );
+
   const addItemToCart = (item: Optional<Item, 'qty'>, quantity: number) => {
+    console.log('isauth', isAuthorized);
     addingItemToCart(
       {
         consumer_id: userInfo?.consumer_id || null,
@@ -119,7 +124,7 @@ export const CartProvider: React.FC = (props) => {
         restaurant_id: item.restaurant_id,
         item_instruction: null,
         code: 'EN',
-        ...(isAuthorized ? { device_id: location.address } : {}),
+        ...(!isAuthorized ? { device_id: location.address } : {}),
       },
       {
         onSuccess: (res) => {
@@ -140,17 +145,61 @@ export const CartProvider: React.FC = (props) => {
           console.log('error', error, error.response);
           if (error.response.status === 406) {
             toast.error(
-              <b>
-                You have already added from other restaurant. Do you want to
-                replace it?
-              </b>,
+              (t) => (
+                <div className="mt-4 mb-2">
+                  <b className="mb-3 block">Replace cart item?</b>
+                  <span>
+                    Your cart contains dishes from other restaurant. Do you want
+                    to replace them?
+                  </span>
+                  <div className="mt-2 mr-3 flex justify-end gap-3">
+                    <button
+                      onClick={() => {
+                        replaceCart(item, quantity);
+                        toast.dismiss(t.id);
+                      }}
+                      className="font-bold text-brand hover:text-brand-dark"
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={() => toast.dismiss(t.id)}
+                      className="font-bold text-brand hover:text-brand-dark"
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              ),
               {
-                duration: 4000,
+                duration: 12000,
                 className: '-mt-10 xs:mt-0 w-2xl',
+                icon: '',
               }
             );
             return;
           }
+          toast.error(<b>Something went wrong</b>, {
+            className: '-mt-10 xs:mt-0',
+          });
+        },
+      }
+    );
+  };
+
+  const replaceCart = (item: Optional<Item, 'qty'>, quantity: number) => {
+    deleteAllFromCart(
+      `${
+        isAuthorized
+          ? `consumer/${userInfo.consumer_id}`
+          : `guest/${location.address}`
+      }`,
+      {
+        onSuccess: () => {
+          addItemToCart(item, quantity);
+        },
+        onError: (error: any) => {
+          console.log('error', error, error.response);
           toast.error(<b>Something went wrong</b>, {
             className: '-mt-10 xs:mt-0',
           });

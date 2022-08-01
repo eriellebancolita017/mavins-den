@@ -238,7 +238,9 @@ class Client {
       );
     },
     removeAllFromCart: (user_code: string) => {
-      return HttpClient.delete(`${API_ENDPOINTS}${user_code}`);
+      return HttpClient.delete(
+        `${API_ENDPOINTS.DELETE_ALL_FROM_CART}${user_code}`
+      );
     },
   };
 }
