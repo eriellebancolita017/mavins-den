@@ -427,7 +427,9 @@ export interface CreateOrderInput {
 }
 export interface CheckoutVerificationInput {
   amount: number;
-  products: ConnectProductOrderPivot[];
+  // products: ConnectProductOrderPivot[];
+  restaurant_id: string;
+  consumer_id: string;
 }
 export interface VerifiedCheckoutResponse {
   total_tax: number;

@@ -14,10 +14,12 @@ import client from '@/data/client';
 import { useMutation } from 'react-query';
 import CartCheckout from '@/components/cart/cart-checkout';
 import { useMe } from '@/data/user';
+import { useUserContext } from '@/components/preppers/context';
 
 const CheckoutPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { me } = useMe();
+  const { userInfo } = useUserContext();
   const {
     items,
     total,
@@ -34,22 +36,19 @@ const CheckoutPage: NextPageWithLayout = () => {
       setVerifiedResponse(res);
     },
   });
+  console.log('me', me);
   function verify() {
     mutate({
       amount: total,
-      products: items.map((item) => ({
-        product_id: item.id,
-        order_quantity: item.quantity,
-        unit_price: item.price,
-        subtotal: item.price * item.quantity,
-      })),
+      consumer_id: userInfo.consumer_id,
+      restaurant_id: items[0].restaurant_id!,
     });
   }
   return (
     <>
       <Seo
         title="Checkout"
-        description="Fastest digital download template built with React, NextJS, TypeScript, React-Query and Tailwind CSS."
+        description="We partnered up with the best meal prep providers and meal delivery companies in the UK."
         url={routes?.checkout}
       />
       <div className="mx-auto flex h-full w-full max-w-screen-sm flex-col p-4 pt-6 sm:p-5 sm:pt-8 md:pt-10 3xl:pt-12">
@@ -59,7 +58,7 @@ const CheckoutPage: NextPageWithLayout = () => {
               Contact Number
             </h2>
             <div className="px-5 py-4 sm:py-6 sm:px-7">
-              <PhoneInput defaultValue={me?.profile?.contact} />
+              <PhoneInput defaultValue={me?.mobile_country_code + me?.mobile} />
             </div>
           </div>
         ) : null}
@@ -91,15 +90,15 @@ const CheckoutPage: NextPageWithLayout = () => {
               <div className="sticky bottom-11 z-[5] mt-10 border-t border-light-400 bg-light pt-6 pb-7 dark:border-dark-400 dark:bg-dark-250 sm:bottom-0 sm:mt-12 sm:pt-8 sm:pb-9">
                 <div className="mb-6 flex flex-col gap-3 text-dark dark:text-light sm:mb-7">
                   <div className="flex justify-between">
-                    <p>Sub Total</p>
+                    <p>Total</p>
                     <strong className="font-semibold">{totalPrice}</strong>
                   </div>
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <p>Tax</p>
                     <strong className="font-semibold">
                       Calculated at checkout
                     </strong>
-                  </div>
+                  </div> */}
                 </div>
                 <Button
                   className="w-full md:h-[50px] md:text-sm"
