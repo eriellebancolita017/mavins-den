@@ -181,3 +181,15 @@ html.dark .StripeElement {
   @apply absolute inset-auto mt-[5px] ml-0.5 flex h-2 w-3 border-2 border-t-0 border-r-0 border-light content-[''];
   transform: rotate(-45deg) translate(2px, -1px);
 }
+
+/* radio component */
+.radio-component + span {
+  @apply h-5 w-5 cursor-pointer rounded-full border border-light-500 ring-[0.5px] ring-light-500 dark:border-dark-600 dark:ring-dark-600 relative;
+}
+.radio-component:checked + span {
+  @apply border-brand bg-brand ring-brand;
+}
+.radio-component:checked + span::before {
+  @apply absolute w-4 h-4 border-[3px] border-light bg-brand rounded-full content-[''] top-[1px] left-[1px];
+  /* transform: rotate(-45deg) translate(2px, -1px); */
+}

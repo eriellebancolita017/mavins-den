@@ -19,6 +19,7 @@ import Button from '@/components/ui/button';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import CheckBox from '@/components/ui/forms/checkbox';
+import RadioButton from '../ui/forms/radio-button';
 
 export default function ProductPopupDetails() {
   const [loading, setLoading] = useState(false);
@@ -78,25 +79,27 @@ export default function ProductPopupDetails() {
 
   const hadleOptionCheck = (
     opiton_id: string,
-    item_option_category_id: string
+    item_option_category_id: string,
+    type = 'checkbox'
   ) => {
-    // item_options!
-    //   .find((t) => t.item_option_category_id === item_option_category_id)
-    //   .item_option_list.find((l: any) => l.item_option_id === opiton_id).isChecked =
-    //   !item_options!
-    //     .find((t) => t.item_option_category_id === item_option_category_id)
-    //     .item_option_list.find((l: any) => l.item_option_id === opiton_id).isChecked;
-
     const tempList: { [index: string]: { [index: string]: boolean } } = {
       ...checkedList,
     };
 
-    tempList[item_option_category_id as keyof object] =
-      (tempList[item_option_category_id as keyof object] as {
+    if (type === 'radio') {
+      tempList[item_option_category_id as keyof object] = {} as {
         [index: string]: boolean;
-      }) || ({} as { [index: string]: boolean });
-    tempList[item_option_category_id as keyof object][opiton_id] =
-      !tempList[item_option_category_id as keyof object][opiton_id];
+      };
+      tempList[item_option_category_id as keyof object][opiton_id] =
+        !tempList[item_option_category_id as keyof object][opiton_id];
+    } else {
+      tempList[item_option_category_id as keyof object] =
+        (tempList[item_option_category_id as keyof object] as {
+          [index: string]: boolean;
+        }) || ({} as { [index: string]: boolean });
+      tempList[item_option_category_id as keyof object][opiton_id] =
+        !tempList[item_option_category_id as keyof object][opiton_id];
+    }
 
     console.log(tempList);
     setCheckedList(tempList);
@@ -196,7 +199,7 @@ export default function ProductPopupDetails() {
                 <div className="flex items-center tracking-[.1px] text-dark dark:text-light">
                   Meal Options:
                 </div>
-                {item_options!.map((option) => (
+                {item_options!.map((option: any) => (
                   <div key={option.item_option_category_id}>
                     <p className="my-2 text-sm font-semibold">
                       {option.title_cat}
@@ -207,27 +210,52 @@ export default function ProductPopupDetails() {
                           key={item.item_option_id}
                           className="my-1 inline-block"
                         >
-                          <CheckBox
-                            name={item.item_option_id}
-                            label={`${item.title} - ${currency}
+                          {!!option.is_multi ? (
+                            <CheckBox
+                              name={item.item_option_id}
+                              label={`${item.title} - ${currency}
                             ${item.price}`}
-                            onChange={() =>
-                              hadleOptionCheck(
-                                item.item_option_id,
-                                option.item_option_category_id
-                              )
-                            }
-                            checked={
-                              checkedList[
-                                option.item_option_category_id as keyof object
-                              ]
-                                ? checkedList[
-                                    option.item_option_category_id as keyof object
-                                  ][item.item_option_id]
-                                : false
-                            }
-                            disabled={option.status !== 'active'}
-                          />
+                              onChange={() =>
+                                hadleOptionCheck(
+                                  item.item_option_id,
+                                  option.item_option_category_id
+                                )
+                              }
+                              checked={
+                                checkedList[
+                                  option.item_option_category_id as keyof object
+                                ]
+                                  ? checkedList[
+                                      option.item_option_category_id as keyof object
+                                    ][item.item_option_id]
+                                  : false
+                              }
+                              disabled={option.status !== 'active'}
+                            />
+                          ) : (
+                            <RadioButton
+                              name={option.item_option_category_id}
+                              label={`${item.title} - ${currency}
+                            ${item.price}`}
+                              onChange={() =>
+                                hadleOptionCheck(
+                                  item.item_option_id,
+                                  option.item_option_category_id,
+                                  'radio'
+                                )
+                              }
+                              checked={
+                                checkedList[
+                                  option.item_option_category_id as keyof object
+                                ]
+                                  ? checkedList[
+                                      option.item_option_category_id as keyof object
+                                    ][item.item_option_id]
+                                  : false
+                              }
+                              disabled={option.status !== 'active'}
+                            />
+                          )}
                           {/* {item.title} - {currency}
                           {item.price} */}
                         </li>
@@ -262,6 +290,7 @@ export default function ProductPopupDetails() {
                 ...bundle,
                 item_id: data?.item_id,
                 item_options: getCheckedOptions(),
+                currency: bundle.currency || '£',
               }}
               toastClassName="-mt-10 xs:mt-0"
               className="mt-2.5 w-full flex-1 xs:mt-0"

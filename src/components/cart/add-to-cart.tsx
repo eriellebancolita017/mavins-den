@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function AddToCart({ item, className, toastClassName }: Props) {
-  const { price, currency, item_id } = item;
+  const { price, currency, item_options } = item;
   const { addItemToCart } = useCart();
   const [addToCartLoader, setAddToCartLoader] = useState(false);
   const [cartingSuccess, setCartingSuccess] = useState(false);
@@ -24,6 +24,18 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
   }
   function addSuccessfully() {
     addItemToCart(generateCartItem(item), 1);
+  }
+
+  function getAddonPrice() {
+    let addonPrice = 0;
+    if (item_options?.length! > 0) {
+      item_options?.map((options) => {
+        options.item_option_list.map((option: any) => {
+          addonPrice += option.price || 0;
+        });
+      });
+    }
+    return addonPrice;
   }
   return (
     <Button
@@ -37,7 +49,7 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
         className
       )}
     >
-      Add to Basket ( {currency} {price} )
+      Add to Basket ( {currency} {price + getAddonPrice()} )
       <svg
         viewBox="0 0 37 37"
         xmlns="http://www.w3.org/2000/svg"
