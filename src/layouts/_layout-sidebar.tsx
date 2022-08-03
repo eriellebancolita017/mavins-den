@@ -84,12 +84,12 @@ export function Sidebar({
               isCollapse={isCollapse}
               icon={<DiscoverIcon className="h-[18px] w-[18px] text-current" />}
             />
-            <NavLink
+            {/* <NavLink
               title={'Popular Products'}
               href={routes.popularProducts}
               isCollapse={isCollapse}
               icon={<ProductIcon className="h-4 w-4 text-current" />}
-            />
+            /> */}
             <NavLink
               title={'Contact'}
               href={'https://www.marvinsden.com/contact'}
@@ -109,7 +109,7 @@ export function Sidebar({
             />
             <NavLink
               title={'Help'}
-              href={routes.help}
+              href={'https://www.marvinsden.com/support'}
               isCollapse={isCollapse}
               icon={<HelpIcon className="h-[18px] w-[18px] text-current" />}
             />
