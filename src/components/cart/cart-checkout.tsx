@@ -19,29 +19,26 @@ import {
 } from '@/components/cart/lib/checkout';
 import StripePayment from '@/components/cart/payment/stripe';
 import routes from '@/config/routes';
+import { useUserContext } from '@/components/preppers/context';
 
 export default function CartCheckout() {
   const router = useRouter();
   const { mutate, isLoading } = useMutation(client.orders.create, {
     onSuccess: (res) => {
-      router.push(routes.orderUrl(res.tracking_number));
+      router.push(routes.orderUrl(res.payload.order_id));
     },
     onError: (err: any) => {
       toast.error(<b>Something went wrong!</b>);
       console.log(err.response.data.message);
     },
   });
+  const { userInfo, location } = useUserContext();
   // const [use_wallet] = useAtom(useWalletPointsAtom);
   // const [payableAmount] = useAtom(payableAmountAtom);
-  // const [token] = useAtom(verifiedTokenAtom);
+  const [token] = useAtom(verifiedTokenAtom);
   const { items, verifiedResponse } = useCart();
 
-  const available_items = items.filter(
-    (item) =>
-      !verifiedResponse?.unavailable_products?.includes(
-        item.item_id!.toString()
-      )
-  );
+  const available_items = items;
 
   // const { price: tax } = usePrice(
   //   verifiedResponse && {
@@ -78,21 +75,38 @@ export default function CartCheckout() {
       return;
     }
     mutate({
-      amount: base_amount,
-      total: +totalPrice,
-      paid_total: +totalPrice,
-      products: available_items.map((item) => ({
-        product_id: item.item_id!,
-        order_quantity: item.qty!,
-        unit_price: item.price!,
-        subtotal: item.price! * item.qty!,
-      })),
-      status: '1',
-      payment_gateway: 'STRIPE',
-      use_wallet_points: false,
-      sales_tax: verifiedResponse?.total_tax ?? 0,
-      customer_contact: phoneNumber,
-      billing_address: {},
+      code: 'EN',
+      place_order_json: JSON.stringify({
+        consumer_id: userInfo.consumer_id,
+        coupon_id: '',
+        coupon_discount: 0,
+        coupon_type: '',
+        coupon_value: 0,
+        credit_deduct_amount: 0.0,
+        deliver_to: location.address,
+        deliver_to_latitude: location.latitude,
+        deliver_to_longitude: location.longitude,
+        // "deliver_to": '86 Paul Stret London',
+        // "deliver_to_latitude": 51.9304799,
+        // "deliver_to_longitude": -0.5894157,
+        delivery_fee: 0.0,
+        discount_type: 'percentage',
+        discount_value: 0.0,
+        floor: '',
+        food_allergies_note: '',
+        gross_amount: base_amount.toString(),
+        code: 'EN',
+        address_title: '',
+        address_type: 'home',
+        landmark: ' ',
+        net_amount: base_amount,
+        restaurant_discount: 0.0,
+        restaurant_id: items[0].restaurant_id,
+        // "restaurant_id": "RES1655826172HZA99933",
+        special_instruction: '',
+        tax_details: [],
+        total_tax_amount: 0.0,
+      }),
     });
   }
   return (
@@ -123,7 +137,7 @@ export default function CartCheckout() {
       <StripePayment />
 
       <Button
-        disabled={isLoading}
+        disabled={isLoading || !token}
         isLoading={isLoading}
         onClick={createOrder}
         className="w-full md:h-[50px] md:text-sm"

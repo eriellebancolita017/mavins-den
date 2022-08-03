@@ -16,11 +16,9 @@ export interface Item {
   item_options?: any[];
 }
 export interface VerifiedResponse {
-  total_tax: number;
-  shipping_charge: number;
-  unavailable_products: string[];
-  wallet_currency: number;
-  wallet_amount: number;
+  clientSecret: string;
+  customerId: string;
+  customerEphemeralKeySecret: string;
 }
 export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
 

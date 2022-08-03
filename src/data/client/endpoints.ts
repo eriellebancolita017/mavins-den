@@ -7,7 +7,8 @@ export const API_ENDPOINTS = {
   TAGS: '/tags',
   SHOPS: '/shops',
   TOP_SHOPS: '/top-shops',
-  ORDERS: '/orders',
+
+  ORDERS: 'order/place-order',
 
   ORDERS_CHECKOUT_VERIFY: 'card/create-payment-intent',
   ORDERS_DOWNLOADS: '/downloads',

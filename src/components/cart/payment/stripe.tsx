@@ -10,12 +10,15 @@ import toast from 'react-hot-toast';
 import getStripe from '@/lib/get-stripejs';
 import Button from '@/components/ui/button';
 import { verifiedTokenAtom } from '@/components/cart/lib/checkout';
+import { useCart } from '@/components/cart/lib/cart.context';
 
 const StripeForm: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [_, setVerifiedToken] = useAtom(verifiedTokenAtom);
+  const { verifiedResponse } = useCart();
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     // Block native form submission.
     e.preventDefault();
@@ -30,18 +33,24 @@ const StripeForm: React.FC = () => {
     // each type of element.
     const cardElement = elements.getElement(CardElement)!;
     // Use your card Element with other Stripe.js APIs
-    const { error, token } = await stripe.createToken(cardElement);
+    const payload = await stripe.confirmCardPayment(
+      verifiedResponse!.clientSecret,
+      // "pi_3LRLNbFf8reu2sN81WWRVDgT_secret_DVVYGpepKml0JsBCSmwgeg83D",
+      {
+        payment_method: {
+          card: cardElement,
+        },
+      }
+    );
 
-    if (error) {
+    if (payload.error) {
       setLoading(false);
-      toast.error(<b>Please enter valid card number</b>, {
+      toast.error(<b>{payload.error.message}</b>, {
         className: '-mt-10 xs:mt-0',
       });
       return;
-    }
-
-    if (token) {
-      setVerifiedToken(token.id);
+    } else {
+      setVerifiedToken(payload.paymentIntent.receipt_email);
       toast.success(<b>Confirmation Done!</b>, {
         className: '-mt-10 xs:mt-0',
       });
@@ -56,6 +65,7 @@ const StripeForm: React.FC = () => {
     >
       <CardElement
         options={{
+          hidePostalCode: true,
           style: {
             base: {
               fontSize: '13px',

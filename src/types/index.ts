@@ -413,17 +413,8 @@ interface ConnectProductOrderPivot {
   subtotal: number;
 }
 export interface CreateOrderInput {
-  amount: number;
-  total: number;
-  paid_total: number;
-  customer_contact: string;
-  products: ConnectProductOrderPivot[];
-  status: string;
-  sales_tax: number;
-  billing_address: any;
-  payment_gateway: string;
-  token?: string;
-  use_wallet_points: boolean;
+  code: string;
+  place_order_json: string;
 }
 export interface CheckoutVerificationInput {
   amount: number;
@@ -432,11 +423,13 @@ export interface CheckoutVerificationInput {
   consumer_id: string;
 }
 export interface VerifiedCheckoutResponse {
-  total_tax: number;
-  shipping_charge: number;
-  unavailable_products: string[];
-  wallet_currency: number;
-  wallet_amount: number;
+  error: null;
+  payload: {
+    clientSecret: string;
+    customerId: string;
+    customerEphemeralKeySecret: string;
+  };
+  status: '200';
 }
 export interface Product {
   id: string;
@@ -470,13 +463,19 @@ export interface Category {
 export interface CategoryPaginator extends PaginatorInfo<Category> {}
 export interface ShopPaginator extends PaginatorInfo<Shop> {}
 export interface Order {
-  id: string;
-  tracking_number: string;
-  total: number;
+  // id: string;
+  // tracking_number: string;
+  // total: number;
+  // status: string;
+  // products: Product[];
+  // created_at: string;
+  // updated_at: string;
+  error: null;
+  payload: {
+    order_id: string;
+    credit: number;
+  };
   status: string;
-  products: Product[];
-  created_at: string;
-  updated_at: string;
 }
 export interface DigitalFile {
   id: string;

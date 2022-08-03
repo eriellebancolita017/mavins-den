@@ -33,13 +33,13 @@ const CheckoutPage: NextPageWithLayout = () => {
   });
   const { mutate, isLoading } = useMutation(client.orders.verify, {
     onSuccess: (res) => {
-      setVerifiedResponse(res);
+      setVerifiedResponse(res.payload);
     },
   });
   console.log('me', me);
   function verify() {
     mutate({
-      amount: total,
+      amount: total * 100,
       consumer_id: userInfo.consumer_id,
       restaurant_id: items[0].restaurant_id!,
     });
@@ -70,7 +70,7 @@ const CheckoutPage: NextPageWithLayout = () => {
           </h2>
           <div className="px-5 pt-9 sm:px-7 sm:pt-11">
             {!isEmpty ? (
-              <CartItemList className="pl-3" />
+              <CartItemList closeDrawer={() => {}} className="pl-3" />
             ) : (
               <>
                 <CartEmpty />

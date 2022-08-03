@@ -249,7 +249,26 @@ export const CartProvider: React.FC = (props) => {
     (id: Item['item_id']) => inStock(state.items, id),
     [state.items]
   );
-  const resetCart = () => dispatch({ type: 'RESET_CART' });
+  const resetCart = () => {
+    deleteAllFromCart(
+      `${
+        isAuthorized
+          ? `consumer/${userInfo.consumer_id}`
+          : `guest/${location.address}`
+      }`,
+      {
+        onSuccess: () => {
+          dispatch({ type: 'RESET_CART' });
+        },
+        onError: (error: any) => {
+          console.log('error', error, error.response);
+          toast.error(<b>Something went wrong</b>, {
+            className: '-mt-10 xs:mt-0',
+          });
+        },
+      }
+    );
+  };
   const value = React.useMemo(
     () => ({
       ...state,
