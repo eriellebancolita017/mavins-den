@@ -81,9 +81,9 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
           },
           (error) => {
             setLocation({
-              latitude: 0.0,
-              longitude: 0.0,
-              address: 'xxx',
+              latitude: 0.0001,
+              longitude: 0.0001,
+              address: 'placeholder address',
             });
           }
         );

@@ -46,7 +46,7 @@ export default function ProductThumbnailGallery({
           {gallery?.map((item: any) => (
             <SwiperSlide
               key={`product-gallery-${item.id}`}
-              className="flex aspect-[3/2] items-center justify-center bg-light-200 dark:bg-dark-200"
+              className="flex aspect-[3/2] min-h-[200px] min-w-[320px] items-center justify-center bg-light-200 dark:bg-dark-200"
             >
               <Image
                 layout="fill"
@@ -85,7 +85,7 @@ export default function ProductThumbnailGallery({
           {gallery?.map((item: any) => (
             <SwiperSlide
               key={`product-thumb-gallery-${item.id}`}
-              className="flex aspect-[3/2] cursor-pointer items-center justify-center border border-light-500 transition hover:opacity-75 dark:border-dark-500"
+              className="flex aspect-[3/2] min-h-[50px] min-w-[60px] cursor-pointer items-center justify-center border border-light-500 transition hover:opacity-75 dark:border-dark-500"
             >
               <Image
                 layout="fill"

@@ -68,10 +68,10 @@ export default function LoginUserForm() {
         <div className="w-full shrink-0 text-left md:w-[380px]">
           <div className="flex flex-col pb-5 text-center xl:pb-6 xl:pt-2">
             <h2 className="text-lg font-medium tracking-[-0.3px] text-dark dark:text-light lg:text-xl">
-              Welcome Back, Get Login
+              Welcome back, Let&apos;s Login
             </h2>
-            <div className="mt-1.5 text-13px leading-6 tracking-[0.2px] dark:text-light-900 lg:mt-2.5 xl:mt-3">
-              Join your account. Don’t have account?{' '}
+            <div className="mt-1.5 text-right text-13px leading-6 tracking-[0.2px] dark:text-light-900 lg:mt-2.5 xl:mt-3">
+              {/* Join your account. Don’t have account?{' '} */}
               <button
                 onClick={() => openModal('REGISTER')}
                 className="inline-flex font-semibold text-brand hover:text-dark-400 hover:dark:text-light-500"
