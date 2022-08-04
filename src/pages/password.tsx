@@ -55,6 +55,17 @@ const ChangePasswordPage: NextPageWithLayout = () => {
         className: '-mt-10 xs:mt-0',
       });
     },
+    onError: (error: any) => {
+      toast.error(
+        <b>
+          {error.response?.data?.error?.message ||
+            'Current password is incorrect'}
+        </b>,
+        {
+          className: '-mt-10 xs:mt-0',
+        }
+      );
+    },
   });
   const onSubmit: SubmitHandler<ChangePasswordInput> = (data) => {
     console.log('data', data);
