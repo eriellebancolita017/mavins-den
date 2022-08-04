@@ -17,28 +17,19 @@ import pick from 'lodash/pick';
 import { API_ENDPOINTS } from '@/data/client/endpoints';
 import Uploader from '@/components/ui/forms/uploader';
 import * as yup from 'yup';
+import PhoneInput, { usePhoneInput } from '@/components/ui/forms/phone-input';
 
 const profileValidationSchema = yup.object().shape({
-  id: yup.string().required(),
+  consumer_id: yup.string().required(),
   name: yup.string().required(),
-  profile: yup.object().shape({
-    id: yup.string().required(),
-    bio: yup.string(),
-    contact: yup.string(),
-    avatar: yup
-      .object()
-      .shape({
-        id: yup.string(),
-        thumbnail: yup.string(),
-        original: yup.string(),
-      })
-      .optional()
-      .nullable(),
-  }),
+  mobile: yup.string(),
+  // mobile_country_code: yup.string().required(),
+  profile_photo: yup.string(),
 });
 const ProfilePage: NextPageWithLayout = () => {
   const queryClient = useQueryClient();
   const { me } = useMe();
+  const { phoneNumber } = usePhoneInput();
   const { mutate, isLoading } = useMutation(client.users.update, {
     onSuccess: () => {
       toast.success(<b>Information successfully updated!</b>, {
@@ -55,7 +46,17 @@ const ProfilePage: NextPageWithLayout = () => {
       queryClient.invalidateQueries(API_ENDPOINTS.USERS_ME);
     },
   });
-  const onSubmit: SubmitHandler<UpdateProfileInput> = (data) => mutate(data);
+  const onSubmit: SubmitHandler<UpdateProfileInput> = (data) => {
+    if (phoneNumber.length === 12 || phoneNumber.length === 13)
+      mutate({
+        ...data,
+        mobile: phoneNumber.substring(phoneNumber.length - 10),
+      });
+    else
+      toast.error(<b>Please input correct phone number!</b>, {
+        className: '-mt-10 xs:mt-0',
+      });
+  };
 
   return (
     <motion.div
@@ -69,12 +70,11 @@ const ProfilePage: NextPageWithLayout = () => {
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: pick(me, [
-            'id',
+            'consumer_id',
             'name',
-            'profile.id',
-            'profile.contact',
-            'profile.bio',
-            'profile.avatar',
+            'mobile',
+            'mobile_country_code',
+            'profile_photo',
           ]),
         }}
         validationSchema={profileValidationSchema}
@@ -84,7 +84,7 @@ const ProfilePage: NextPageWithLayout = () => {
           <>
             <fieldset className="mb-6 grid gap-5 pb-5 sm:grid-cols-2 md:pb-9 lg:mb-8">
               <Controller
-                name="profile.avatar"
+                name="profile_photo"
                 control={control}
                 render={({ field: { ref, ...rest } }) => (
                   <div className="sm:col-span-2">
@@ -104,15 +104,19 @@ const ProfilePage: NextPageWithLayout = () => {
               />
               <div>
                 <span className="block cursor-pointer pb-2.5 font-normal text-dark/70 dark:text-light/70">
-                  Contact
+                  Phone Number
                 </span>
-                <Controller
-                  name="profile.contact"
+                {/* <Controller
+                  name="mobile"
                   control={control}
-                  render={({ field }) => <ReactPhone country="us" {...field} />}
+                  render={({ field }) => {console.log('mobile field', field)
+                    return <ReactPhone country="gb" {...field} />}}
+                /> */}
+                <PhoneInput
+                  defaultValue={me?.mobile_country_code + me?.mobile}
                 />
 
-                {errors.profile?.contact?.message && (
+                {errors.mobile?.message && (
                   <span
                     role="alert"
                     className="block pt-2 text-xs text-warning"
@@ -121,26 +125,20 @@ const ProfilePage: NextPageWithLayout = () => {
                   </span>
                 )}
               </div>
-              <Textarea
+              {/* <Textarea
                 label="Bio"
                 {...register('profile.bio')}
                 error={errors.profile?.bio?.message && 'bio field is required'}
                 className="sm:col-span-2"
-              />
+              /> */}
             </fieldset>
             <div className="mt-auto flex items-center gap-4 pb-3 lg:justify-end">
               <Button
                 type="reset"
                 onClick={() =>
                   reset({
-                    id: me?.id,
+                    consumer_id: me?.consumer_id,
                     name: '',
-                    profile: {
-                      id: me?.profile?.id,
-                      avatar: null,
-                      bio: '',
-                      contact: '',
-                    },
                   })
                 }
                 disabled={isLoading}
@@ -151,6 +149,7 @@ const ProfilePage: NextPageWithLayout = () => {
               </Button>
               <Button
                 className="flex-1 lg:flex-none"
+                type="submit"
                 isLoading={isLoading}
                 disabled={isLoading}
               >

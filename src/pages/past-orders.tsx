@@ -125,7 +125,7 @@ const LIMIT = 10;
 const Purchases: NextPageWithLayout = () => {
   const { userInfo } = useUserContext();
   const { orders, isLoading } = useOrderList({
-    request_type: 'current',
+    request_type: 'past',
     // consumer_id: 'CON1644746337JTW12380',
     consumer_id: userInfo.consumer_id,
     code: 'EN',
@@ -136,7 +136,7 @@ const Purchases: NextPageWithLayout = () => {
       className="flex min-h-full flex-grow flex-col"
     >
       <h1 className="mb-3 text-15px font-medium text-dark dark:text-light">
-        My Current Orders{' '}
+        My Past Orders{' '}
         <span className="ml-1 text-light-900">({orders.length})</span>
       </h1>
 

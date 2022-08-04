@@ -26,11 +26,11 @@ export const getStaticProps = async () => {
   };
 };
 const changePasswordSchema = yup.object().shape({
-  oldPassword: yup.string().required(),
-  newPassword: yup.string().min(6).required(),
-  confirmPassword: yup
+  old_password: yup.string().required(),
+  new_password: yup.string().min(6).required(),
+  conform_password: yup
     .string()
-    .oneOf([yup.ref('newPassword')], 'Passwords must match')
+    .oneOf([yup.ref('new_password')], 'Passwords must match')
     .required(),
 });
 
@@ -39,7 +39,7 @@ const ChangePasswordPage: NextPageWithLayout = () => {
   const { mutate, isLoading } = useMutation(client.users.changePassword, {
     onSuccess: (data) => {
       if (!data.success) {
-        setError({ oldPassword: data.message });
+        setError({ old_password: data.message });
         toast.error(<b>Current password is incorrect</b>, {
           className: '-mt-10 xs:mt-0',
         });
@@ -50,7 +50,10 @@ const ChangePasswordPage: NextPageWithLayout = () => {
       });
     },
   });
-  const onSubmit: SubmitHandler<ChangePasswordInput> = (data) => mutate(data);
+  const onSubmit: SubmitHandler<ChangePasswordInput> = (data) => {
+    console.log('data', data);
+    // mutate(data)
+  };
   return (
     <motion.div
       variants={fadeInBottom()}
@@ -59,7 +62,7 @@ const ChangePasswordPage: NextPageWithLayout = () => {
       <h1 className="mb-5 text-15px font-medium text-dark dark:text-light sm:mb-6">
         Change Password
       </h1>
-      <Form<ChangePasswordInput & { confirmPassword: string }>
+      <Form<ChangePasswordInput & { conform_password: string }>
         onSubmit={onSubmit}
         validationSchema={changePasswordSchema}
         serverError={error}
@@ -70,20 +73,21 @@ const ChangePasswordPage: NextPageWithLayout = () => {
             <fieldset className="mb-6 grid gap-5 pb-5 sm:grid-cols-2 md:pb-9 lg:mb-8">
               <Password
                 label="Current Password"
-                {...register('oldPassword')}
+                {...register('old_password')}
                 error={
-                  errors.oldPassword?.message && 'Current password is incorrect'
+                  errors.old_password?.message &&
+                  'Current password is incorrect'
                 }
               />
               <Password
                 label="New Password"
-                {...register('newPassword')}
-                error={errors.newPassword?.message}
+                {...register('new_password')}
+                error={errors.new_password?.message}
               />
               <Password
                 label="Confirm Password"
-                {...register('confirmPassword')}
-                error={errors.confirmPassword?.message}
+                {...register('conform_password')}
+                error={errors.conform_password?.message}
               />
             </fieldset>
             <div className="mt-auto flex items-center gap-4 pb-3 lg:justify-end">

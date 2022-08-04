@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
   TOP_SHOPS: '/top-shops',
 
   ORDERS: 'order/place-order',
+  GET_ORDER_LIST: 'order/get-order-list',
 
   ORDERS_CHECKOUT_VERIFY: 'card/create-payment-intent',
   ORDERS_DOWNLOADS: '/downloads',

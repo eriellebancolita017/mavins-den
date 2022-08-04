@@ -7,7 +7,7 @@ module.exports = withPWA({
   reactStrictMode: true,
   pwa: {
     dest: 'public',
-    disable: false,
+    disable: process.env.NODE_ENV === 'development',
     runtimeCaching,
   },
   images: {

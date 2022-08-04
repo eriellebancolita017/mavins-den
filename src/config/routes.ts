@@ -6,6 +6,7 @@ const routes = {
   about: '/about-us',
   contact: '/contact-us',
   purchases: '/purchases',
+  pastOrders: '/past-orders',
   profile: '/profile',
   checkout: '/checkout',
   help: '/help',

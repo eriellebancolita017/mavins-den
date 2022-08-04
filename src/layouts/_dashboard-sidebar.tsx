@@ -10,6 +10,9 @@ import { LogoutIcon } from '@/components/icons/logout-icon';
 import { useLogout } from '@/data/user';
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
+import toast from 'react-hot-toast';
+import { useUserContext } from '@/components/preppers/context';
+import { ShoppingCartIcon } from '@/components/icons/shopping-cart-icon';
 
 const menuItems = [
   {
@@ -18,9 +21,14 @@ const menuItems = [
     path: routes.profile,
   },
   {
-    icon: <PurchaseIcon className="h-[15px] w-[15px] sm:h-4 sm:w-4" />,
-    label: 'Purchases',
+    icon: <ShoppingCartIcon className="h-[15px] w-[15px] sm:h-4 sm:w-4" />,
+    label: 'Current Orders',
     path: routes.purchases,
+  },
+  {
+    icon: <PurchaseIcon className="h-[15px] w-[15px] sm:h-4 sm:w-4" />,
+    label: 'Past Orders',
+    path: routes.pastOrders,
   },
   {
     icon: <LockIcon className="h-[18px] w-[18px] sm:h-5 sm:w-5" />,
@@ -31,6 +39,7 @@ const menuItems = [
 
 function SidebarNav() {
   const { mutate: logout } = useLogout();
+  const { userInfo } = useUserContext();
   return (
     <nav className="hidden flex-col text-13px text-dark-900 lg:flex">
       {menuItems.map((item) => (
@@ -47,7 +56,16 @@ function SidebarNav() {
         </ActiveLink>
       ))}
       <button
-        onClick={() => logout()}
+        onClick={async () => {
+          await logout({
+            user_id: userInfo.consumer_id,
+            device_token: userInfo.device_token || 'xxx',
+            code: 'EN',
+          });
+          toast.success(<b>Successfully Signed up.</b>, {
+            className: '-mt-10 xs:mt-0',
+          });
+        }}
         className="flex w-full items-center gap-2.5 px-6 py-3.5 text-left hover:text-dark focus:text-dark dark:hover:text-light dark:focus:text-light "
       >
         <LogoutIcon className="h-6 w-6" />
@@ -62,6 +80,7 @@ function SidebarMobileNav() {
   const { mutate: logout } = useLogout();
   const currentPath = menuItems.findIndex((item) => item.path === pathname);
   let [selected, setSelected] = useState(menuItems[currentPath]);
+  const { userInfo } = useUserContext();
   useEffect(() => {
     setSelected(menuItems[currentPath]);
   }, [currentPath]);
@@ -110,7 +129,16 @@ function SidebarMobileNav() {
                 </Listbox.Option>
               ))}
               <button
-                onClick={() => logout()}
+                onClick={async () => {
+                  await logout({
+                    user_id: userInfo.consumer_id,
+                    device_token: userInfo.device_token || 'xxx',
+                    code: 'EN',
+                  });
+                  toast.success(<b>Successfully Signed up.</b>, {
+                    className: '-mt-10 xs:mt-0',
+                  });
+                }}
                 className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-13px hover:text-dark focus:text-dark dark:hover:text-light dark:focus:text-light sm:px-5 sm:py-3 sm:text-sm md:py-3.5 "
               >
                 <LogoutIcon className="h-5 w-5" />

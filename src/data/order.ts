@@ -39,6 +39,19 @@ export function useOrders(options?: OrderQueryOptions) {
     loadMore: handleLoadMore,
   };
 }
+
+export function useOrderList(query: any) {
+  const { data, isLoading, error } = useQuery<any, Error>(
+    [API_ENDPOINTS.GET_ORDER_LIST, query],
+    () => client.orders.all(query)
+  );
+  return {
+    orders: data?.payload || [],
+    isLoading,
+    error,
+  };
+}
+
 export function useDownloadableProductOrders(options?: OrderQueryOptions) {
   const {
     data,

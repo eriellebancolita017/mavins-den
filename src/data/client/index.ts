@@ -108,7 +108,7 @@ class Client {
   };
   orders = {
     all: (query?: OrderQueryOptions) =>
-      HttpClient.get<OrderPaginator>(API_ENDPOINTS.ORDERS, query),
+      HttpClient.get<OrderPaginator>(API_ENDPOINTS.GET_ORDER_LIST, query),
     get: (tracking_number: string) =>
       HttpClient.get<Order>(`${API_ENDPOINTS.ORDERS}/${tracking_number}`),
     downloadable: (query?: OrderQueryOptions) =>
@@ -134,7 +134,7 @@ class Client {
   users = {
     me: () => HttpClient.get<User>(API_ENDPOINTS.USERS_ME),
     update: (user: UpdateProfileInput) =>
-      HttpClient.put<User>(`${API_ENDPOINTS.USERS}/${user.id}`, user),
+      HttpClient.put<User>(`${API_ENDPOINTS.USERS}/${user.consumer_id}`, user),
     login: (input: LoginUserInput) =>
       HttpClient.post<AuthResponse>(API_ENDPOINTS.USERS_LOGIN, input),
     register: (input: RegisterUserInput) =>

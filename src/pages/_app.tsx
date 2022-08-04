@@ -21,6 +21,7 @@ import { useRouter } from 'next/router';
 import Layout from '@/layouts/_general-layout';
 import UserContextProvider from '@/components/preppers/context';
 import { SpinnerIcon } from '@/components/icons/spinner-icon';
+import toast from 'react-hot-toast';
 
 import dynamic from 'next/dynamic';
 const PrivateRoute = dynamic(() => import('@/layouts/_private-route'), {
@@ -76,14 +77,51 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,
                   address: responseJson.results[0]?.formatted_address || 'xxx',
+                  guestInfo: new Date().toString(),
                 });
               });
           },
           (error) => {
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                toast.error(<b>User denied the request for Geolocation.</b>, {
+                  className: '-mt-10 xs:mt-0',
+                  duration: 10000,
+                });
+                break;
+              case error.POSITION_UNAVAILABLE:
+                toast.error(<b>Location information is unavailable.</b>, {
+                  className: '-mt-10 xs:mt-0',
+                  duration: 10000,
+                });
+                break;
+              case error.TIMEOUT:
+                toast.error(
+                  <b>The request to get user location timed out.</b>,
+                  {
+                    className: '-mt-10 xs:mt-0',
+                    duration: 10000,
+                  }
+                );
+                break;
+              default:
+                toast.error(
+                  <b>An unknown error occurred to get the geolocation.</b>,
+                  {
+                    className: '-mt-10 xs:mt-0',
+                    duration: 10000,
+                  }
+                );
+                break;
+            }
+
+            // setPageLoading(true);
+
             setLocation({
               latitude: 0.0001,
               longitude: 0.0001,
               address: 'placeholder address',
+              guestInfo: new Date().toString(),
             });
           }
         );

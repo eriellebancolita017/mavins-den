@@ -317,18 +317,15 @@ export interface User {
   status: string;
 }
 export interface UpdateProfileInput {
-  id: string;
+  consumer_id: string;
   name: string;
-  profile: {
-    id: string;
-    bio?: string;
-    contact?: string;
-    avatar?: Attachment | null;
-  };
+  mobile?: string;
+  profile_photo?: string;
 }
 export interface ChangePasswordInput {
-  oldPassword: string;
-  newPassword: string;
+  old_password: string;
+  new_password: string;
+  conform_password: string;
 }
 
 export interface ContactInput {

@@ -66,7 +66,7 @@ export const CartProvider: React.FC = (props) => {
       return client.cart.getAllInCart(
         isAuthorized
           ? `${userInfo.consumer_id}/consumer/EN`
-          : `${location.address}/guest/EN`
+          : `${location.guestInfo}/guest/EN`
       );
     },
     {
@@ -124,7 +124,7 @@ export const CartProvider: React.FC = (props) => {
         restaurant_id: item.restaurant_id,
         item_instruction: null,
         code: 'EN',
-        ...(!isAuthorized ? { device_id: location.address } : {}),
+        ...(!isAuthorized ? { device_id: location.guestInfo } : {}),
       },
       {
         onSuccess: (res) => {
@@ -192,7 +192,7 @@ export const CartProvider: React.FC = (props) => {
       `${
         isAuthorized
           ? `consumer/${userInfo.consumer_id}`
-          : `guest/${location.address}`
+          : `guest/${location.guestInfo}`
       }`,
       {
         onSuccess: () => {
@@ -213,7 +213,7 @@ export const CartProvider: React.FC = (props) => {
       `${
         isAuthorized
           ? `consumer/${userInfo.consumer_id}/`
-          : `guest/${location.address}/`
+          : `guest/${location.guestInfo}/`
       }${state.items.find((i) => i.item_id === id)?.cart_id!}`,
       {
         onSuccess: () => {
@@ -254,7 +254,7 @@ export const CartProvider: React.FC = (props) => {
       `${
         isAuthorized
           ? `consumer/${userInfo.consumer_id}`
-          : `guest/${location.address}`
+          : `guest/${location.guestInfo}`
       }`,
       {
         onSuccess: () => {
