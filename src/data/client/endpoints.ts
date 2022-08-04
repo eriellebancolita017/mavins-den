@@ -39,7 +39,7 @@ export const API_ENDPOINTS = {
   USERS_FORGOT_PASSWORD: '/forget-password',
   USERS_VERIFY_FORGOT_PASSWORD_TOKEN: '/verify-forget-password-token',
   USERS_RESET_PASSWORD: '/reset-password',
-  USERS_CHANGE_PASSWORD: '/change-password',
+  USERS_CHANGE_PASSWORD: 'auth/change-password',
   USERS_LOGOUT: 'auth/consumer-logout',
 
   GET_PROFILE: 'account/display-profile',

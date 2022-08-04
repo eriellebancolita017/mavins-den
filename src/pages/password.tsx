@@ -12,6 +12,7 @@ import { fadeInBottom } from '@/lib/framer-motion/fade-in-bottom';
 import * as yup from 'yup';
 import { useState } from 'react';
 import { API_ENDPOINTS } from '@/data/client/endpoints';
+import { useUserContext } from '@/components/preppers/context';
 
 export const getStaticProps = async () => {
   const queryClient = new QueryClient();
@@ -32,14 +33,19 @@ const changePasswordSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref('new_password')], 'Passwords must match')
     .required(),
+  user_id: yup.string(),
+  type: yup.string(),
+  code: yup.string(),
 });
 
 const ChangePasswordPage: NextPageWithLayout = () => {
   let [error, setError] = useState<Partial<ChangePasswordInput> | null>(null);
+  const { userInfo } = useUserContext();
   const { mutate, isLoading } = useMutation(client.users.changePassword, {
     onSuccess: (data) => {
-      if (!data.success) {
-        setError({ old_password: data.message });
+      console.log('data', data);
+      if (data.status !== '200') {
+        setError({ old_password: data.error! });
         toast.error(<b>Current password is incorrect</b>, {
           className: '-mt-10 xs:mt-0',
         });
@@ -52,7 +58,12 @@ const ChangePasswordPage: NextPageWithLayout = () => {
   });
   const onSubmit: SubmitHandler<ChangePasswordInput> = (data) => {
     console.log('data', data);
-    // mutate(data)
+    mutate({
+      ...data,
+      type: 'consumer',
+      code: 'EN',
+      user_id: userInfo.consumer_id,
+    });
   };
   return (
     <motion.div

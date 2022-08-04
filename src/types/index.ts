@@ -326,6 +326,9 @@ export interface ChangePasswordInput {
   old_password: string;
   new_password: string;
   conform_password: string;
+  type?: string;
+  code?: string;
+  user_id?: string;
 }
 
 export interface ContactInput {
@@ -373,8 +376,8 @@ export interface VerifyForgetPasswordTokenInput {
 }
 
 export interface PasswordChangeResponse {
-  success: boolean;
-  message: string;
+  status: string;
+  error: string | null;
 }
 export interface AuthResponse {
   erorr: string | null;
