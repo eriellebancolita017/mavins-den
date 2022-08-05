@@ -146,7 +146,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
           defaultTheme="dark"
           enableSystem={false}
         >
-          <UserContextProvider location={location}>
+          <UserContextProvider location={location} setLocation={setLocation}>
             <CartProvider>
               <ModalProvider>
                 <AnimatePresence

@@ -199,7 +199,7 @@ export default function CartCheckout() {
       <StripePayment />
 
       <p className="!mb-4 text-base font-medium text-dark dark:text-light">
-        Select deliver address
+        Select delivery address
       </p>
       {!!savedAddress.length ? (
         <div className="mb-3 space-y-2">
@@ -229,12 +229,12 @@ export default function CartCheckout() {
                 >
                   {address.address}
                 </div>
-                <div className="my-1 text-[11px]">
+                {/* <div className="my-1 text-[11px]">
                   latitude: {address.latitude}, longitude: {address.longitude}
                 </div>
                 <div className="text-xs font-bold">
                   floor: {address.floor || '--'}
-                </div>
+                </div> */}
               </div>
               <p
                 className={classNames(
@@ -302,7 +302,7 @@ export default function CartCheckout() {
             }
             disabled={!selectedAddress.longitude}
           />
-          <div className="my-4 flex flex-col gap-5 sm:flex-row">
+          {/* <div className="my-4 flex flex-col gap-5 sm:flex-row">
             <Input
               label="Latitude"
               inputClassName="bg-light-100 dark:bg-dark-100"
@@ -331,9 +331,9 @@ export default function CartCheckout() {
               }
               disabled={true}
             />
-          </div>
-          <div className="flex flex-col gap-5 sm:flex-row">
-            <Input
+          </div> */}
+          <div className="mt-4 flex flex-col gap-5 sm:flex-row">
+            {/* <Input
               label="Floor"
               inputClassName="bg-light dark:bg-dark-300"
               className="flex-1"
@@ -345,7 +345,8 @@ export default function CartCheckout() {
                   floor: e.target.value,
                 })
               }
-            />
+            /> */}
+            <div className="flex-1"></div>
             <div className="flex flex-1 flex-col items-start gap-y-2">
               <RadioButton
                 name="home"
@@ -377,21 +378,21 @@ export default function CartCheckout() {
             <Button variant="outline" onClick={cancelAddress}>
               Cancel
             </Button>
-            <Button
-              variant="outline"
-              className="sm:ml-auto"
-              disabled={!selectedAddress.address_id}
-              onClick={addressUpdate}
-            >
-              Update Address
-            </Button>
-            <Button
-              variant="outline"
-              disabled={selectedAddress.address_id || !selectedAddress.latitude}
-              onClick={addNewAddress}
-            >
-              Add as New Address
-            </Button>
+            <div className="sm:ml-auto">
+              {selectedAddress.address_id ? (
+                <Button variant="outline" onClick={addressUpdate}>
+                  Update Address
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  disabled={!selectedAddress.latitude}
+                  onClick={addNewAddress}
+                >
+                  Add as New Address
+                </Button>
+              )}
+            </div>
           </div>
           <hr className="mt-6" />
         </div>

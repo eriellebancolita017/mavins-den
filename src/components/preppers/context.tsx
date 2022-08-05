@@ -11,6 +11,7 @@ interface UserContextInterface {
   userInfo?: any;
   setUserInfo?: any;
   location?: any;
+  setLocation?: any;
 }
 
 const defaultState: UserContextInterface = {};
@@ -20,14 +21,23 @@ export const UserContext = createContext(defaultState);
 const UserContextProvider = ({
   children,
   location,
+  setLocation,
 }: {
   children: ReactNode;
   location: any;
+  setLocation: any;
 }) => {
   const [userInfo, setUserInfo] = useState(false);
 
   return (
-    <UserContext.Provider value={{ userInfo, setUserInfo, location: location }}>
+    <UserContext.Provider
+      value={{
+        userInfo,
+        setUserInfo,
+        location: location,
+        setLocation: setLocation,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

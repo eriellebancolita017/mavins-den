@@ -20,6 +20,9 @@ const ForgotUserPassword = dynamic(
   () => import('@/components/auth/forgot-password')
 );
 const OptionModal = dynamic(() => import('@/components/product/option-popup'));
+const AddressModal = dynamic(
+  () => import('@/components/product/address-popup')
+);
 
 function renderModalContent(view: MODAL_VIEWS) {
   switch (view) {
@@ -33,6 +36,8 @@ function renderModalContent(view: MODAL_VIEWS) {
       return <ProductPopupDetails />;
     case 'OPTION_VIEW':
       return <OptionModal />;
+    case 'ADDRESS_VIEW':
+      return <AddressModal />;
     default:
       return null;
   }

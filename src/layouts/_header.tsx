@@ -129,7 +129,9 @@ export default function Header({
   showHamburger = false,
   onClickHamburger,
 }: HeaderProps) {
+  const { openModal } = useModalAction();
   const { asPath } = useRouter();
+  const { location } = useUserContext();
   useSwapBodyClassOnScrollDirection();
   return (
     <header className="app-header sticky top-0 left-0 z-30 flex h-16 w-full items-center justify-between border-b border-light-300 bg-light py-1 px-4 dark:border-dark-300 dark:bg-dark-250 sm:h-[70px] sm:px-6">
@@ -144,6 +146,12 @@ export default function Header({
         <Logo />
       </div>
       <div className="relative flex items-center gap-5 pr-0.5 xs:gap-6 sm:gap-7">
+        <button
+          onClick={() => openModal('ADDRESS_VIEW')}
+          className="inline-flex font-semibold text-brand hover:text-dark-400 hover:dark:text-light-500"
+        >
+          Postcode: {location.postcode}
+        </button>
         <SearchButton className="hidden sm:flex" />
         <ThemeSwitcher />
         <GridSwitcher />
