@@ -55,4 +55,6 @@ export const API_ENDPOINTS = {
 
   ADD_TO_CART: 'cart/add-to-cart/',
   MOVE_CART_GUEST: 'cart/move-cart-from-guest/',
+
+  MANAGE_ADDRESS: 'consumer/manage-delivery-address',
 };

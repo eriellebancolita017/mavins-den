@@ -20,9 +20,24 @@ import {
 import StripePayment from '@/components/cart/payment/stripe';
 import routes from '@/config/routes';
 import { useUserContext } from '@/components/preppers/context';
+import { useEffect, useState } from 'react';
+import classNames from 'classnames';
+import { capitalizeFirstLetter } from '@/lib/utils';
+import { HomeIcon } from '../icons/home-icon';
+import { PurchaseIcon } from '../icons/purchase-icon';
+import { LocationIcon } from '../icons/contact/location-icon';
+import AddressAuto from '../auth/address-auto';
+import Input from '../ui/forms/input';
+import RadioButton from '../ui/forms/radio-button';
 
 export default function CartCheckout() {
   const router = useRouter();
+  const { userInfo, location } = useUserContext();
+  const [savedAddress, setSavedAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState<any>({});
+  const [showAll, setShowAll] = useState(false);
+  const [addNew, setAddNew] = useState(false);
+
   const { mutate, isLoading } = useMutation(client.orders.create, {
     onSuccess: (res) => {
       router.push(routes.orderUrl(res.payload.order_id));
@@ -32,7 +47,42 @@ export default function CartCheckout() {
       console.log(err.response.data.message);
     },
   });
-  const { userInfo, location } = useUserContext();
+
+  const { mutate: getAddressList } = useMutation(client.address.manageAddress, {
+    onSuccess: (res) => {
+      setSavedAddress(res.payload || []);
+    },
+  });
+
+  const { mutate: updateAddress } = useMutation(client.address.manageAddress, {
+    onSuccess: (res) => {
+      toast.success(<b>Address Updated!</b>, {
+        className: '-mt-10 xs:mt-0',
+      });
+      setSelectedAddress(res.payload[0]);
+      getAddressList({
+        consumer_id: userInfo.consumer_id,
+        request_type: 'list',
+        type: 'other',
+        code: 'EN',
+      });
+    },
+    onError: () => {
+      toast.error(<b>Address Update Failed!</b>, {
+        className: '-mt-10 xs:mt-0',
+      });
+    },
+  });
+
+  useEffect(() => {
+    console.log('run address fetch');
+    getAddressList({
+      consumer_id: userInfo.consumer_id,
+      request_type: 'list',
+      type: 'other',
+      code: 'EN',
+    });
+  }, [userInfo.consumer_id, getAddressList]);
   // const [use_wallet] = useAtom(useWalletPointsAtom);
   // const [payableAmount] = useAtom(payableAmountAtom);
   const [token] = useAtom(verifiedTokenAtom);
@@ -52,12 +102,7 @@ export default function CartCheckout() {
       amount: base_amount,
     }
   );
-  const totalPrice = verifiedResponse ? base_amount : 0;
-  const { price: total } = usePrice(
-    verifiedResponse && {
-      amount: +totalPrice,
-    }
-  );
+
   const { phoneNumber } = usePhoneInput();
   function createOrder() {
     // if (
@@ -83,21 +128,18 @@ export default function CartCheckout() {
         coupon_type: '',
         coupon_value: 0,
         credit_deduct_amount: 0.0,
-        deliver_to: location.address,
-        deliver_to_latitude: location.latitude,
-        deliver_to_longitude: location.longitude,
-        // "deliver_to": '86 Paul Stret London',
-        // "deliver_to_latitude": 51.9304799,
-        // "deliver_to_longitude": -0.5894157,
+        deliver_to: selectedAddress.address,
+        deliver_to_latitude: selectedAddress.latitude,
+        deliver_to_longitude: selectedAddress.longitude,
         delivery_fee: 0.0,
         discount_type: 'percentage',
         discount_value: 0.0,
-        floor: '',
+        floor: selectedAddress.floor || 0,
         food_allergies_note: '',
         gross_amount: base_amount.toString(),
         code: 'EN',
         address_title: '',
-        address_type: 'home',
+        address_type: selectedAddress.type || 'other',
         landmark: ' ',
         net_amount: base_amount,
         restaurant_discount: 0.0,
@@ -109,6 +151,42 @@ export default function CartCheckout() {
       }),
     });
   }
+
+  const cancelAddress = () => {
+    setSelectedAddress({});
+    setAddNew(false);
+  };
+
+  const addressUpdate = () => {
+    updateAddress({
+      consumer_id: userInfo.consumer_id,
+      request_type: 'update',
+      type: selectedAddress.type,
+      latitude: selectedAddress.latitude,
+      longitude: selectedAddress.longitude,
+      address: selectedAddress.address,
+      floor: selectedAddress.floor,
+      landmark: '',
+      title: '',
+      address_id: selectedAddress.address_id,
+      code: 'EN',
+    });
+  };
+
+  const addNewAddress = () => {
+    updateAddress({
+      consumer_id: userInfo.consumer_id,
+      request_type: 'add',
+      type: selectedAddress.type || 'other',
+      latitude: selectedAddress.latitude,
+      longitude: selectedAddress.longitude,
+      address: selectedAddress.address,
+      floor: selectedAddress.floor || 0,
+      landmark: '',
+      title: '',
+      code: 'EN',
+    });
+  };
   return (
     <div className="mt-10 border-t border-light-400 bg-light pt-6 pb-7 dark:border-dark-400 dark:bg-dark-250 sm:bottom-0 sm:mt-12 sm:pt-8 sm:pb-9">
       <div className="mb-6 flex flex-col gap-3 text-dark dark:text-light sm:mb-7">
@@ -116,28 +194,211 @@ export default function CartCheckout() {
           <p>Total</p>
           <strong className="font-semibold">{sub_total}</strong>
         </div>
-        {/* <div className="flex justify-between">
-          <p>Tax</p>
-          <strong className="font-semibold">{tax}</strong>
-        </div> */}
-        {/* <div className="mt-4 flex justify-between border-t border-light-400 pt-5 dark:border-dark-400">
-          <p>Total</p>
-          <strong className="font-semibold">{total}</strong>
-        </div> */}
       </div>
-
-      {/* {verifiedResponse && (
-        <CartWallet
-          totalPrice={totalPrice}
-          walletAmount={verifiedResponse.wallet_amount}
-          walletCurrency={verifiedResponse.wallet_currency}
-        />
-      )} */}
 
       <StripePayment />
 
+      <p className="!mb-4 text-base font-medium text-dark dark:text-light">
+        Select deliver address
+      </p>
+      {!!savedAddress.length ? (
+        <div className="mb-3 space-y-2">
+          {savedAddress.map((address: any, index) => (
+            <div
+              key={address.address_id}
+              className={classNames(
+                'flex cursor-pointer items-center justify-between rounded-md border p-3 hover:border-brand-dark',
+                selectedAddress.address_id === address.address_id
+                  ? 'border-brand'
+                  : 'border-gray-300',
+                index > 1 &&
+                  !showAll &&
+                  selectedAddress.address_id !== address.address_id &&
+                  'hidden'
+              )}
+              onClick={() => setSelectedAddress(address)}
+            >
+              <div>
+                <div
+                  className={classNames(
+                    'text-sm font-medium transition-colors',
+                    selectedAddress.address_id === address.address_id
+                      ? 'text-brand'
+                      : 'text-dark dark:text-light'
+                  )}
+                >
+                  {address.address}
+                </div>
+                <div className="my-1 text-[11px]">
+                  latitude: {address.latitude}, longitude: {address.longitude}
+                </div>
+                <div className="text-xs font-bold">
+                  floor: {address.floor || '--'}
+                </div>
+              </div>
+              <p
+                className={classNames(
+                  'flex items-center transition-colors',
+                  selectedAddress.address_id === address.address_id
+                    ? 'text-brand'
+                    : 'text-dark dark:text-light'
+                )}
+              >
+                <div className="mr-2 h-5 w-5">
+                  {address.type === 'home' ? (
+                    <HomeIcon />
+                  ) : address.type === 'work' ? (
+                    <PurchaseIcon />
+                  ) : (
+                    <LocationIcon />
+                  )}
+                </div>
+                {capitalizeFirstLetter(address.type)}
+              </p>
+            </div>
+          ))}
+          {savedAddress.length > 2 && (
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="float-right !mb-3 inline-flex font-semibold text-brand hover:text-dark-400 hover:dark:text-light-500"
+            >
+              {showAll ? 'Show Less' : 'Show More'}
+            </button>
+          )}
+        </div>
+      ) : (
+        <div>
+          <hr className="my-4" />
+          No saved addresses
+          <hr className="my-4" />
+        </div>
+      )}
+
+      {!addNew ? (
+        <Button
+          variant="outline"
+          className="mb-6 w-full"
+          onClick={() => setAddNew(!addNew)}
+        >
+          Add or Update Address
+        </Button>
+      ) : (
+        <div className="my-6 w-full">
+          <p className="!mb-2 text-base font-medium text-dark dark:text-light">
+            Add your address
+          </p>
+          <AddressAuto onSelect={(val) => setSelectedAddress(val)} />
+          <hr className="my-4" />
+          <Input
+            label="Address"
+            inputClassName="bg-light dark:bg-dark-300"
+            type="text"
+            value={selectedAddress.address}
+            onChange={(e) =>
+              setSelectedAddress({
+                ...selectedAddress,
+                address: e.target.value,
+              })
+            }
+            disabled={!selectedAddress.longitude}
+          />
+          <div className="my-4 flex flex-col gap-5 sm:flex-row">
+            <Input
+              label="Latitude"
+              inputClassName="bg-light-100 dark:bg-dark-100"
+              className="flex-1"
+              type="text"
+              value={selectedAddress.latitude}
+              onChange={(e) =>
+                setSelectedAddress({
+                  ...selectedAddress,
+                  latitude: e.target.value,
+                })
+              }
+              disabled={true}
+            />
+            <Input
+              label="Longitude"
+              inputClassName="bg-light-100 dark:bg-dark-100"
+              className="flex-1"
+              type="text"
+              value={selectedAddress.longitude}
+              onChange={(e) =>
+                setSelectedAddress({
+                  ...selectedAddress,
+                  longitude: e.target.value,
+                })
+              }
+              disabled={true}
+            />
+          </div>
+          <div className="flex flex-col gap-5 sm:flex-row">
+            <Input
+              label="Floor"
+              inputClassName="bg-light dark:bg-dark-300"
+              className="flex-1"
+              type="number"
+              value={selectedAddress.floor}
+              onChange={(e) =>
+                setSelectedAddress({
+                  ...selectedAddress,
+                  floor: e.target.value,
+                })
+              }
+            />
+            <div className="flex flex-1 flex-col items-start gap-y-2">
+              <RadioButton
+                name="home"
+                label="Home"
+                onChange={() =>
+                  setSelectedAddress({ ...selectedAddress, type: 'home' })
+                }
+                checked={selectedAddress.type === 'home'}
+              />
+              <RadioButton
+                name="work"
+                label="Work"
+                onChange={() =>
+                  setSelectedAddress({ ...selectedAddress, type: 'work' })
+                }
+                checked={selectedAddress.type === 'work'}
+              />
+              <RadioButton
+                name="other"
+                label="Other"
+                onChange={() =>
+                  setSelectedAddress({ ...selectedAddress, type: 'other' })
+                }
+                checked={selectedAddress.type === 'other'}
+              />
+            </div>
+          </div>
+          <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+            <Button variant="outline" onClick={cancelAddress}>
+              Cancel
+            </Button>
+            <Button
+              variant="outline"
+              className="sm:ml-auto"
+              disabled={!selectedAddress.address_id}
+              onClick={addressUpdate}
+            >
+              Update Address
+            </Button>
+            <Button
+              variant="outline"
+              disabled={selectedAddress.address_id || !selectedAddress.latitude}
+              onClick={addNewAddress}
+            >
+              Add as New Address
+            </Button>
+          </div>
+          <hr className="mt-6" />
+        </div>
+      )}
+
       <Button
-        disabled={isLoading || !token}
+        disabled={isLoading || !token || !selectedAddress}
         isLoading={isLoading}
         onClick={createOrder}
         className="w-full md:h-[50px] md:text-sm"

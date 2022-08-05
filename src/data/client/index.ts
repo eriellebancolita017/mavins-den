@@ -243,6 +243,12 @@ class Client {
       );
     },
   };
+
+  address = {
+    manageAddress: (query: any) => {
+      return HttpClient.post<any>(API_ENDPOINTS.MANAGE_ADDRESS, query);
+    },
+  };
 }
 
 export default new Client();

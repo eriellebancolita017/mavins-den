@@ -36,7 +36,7 @@ type AppPropsWithLayout = AppProps & {
 
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const [queryClient] = useState(() => new QueryClient());
-  const getLayout = Component.getLayout ?? ((page) => page);
+  const getLayout = Component.getLayout ?? ((page: any) => page);
   const authenticationRequired = Component.authorization ?? false;
 
   const router = useRouter();
@@ -73,11 +73,17 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             )
               .then((response) => response.json())
               .then((responseJson) => {
+                console.log('response json', responseJson);
+                const postcode =
+                  responseJson.results[0].address_components.find(
+                    (addr: any) => addr.types[0] === 'postal_code'
+                  ).short_name;
                 setLocation({
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,
                   address: responseJson.results[0]?.formatted_address || 'xxx',
                   guestInfo: new Date().toString(),
+                  postcode,
                 });
               });
           },
@@ -122,6 +128,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
               longitude: 0.0001,
               address: 'placeholder address',
               guestInfo: new Date().toString(),
+              postcode: 'EC2A 4NE',
             });
           }
         );

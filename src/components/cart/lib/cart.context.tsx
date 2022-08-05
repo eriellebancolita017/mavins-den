@@ -54,11 +54,11 @@ export const CartProvider: React.FC = (props) => {
   const { location, userInfo } = useUserContext();
   const { isAuthorized } = useAuth();
 
-  React.useEffect(() => {
-    if (state.isEmpty) {
-      resetCart();
-    }
-  }, [state.isEmpty]);
+  // React.useEffect(() => {
+  //   if (state.isEmpty) {
+  //     resetCart();
+  //   }
+  // }, [state.isEmpty]);
 
   const { data, refetch } = useQuery<any>(
     [API_ENDPOINTS.GET_ALL_IN_CART, userInfo, location],

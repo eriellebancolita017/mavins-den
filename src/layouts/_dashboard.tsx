@@ -17,7 +17,7 @@ export default function DashboardLayout({
       initial="exit"
       animate="enter"
       exit="exit"
-      className="flex min-h-full flex-col bg-light dark:bg-dark-100 lg:min-h-[auto] lg:bg-light-300"
+      className="flex min-h-full flex-col bg-light dark:bg-dark-100 lg:bg-light-300"
     >
       <Header />
       <motion.div
