@@ -22,32 +22,32 @@ const MAP_RANGE_FILTER = [
   },
 ];
 
-function Products() {
-  let [selected, setRange] = useState(MAP_RANGE_FILTER[2]);
-  const { popularProducts, isLoading } = usePopularProducts({
-    range: selected.range,
-  });
-  return (
-    <>
-      <div className="flex flex-col-reverse flex-wrap items-center justify-between px-4 pt-5 pb-4 xs:flex-row xs:space-x-4 md:px-6 md:pt-6 lg:px-7 3xl:px-8">
-        <div className="pt-3 xs:pt-0">
-          Total {popularProducts.length} products found
-        </div>
-        <ButtonGroup
-          items={MAP_RANGE_FILTER}
-          selectedValue={selected}
-          onChange={setRange}
-        />
-      </div>
-      <Grid
-        products={popularProducts}
-        hasNextPage={false}
-        isLoadingMore={false}
-        isLoading={isLoading}
-      />
-    </>
-  );
-}
+// function Products() {
+//   let [selected, setRange] = useState(MAP_RANGE_FILTER[2]);
+//   const { popularProducts, isLoading } = usePopularProducts({
+//     range: selected.range,
+//   });
+//   return (
+//     <>
+//       <div className="flex flex-col-reverse flex-wrap items-center justify-between px-4 pt-5 pb-4 xs:flex-row xs:space-x-4 md:px-6 md:pt-6 lg:px-7 3xl:px-8">
+//         <div className="pt-3 xs:pt-0">
+//           Total {popularProducts.length} products found
+//         </div>
+//         <ButtonGroup
+//           items={MAP_RANGE_FILTER}
+//           selectedValue={selected}
+//           onChange={setRange}
+//         />
+//       </div>
+//       <Grid
+//         products={popularProducts}
+//         hasNextPage={false}
+//         isLoadingMore={false}
+//         isLoading={isLoading}
+//       />
+//     </>
+//   );
+// }
 
 const PopularProductsPage: NextPageWithLayout = () => {
   return (
@@ -57,7 +57,7 @@ const PopularProductsPage: NextPageWithLayout = () => {
         description="Fastest digital download template built with React, NextJS, TypeScript, React-Query and Tailwind CSS."
         url={routes.popularProducts}
       />
-      <Products />
+      {/* <Products /> */}
     </>
   );
 };

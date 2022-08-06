@@ -203,7 +203,7 @@ function ShopProducts({ prepper }: { prepper: Prepper }) {
 const ShopPage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ prepper }) => {
-  const { name, logo, cover_photo } = prepper;
+  const { name, logo, cover_photo } = prepper || {};
 
   const router = useRouter();
 

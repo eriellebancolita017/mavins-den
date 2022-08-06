@@ -92,13 +92,11 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
               case error.PERMISSION_DENIED:
                 toast.error(<b>User denied the request for Geolocation.</b>, {
                   className: '-mt-10 xs:mt-0',
-                  duration: 10000,
                 });
                 break;
               case error.POSITION_UNAVAILABLE:
                 toast.error(<b>Location information is unavailable.</b>, {
                   className: '-mt-10 xs:mt-0',
-                  duration: 10000,
                 });
                 break;
               case error.TIMEOUT:
@@ -106,7 +104,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                   <b>The request to get user location timed out.</b>,
                   {
                     className: '-mt-10 xs:mt-0',
-                    duration: 10000,
                   }
                 );
                 break;
@@ -115,7 +112,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                   <b>An unknown error occurred to get the geolocation.</b>,
                   {
                     className: '-mt-10 xs:mt-0',
-                    duration: 10000,
                   }
                 );
                 break;

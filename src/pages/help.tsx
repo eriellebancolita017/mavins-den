@@ -17,11 +17,11 @@ const HelpPage: NextPageWithLayout = () => {
       />
       <div className="mx-auto flex h-full w-full max-w-screen-xl flex-col p-4 sm:p-5">
         <PageHeading title="Help" subtitle="Frequently asked question" />
-        <GeneralContainer>
+        {/* <GeneralContainer>
           {helpData?.map((item) => (
             <Accordion key={`${item.title}-${item.id}`} item={item} />
           ))}
-        </GeneralContainer>
+        </GeneralContainer> */}
       </div>
     </>
   );

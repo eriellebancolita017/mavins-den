@@ -16,51 +16,51 @@ import { API_ENDPOINTS } from '@/data/client/endpoints';
 import CategoryFilter from '@/components/product/category-filter';
 import PromoCarousel from '@/components/product/promo-carousel';
 
-export const getStaticProps: GetStaticProps = async () => {
-  const queryClient = new QueryClient();
-  try {
-    await Promise.all([
-      queryClient.prefetchInfiniteQuery(
-        [API_ENDPOINTS.PRODUCTS, {}],
-        ({ queryKey }) =>
-          client.products.all(queryKey[1] as ProductQueryOptions)
-      ),
-      queryClient.prefetchInfiniteQuery(
-        [API_ENDPOINTS.CATEGORIES, { limit: 100 }],
-        ({ queryKey }) =>
-          client.categories.all(queryKey[1] as CategoryQueryOptions)
-      ),
-    ]);
-    return {
-      props: {
-        dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
-      },
-      revalidate: 60, // In seconds
-    };
-  } catch (error) {
-    //* if we get here, the product doesn't exist or something else went wrong
-    return {
-      notFound: true,
-    };
-  }
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//   const queryClient = new QueryClient();
+//   try {
+//     await Promise.all([
+//       queryClient.prefetchInfiniteQuery(
+//         [API_ENDPOINTS.PRODUCTS, {}],
+//         ({ queryKey }) =>
+//           client.products.all(queryKey[1] as ProductQueryOptions)
+//       ),
+//       queryClient.prefetchInfiniteQuery(
+//         [API_ENDPOINTS.CATEGORIES, { limit: 100 }],
+//         ({ queryKey }) =>
+//           client.categories.all(queryKey[1] as CategoryQueryOptions)
+//       ),
+//     ]);
+//     return {
+//       props: {
+//         dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+//       },
+//       revalidate: 60, // In seconds
+//     };
+//   } catch (error) {
+//     //* if we get here, the product doesn't exist or something else went wrong
+//     return {
+//       notFound: true,
+//     };
+//   }
+// };
 
-function Products() {
-  const { query } = useRouter();
-  const { products, loadMore, hasNextPage, isLoadingMore, isLoading } =
-    useProducts({
-      ...(query.category && { categories: query.category }),
-    });
-  return (
-    <Grid
-      products={products}
-      onLoadMore={loadMore}
-      hasNextPage={hasNextPage}
-      isLoadingMore={isLoadingMore}
-      isLoading={isLoading}
-    />
-  );
-}
+// function Products() {
+//   const { query } = useRouter();
+//   const { products, loadMore, hasNextPage, isLoadingMore, isLoading } =
+//     useProducts({
+//       ...(query.category && { categories: query.category }),
+//     });
+//   return (
+//     <Grid
+//       products={products}
+//       onLoadMore={loadMore}
+//       hasNextPage={hasNextPage}
+//       isLoadingMore={isLoadingMore}
+//       isLoading={isLoading}
+//     />
+//   );
+// }
 
 const Explore: NextPageWithLayout = () => {
   return (
@@ -70,9 +70,9 @@ const Explore: NextPageWithLayout = () => {
         description="Fastest digital download template built with React, NextJS, TypeScript, React-Query and Tailwind CSS."
         url={routes.home}
       />
-      <PromoCarousel />
-      <CategoryFilter defaultActivePath={routes.explore} />
-      <Products />
+      {/* <PromoCarousel /> */}
+      {/* <CategoryFilter defaultActivePath={routes.explore} /> */}
+      {/* <Products /> */}
     </>
   );
 };

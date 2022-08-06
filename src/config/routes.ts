@@ -16,9 +16,9 @@ const routes = {
   privacy: '/privacy',
   password: '/password',
   orderUrl: (tracking_number: string) => `/orders/${tracking_number}`,
-  productUrl: (slug: string) => `/products/${slug}`,
-  tagUrl: (slug: string) => `/products/tags/${slug}`,
-  shopUrl: (slug: string) => `/authors/${slug}`,
+  // productUrl: (slug: string) => `/products/${slug}`,
+  // tagUrl: (slug: string) => `/products/tags/${slug}`,
+  // shopUrl: (slug: string) => `/authors/${slug}`,
 
   preppers: '/preppers',
   prepperUrl: (id: string) => `/preppers/${id}`,

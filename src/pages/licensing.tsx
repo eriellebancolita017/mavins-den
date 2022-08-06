@@ -18,7 +18,7 @@ const LicensingPage: NextPageWithLayout = () => {
           title="All the legal bits"
           subtitle="Last updated on January 20, 2022"
         />
-        <GeneralContainer>
+        {/* <GeneralContainer>
           {licensingData?.map((item) => (
             <div
               key={item.id}
@@ -35,7 +35,7 @@ const LicensingPage: NextPageWithLayout = () => {
               />
             </div>
           ))}
-        </GeneralContainer>
+        </GeneralContainer> */}
       </div>
     </>
   );

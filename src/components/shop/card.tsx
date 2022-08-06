@@ -14,7 +14,7 @@ export default function Card({ shop }: { shop: Shop }) {
       whileTap={{ scale: 0.98 }}
       whileHover={{ scale: 1.05 }}
       variants={fadeInBottomWithScaleX()}
-      onClick={() => router.push(routes.shopUrl(slug))}
+      onClick={() => {}}
       className="group cursor-pointer rounded-md bg-light px-4 py-7 text-center dark:bg-dark-250"
     >
       <div className="relative mx-auto mb-2.5 h-[75px] w-[75px] md:h-20 md:w-20 lg:h-[90px] lg:w-[90px]">

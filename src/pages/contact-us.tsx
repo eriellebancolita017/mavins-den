@@ -52,23 +52,24 @@ const ContactUsPage: NextPageWithLayout = () => {
   const { settings } = useSettings();
   const { contactDetails } = settings ?? {};
   let [reset, setReset] = useState<CreateContactUsInput | null>(null);
-  const { mutate } = useMutation(client.settings.contactUs, {
-    onSuccess: () => {
-      toast.success('Successfully sent your message');
-      setReset({
-        name: '',
-        email: '',
-        subject: '',
-        description: '',
-      });
-    },
-    onError: (res) => {
-      toast.error('Ops! something went wrong');
-      console.log(res);
-    },
-  });
+  // const { mutate } = useMutation(client.settings.contactUs, {
+  //   onSuccess: () => {
+  //     toast.success('Successfully sent your message');
+  //     setReset({
+  //       name: '',
+  //       email: '',
+  //       subject: '',
+  //       description: '',
+  //     });
+  //   },
+  //   onError: (res) => {
+  //     toast.error('Ops! something went wrong');
+  //     console.log(res);
+  //   },
+  // });
   const onSubmit: SubmitHandler<CreateContactUsInput> = (values) => {
-    mutate(values);
+    console.log(values);
+    // mutate(values);
   };
   return (
     <>
@@ -96,7 +97,7 @@ const ContactUsPage: NextPageWithLayout = () => {
                 icon={<LocationIcon className="h-12 w-12" />}
                 title="Office Location"
                 description={
-                  contactDetails?.location?.formattedAddress ??
+                  // contactDetails?.location?.formattedAddress ??
                   'Add your office location from admin panel'
                 }
               />
@@ -104,7 +105,7 @@ const ContactUsPage: NextPageWithLayout = () => {
                 icon={<PhoneIcon className="h-10 w-10" />}
                 title="Call us anytime"
                 description={
-                  contactDetails?.contact ??
+                  // contactDetails?.contact ??
                   'Add your contact info from admin panel'
                 }
               />
@@ -112,7 +113,7 @@ const ContactUsPage: NextPageWithLayout = () => {
                 icon={<MailIcon className="h-10 w-10" />}
                 title="Visit Website"
                 description={
-                  contactDetails?.website ??
+                  // contactDetails?.website ??
                   'Add your website info from admin panel'
                 }
               />

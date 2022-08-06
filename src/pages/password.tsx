@@ -16,10 +16,10 @@ import { useUserContext } from '@/components/preppers/context';
 
 export const getStaticProps = async () => {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(
-    [API_ENDPOINTS.SETTINGS],
-    client.settings.all
-  );
+  // await queryClient.prefetchQuery(
+  //   [API_ENDPOINTS.SETTINGS],
+  //   client.settings.all
+  // );
   return {
     props: {
       dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),

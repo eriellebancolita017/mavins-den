@@ -61,11 +61,11 @@ const PreppersPage: NextPageWithLayout = () => {
   const [index, setIndex] = useState<number | string>('all');
   const { location } = useUserContext();
   const { preppers, isLoading } = usePreppers({
-    // latitude: location.latitude,
-    // longitude: location.longitude,
+    latitude: location.latitude,
+    longitude: location.longitude,
 
-    latitude: 52.2880064,
-    longitude: 0.0522195,
+    // latitude: 52.2880064,
+    // longitude: 0.0522195,
 
     code: 'EN',
   });

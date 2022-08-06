@@ -54,10 +54,7 @@ export default function ProductDetailsPaper({ product, className }: Props) {
               />
             </div>
             <h2 className="pl-2.5 font-medium dark:text-dark-base lg:text-dark lg:dark:text-light-400">
-              <AnchorLink
-                href={routes.shopUrl(shop?.slug)}
-                className="hover:text-brand"
-              >
+              <AnchorLink href={'/'} className="hover:text-brand">
                 {shop?.name}
               </AnchorLink>
             </h2>
@@ -77,7 +74,7 @@ export default function ProductDetailsPaper({ product, className }: Props) {
         </div>
       </div>
       <div className="flex flex-col-reverse items-center py-3.5 xs:flex-row xs:gap-2.5 sm:py-4 md:gap-3.5 lg:w-[480px] lg:gap-4 lg:py-2 2xl:w-2/5 3xl:w-[480px]">
-        {!isFreeItem ? (
+        {/* {!isFreeItem ? (
           <AddToCart
             className="mt-2.5 w-full flex-1 xs:mt-0 xs:w-auto"
             item={product}
@@ -89,7 +86,7 @@ export default function ProductDetailsPaper({ product, className }: Props) {
             productName={name}
             className="mt-2.5 w-full flex-1 xs:mt-0 xs:w-auto"
           />
-        )}
+        )} */}
         {Boolean(preview_url) && (
           <a
             href={preview_url}
