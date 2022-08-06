@@ -126,7 +126,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             setLocation({
               latitude: 0.0001,
               longitude: 0.0001,
-              address: 'placeholder address',
+              address: '_',
               guestInfo: new Date().toString(),
               postcode: 'EC2A 4NE',
             });

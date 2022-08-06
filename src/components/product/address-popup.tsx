@@ -30,7 +30,7 @@ export default function AddressPopup() {
           className="truncate px-2.5 py-1 text-base font-medium text-dark dark:text-light md:text-lg lg:w-[400px] lg:pl-4 lg:pr-5 xl:w-[520px] 3xl:w-[555px] 3xl:text-xl"
         >
           <span className="transition-colors hover:text-brand">
-            Set your address manually
+            Show me meal preppers that deliver to
           </span>
         </h2>
       </div>
@@ -69,7 +69,7 @@ export default function AddressPopup() {
               />
             </div>
           </div>
-          <div className="mt-6 flex flex-col-reverse items-center gap-3 xs:flex-row-reverse xs:gap-2.5 xs:pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
+          <div className="mt-6 flex flex-row-reverse items-center gap-3 pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
             <Button onClick={confirmSet}>Set address</Button>
             <Button variant="outline" onClick={closeModal}>
               Cancel

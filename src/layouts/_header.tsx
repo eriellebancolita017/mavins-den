@@ -148,9 +148,10 @@ export default function Header({
       <div className="relative flex items-center gap-5 pr-0.5 xs:gap-6 sm:gap-7">
         <button
           onClick={() => openModal('ADDRESS_VIEW')}
-          className="inline-flex font-semibold text-brand hover:text-dark-400 hover:dark:text-light-500"
+          className="relative top-1.5 flex flex-col items-center font-semibold text-brand hover:text-dark-400 hover:dark:text-light-500"
         >
-          Postcode: {location.postcode}
+          Show me meal preppers that deliver to: {location.postcode} <br />
+          <small className="text-dark dark:text-light">Tap to change</small>
         </button>
         <SearchButton className="hidden sm:flex" />
         <ThemeSwitcher />
