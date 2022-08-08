@@ -36,15 +36,17 @@ export const API_ENDPOINTS = {
   // auth
   USERS_LOGIN: 'auth/consumer/sign-in',
   USERS_REGISTER: 'auth/consumer/sign-up',
-  USERS_FORGOT_PASSWORD: '/forget-password',
+  USERS_FORGOT_PASSWORD: 'auth/forgot-password',
   USERS_VERIFY_FORGOT_PASSWORD_TOKEN: '/verify-forget-password-token',
-  USERS_RESET_PASSWORD: '/reset-password',
+  USERS_RESET_PASSWORD: 'auth/reset-password',
   USERS_CHANGE_PASSWORD: 'auth/change-password',
   USERS_LOGOUT: 'auth/consumer-logout',
 
   GET_PROFILE: 'account/display-profile',
 
   GET_OPT: 'auth/send-otp',
+  VERIFY_OPT: 'auth/verify-otp',
+  VERIFY_EMAIL_OPT: 'auth/verify-email-otp',
 
   // cart apis
   GET_CART_STATUS: 'cart/get-current-cart-status/',

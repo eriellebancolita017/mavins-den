@@ -21,6 +21,8 @@ import {
 import client from '@/data/client';
 import { useMutation } from 'react-query';
 import { useState } from 'react';
+import { useUserContext } from '../preppers/context';
+import PhoneInput, { usePhoneInput } from '../ui/forms/phone-input';
 
 const emailFormValidation = yup.object().shape({
   email: yup.string().email().required(),
@@ -37,11 +39,15 @@ function EmailForm({
   serverError,
   onSubmit,
   isLoading,
+  setEmailMode,
+  emailMode,
 }: {
   email: string;
   serverError?: { email?: string } | null;
   onSubmit: SubmitHandler<ForgetPasswordInput>;
   isLoading: boolean;
+  emailMode: boolean;
+  setEmailMode: (val: boolean) => void;
 }) {
   const { openModal } = useModalAction();
   return (
@@ -53,9 +59,15 @@ function EmailForm({
             <h2 className="text-lg font-medium tracking-[-0.3px] text-dark dark:text-light lg:text-xl">
               Reset Your Password
             </h2>
-            <div className="mt-1.5 text-13px leading-6 tracking-[0.2px] dark:text-light-900 lg:mt-2.5 xl:mt-3">
+            {/* <div className="mt-1.5 text-13px leading-6 tracking-[0.2px] dark:text-light-900 lg:mt-2.5 xl:mt-3">
               We&apos;ll send you a link to reset your password
-            </div>
+            </div> */}
+            <button
+              onClick={() => setEmailMode(!emailMode)}
+              className="mt-4 inline-flex self-end text-13px font-semibold leading-6 text-brand hover:text-dark-400 hover:dark:text-light-500"
+            >
+              {!emailMode ? 'Use email instead' : 'Use phone number instead'}
+            </button>
           </div>
           <Form<ForgetPasswordInput>
             onSubmit={onSubmit}
@@ -63,20 +75,30 @@ function EmailForm({
               defaultValues: { email },
             }}
             serverError={serverError}
-            validationSchema={emailFormValidation}
+            // validationSchema={emailFormValidation}
             className="text-left"
           >
             {({ register, formState: { errors } }) => (
               <>
-                <Input
-                  label="Email"
-                  type="email"
-                  {...register('email')}
-                  error={
-                    errors.email?.message &&
-                    'your email is not exists in our app'
-                  }
-                />
+                {emailMode ? (
+                  <Input
+                    label="Email"
+                    type="email"
+                    {...register('email')}
+                    error={
+                      errors.email?.message &&
+                      'your email is not exists in our app'
+                    }
+                  />
+                ) : (
+                  <div>
+                    <span className="block cursor-pointer pb-2.5 text-left text-13px font-normal text-dark/70 dark:text-light/70">
+                      Phone Number
+                    </span>
+                    <PhoneInput />
+                  </div>
+                )}
+
                 <Button
                   type="submit"
                   className="!mt-5 w-full text-sm tracking-[0.2px] lg:!mt-6"
@@ -233,6 +255,8 @@ function PasswordForm({
 function RenderFormSteps() {
   const { openModal } = useModalAction();
   const [message, setMessage] = useState<string | null>(null);
+  const [emailMode, setEmailMode] = useState(true);
+  const { phoneNumber } = usePhoneInput();
   const [error, setError] = useState<{ token?: string; email?: string } | null>(
     null
   );
@@ -240,7 +264,12 @@ function RenderFormSteps() {
     client.users.forgotPassword
   );
   const { mutate: verifyForgotPasswordToken, isLoading: verifying } =
-    useMutation(client.users.verifyForgotPasswordToken);
+    useMutation(client.users.verifyEmailOpt);
+
+  const { mutate: verifyToken, isLoading: tokenVerifying } = useMutation(
+    client.users.verifyOpt
+  );
+
   const { mutate: resetPassword, isLoading: resetting } = useMutation(
     client.users.resetPassword
   );
@@ -249,16 +278,26 @@ function RenderFormSteps() {
 
   const emailFormHandle: SubmitHandler<ForgetPasswordInput> = ({ email }) => {
     forgotPassword(
-      { email },
+      {
+        type: 'consumer',
+        lang_code: 'EN',
+        request_type: emailMode ? 'email' : 'mobile',
+        ...(emailMode
+          ? { email }
+          : {
+              mobile: phoneNumber?.substring(2),
+              mobile_country_code: '+44',
+            }),
+      },
       {
         onSuccess: (data) => {
-          if (!data.success) {
-            setError({ email: data.message });
+          if (error) {
+            setError({ email: 'error' });
             return;
           }
-          setMessage(data.message);
+          // setMessage(data.message);
           actions.updateFormState({
-            email,
+            email: email || 'none',
             step: 'Token',
           });
         },
@@ -270,10 +309,23 @@ function RenderFormSteps() {
     Pick<ResetPasswordInput, 'password'>
   > = ({ password }) => {
     resetPassword(
-      { password, token: state.token, email: state.email },
+      {
+        new_password: password,
+        conform_password: password,
+        request_type: emailMode ? 'email' : 'mobile',
+        type: 'consumer',
+        ...(emailMode
+          ? {
+              email: state.email,
+            }
+          : {
+              mobile: phoneNumber?.substring(2),
+              mobile_country_code: '+44',
+            }),
+      },
       {
         onSuccess: (res) => {
-          if (res.success) {
+          if (!res.error) {
             actions.updateFormState({
               ...initialState,
             });
@@ -290,21 +342,53 @@ function RenderFormSteps() {
   const tokenFormHandle: SubmitHandler<
     Pick<VerifyForgetPasswordTokenInput, 'token'>
   > = ({ token }) => {
-    verifyForgotPasswordToken(
-      { token, email: state.email },
-      {
-        onSuccess: (res) => {
-          if (!res.success) {
-            setError({ token: res.message });
-            return;
-          }
-          actions.updateFormState({
-            step: 'Password',
-            token,
-          });
+    if (emailMode) {
+      verifyForgotPasswordToken(
+        {
+          email_verification_code: +token,
+          email: state.email,
+          code: 'EN',
+          type: 'consumer',
         },
-      }
-    );
+        {
+          onSuccess: (res) => {
+            actions.updateFormState({
+              step: 'Password',
+              token,
+            });
+          },
+          onError: (error: any) => {
+            console.log('error', error.response.data.error.message);
+            setError({ token: error.response.data.error.message });
+            return;
+          },
+        }
+      );
+    } else {
+      verifyToken(
+        {
+          otp: +token,
+          request_type: 'forgot',
+          mobile: phoneNumber?.substring(2),
+          mobile_country_code: '+44',
+          code: 'EN',
+          type: 'consumer',
+        },
+        {
+          onSuccess: (res) => {
+            actions.updateFormState({
+              step: 'Password',
+              token,
+            });
+          },
+          onError: (error: any) => {
+            console.log('error', error.response.data.error.message);
+            setError({ token: error.response.data.error.message });
+            return;
+          },
+        }
+      );
+    }
   };
   function backToPreviousStep(step: GlobalState['step']) {
     actions.updateFormState({
@@ -319,6 +403,8 @@ function RenderFormSteps() {
           onSubmit={emailFormHandle}
           serverError={error}
           isLoading={isLoading}
+          emailMode={emailMode}
+          setEmailMode={setEmailMode}
         />
       )}
       {state.step === 'Token' && (

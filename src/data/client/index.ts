@@ -149,11 +149,8 @@ class Client {
         API_ENDPOINTS.USERS_VERIFY_FORGOT_PASSWORD_TOKEN,
         input
       ),
-    resetPassword: (input: ResetPasswordInput) =>
-      HttpClient.post<PasswordChangeResponse>(
-        API_ENDPOINTS.USERS_RESET_PASSWORD,
-        input
-      ),
+    resetPassword: (input: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.USERS_RESET_PASSWORD, input),
     changePassword: (input: ChangePasswordInput) =>
       HttpClient.post<PasswordChangeResponse>(
         API_ENDPOINTS.USERS_CHANGE_PASSWORD,
@@ -164,6 +161,13 @@ class Client {
 
     getOpt: (payload: any) =>
       HttpClient.post<any>(API_ENDPOINTS.GET_OPT, payload),
+
+    verifyOpt: (payload: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.VERIFY_OPT, payload),
+
+    verifyEmailOpt: (payload: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.VERIFY_EMAIL_OPT, payload),
+
     getProfile: (payload: any) =>
       HttpClient.get<any>(API_ENDPOINTS.GET_PROFILE, payload),
   };

@@ -363,7 +363,12 @@ export interface RegisterUserInput {
   user_type?: string;
 }
 export interface ForgetPasswordInput {
-  email: string;
+  email?: string;
+  type?: string;
+  lang_code?: string;
+  request_type?: string;
+  mobile?: string;
+  mobile_country_code?: string;
 }
 export interface ResetPasswordInput {
   token: string;
