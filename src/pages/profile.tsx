@@ -47,15 +47,18 @@ const ProfilePage: NextPageWithLayout = () => {
     },
   });
   const onSubmit: SubmitHandler<UpdateProfileInput> = (data) => {
-    if (phoneNumber.length === 12 || phoneNumber.length === 13)
-      mutate({
-        ...data,
-        mobile: phoneNumber.substring(phoneNumber.length - 10),
-      });
-    else
-      toast.error(<b>Please input correct phone number!</b>, {
-        className: '-mt-10 xs:mt-0',
-      });
+    // if (phoneNumber.length === 12 || phoneNumber.length === 13)
+    mutate({
+      name: data.name,
+      user_id: me.consumer_id,
+      type: 'consumer',
+      code: 'EN',
+      // mobile: phoneNumber.substring(phoneNumber.length - 10),
+    });
+    // else
+    //   toast.error(<b>Please input correct phone number!</b>, {
+    //     className: '-mt-10 xs:mt-0',
+    //   });
   };
 
   return (
@@ -114,6 +117,7 @@ const ProfilePage: NextPageWithLayout = () => {
                 /> */}
                 <PhoneInput
                   defaultValue={me?.mobile_country_code + me?.mobile}
+                  disabled
                 />
 
                 {errors.mobile?.message && (

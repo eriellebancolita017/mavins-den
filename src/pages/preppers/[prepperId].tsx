@@ -27,6 +27,7 @@ import { API_ENDPOINTS } from '@/data/client/endpoints';
 import placeholder from '@/assets/images/placeholders/product.svg';
 import { formatAddress } from '@/lib/format-address';
 import { useRouter } from 'next/router';
+import { getAuthToken } from '../../data/client/token.utils';
 
 type ParsedQueryParams = {
   prepperId: string;
@@ -44,6 +45,7 @@ export const getStaticPaths: GetStaticPaths<ParsedQueryParams> = async () => {
     .map((prepper) => ({
       params: { prepperId: prepper.restaurant_id },
     }));
+
   return {
     paths,
     fallback: true,
@@ -59,10 +61,11 @@ export const getStaticProps: GetStaticProps<
 > = async ({ params }) => {
   const queryClient = new QueryClient();
   const { prepperId } = params!;
+  const token = getAuthToken();
   try {
     const { payload } = await client.preppers.getDetails({
       restaurant_id: prepperId,
-      consumer_id: 'CON1650138575IGP18283', // where should get this?
+      consumer_id: token!,
       latitude: 52.2880069,
       longitude: 0.0522349,
       code: 'EN',

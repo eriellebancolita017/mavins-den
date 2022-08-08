@@ -15,9 +15,11 @@ export function usePhoneInput() {
 export default function PhoneInput({
   className,
   defaultValue,
+  disabled,
 }: {
   className?: string;
   defaultValue?: string;
+  disabled?: boolean;
 }) {
   let { phoneNumber, setPhoneNumber } = usePhoneInput();
   useEffect(() => {
@@ -34,6 +36,7 @@ export default function PhoneInput({
         onChange={(value) => setPhoneNumber(value)}
         disableDropdown
         countryCodeEditable={false}
+        disabled={disabled}
       />
     </div>
   );

@@ -43,6 +43,7 @@ export const API_ENDPOINTS = {
   USERS_LOGOUT: 'auth/consumer-logout',
 
   GET_PROFILE: 'account/display-profile',
+  UPDATE_PROFILE: 'account/update-profile',
 
   GET_OPT: 'auth/send-otp',
   VERIFY_OPT: 'auth/verify-otp',

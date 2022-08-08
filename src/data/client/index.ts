@@ -133,8 +133,8 @@ class Client {
   };
   users = {
     me: () => HttpClient.get<User>(API_ENDPOINTS.USERS_ME),
-    update: (user: UpdateProfileInput) =>
-      HttpClient.put<User>(`${API_ENDPOINTS.USERS}/${user.consumer_id}`, user),
+    update: (user: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.UPDATE_PROFILE, user),
     login: (input: LoginUserInput) =>
       HttpClient.post<AuthResponse>(API_ENDPOINTS.USERS_LOGIN, input),
     register: (input: RegisterUserInput) =>
