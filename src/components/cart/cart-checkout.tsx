@@ -30,13 +30,15 @@ import AddressAuto from '../auth/address-auto';
 import Input from '../ui/forms/input';
 import RadioButton from '../ui/forms/radio-button';
 
-export default function CartCheckout() {
+export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   const router = useRouter();
   const { userInfo, location } = useUserContext();
   const [savedAddress, setSavedAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState<any>({});
   const [showAll, setShowAll] = useState(false);
   const [addNew, setAddNew] = useState(false);
+
+  const { total, couponValue, credit, couponInfo } = priceInfo;
 
   const { mutate, isLoading } = useMutation(client.orders.create, {
     onSuccess: (res) => {
@@ -77,12 +79,12 @@ export default function CartCheckout() {
   useEffect(() => {
     console.log('run address fetch');
     getAddressList({
-      consumer_id: userInfo.consumer_id,
+      consumer_id: userInfo?.consumer_id,
       request_type: 'list',
       type: 'other',
       code: 'EN',
     });
-  }, [userInfo.consumer_id, getAddressList]);
+  }, [userInfo?.consumer_id, getAddressList]);
   // const [use_wallet] = useAtom(useWalletPointsAtom);
   // const [payableAmount] = useAtom(payableAmountAtom);
   const [token] = useAtom(verifiedTokenAtom);
@@ -119,15 +121,15 @@ export default function CartCheckout() {
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       return;
     }
-    mutate({
+    console.log({
       code: 'EN',
       place_order_json: JSON.stringify({
         consumer_id: userInfo.consumer_id,
-        coupon_id: '',
-        coupon_discount: 0,
-        coupon_type: '',
-        coupon_value: 0,
-        credit_deduct_amount: 0.0,
+        coupon_id: couponInfo.coupon_id || '',
+        coupon_discount: couponValue,
+        coupon_type: couponInfo.discount_type || '',
+        coupon_value: couponValue,
+        credit_deduct_amount: credit,
         deliver_to: selectedAddress.address,
         deliver_to_latitude: selectedAddress.latitude,
         deliver_to_longitude: selectedAddress.longitude,
@@ -136,12 +138,12 @@ export default function CartCheckout() {
         discount_value: 0.0,
         floor: selectedAddress.floor || 0,
         food_allergies_note: '',
-        gross_amount: base_amount.toString(),
+        gross_amount: total.toString(),
         code: 'EN',
         address_title: '',
         address_type: selectedAddress.type || 'other',
         landmark: ' ',
-        net_amount: base_amount,
+        net_amount: +(total - credit - couponValue).toFixed(2),
         restaurant_discount: 0.0,
         restaurant_id: items[0].restaurant_id,
         // "restaurant_id": "RES1655826172HZA99933",
@@ -191,8 +193,23 @@ export default function CartCheckout() {
     <div className="mt-10 border-t border-light-400 bg-light pt-6 pb-7 dark:border-dark-400 dark:bg-dark-250 sm:bottom-0 sm:mt-12 sm:pt-8 sm:pb-9">
       <div className="mb-6 flex flex-col gap-3 text-dark dark:text-light sm:mb-7">
         <div className="flex justify-between">
+          <p>Sub Total</p>
+          <strong className="font-semibold">£{total}</strong>
+        </div>
+        <div className="flex justify-between">
+          <p>Credit Amount</p>
+          <strong className="font-semibold">£{credit}</strong>
+        </div>
+        <div className="flex justify-between">
+          <p>Coupon Discount Amount</p>
+          <strong className="font-semibold">£{couponValue}</strong>
+        </div>
+        <hr />
+        <div className="flex justify-between">
           <p>Total</p>
-          <strong className="font-semibold">{sub_total}</strong>
+          <strong className="font-semibold">
+            £{(total - credit - couponValue).toFixed(2)}
+          </strong>
         </div>
       </div>
 
@@ -380,7 +397,11 @@ export default function CartCheckout() {
             </Button>
             <div className="sm:ml-auto">
               {selectedAddress.address_id ? (
-                <Button variant="outline" onClick={addressUpdate}>
+                <Button
+                  variant="outline"
+                  onClick={addressUpdate}
+                  className="w-full sm:w-auto"
+                >
                   Update Address
                 </Button>
               ) : (
@@ -388,6 +409,7 @@ export default function CartCheckout() {
                   variant="outline"
                   disabled={!selectedAddress.latitude}
                   onClick={addNewAddress}
+                  className="w-full sm:w-auto"
                 >
                   Add as New Address
                 </Button>

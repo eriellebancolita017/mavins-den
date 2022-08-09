@@ -130,6 +130,9 @@ class Client {
       ),
     create: (data: CreateOrderInput) =>
       HttpClient.post<Order>(API_ENDPOINTS.ORDERS, data),
+
+    verifyCoupon: (data: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.VERIFY_COUPON, data),
   };
   users = {
     me: () => HttpClient.get<User>(API_ENDPOINTS.USERS_ME),

@@ -12,6 +12,8 @@ export const API_ENDPOINTS = {
   GET_ORDER_LIST: 'order/get-order-list',
 
   ORDERS_CHECKOUT_VERIFY: 'card/create-payment-intent',
+  VERIFY_COUPON: 'coupon/verify-coupon',
+
   ORDERS_DOWNLOADS: '/downloads',
   GENERATE_DOWNLOADABLE_PRODUCT_LINK: '/downloads/digital-file',
   USERS: '/users',
