@@ -20,12 +20,18 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import CheckBox from '@/components/ui/forms/checkbox';
 import RadioButton from '../ui/forms/radio-button';
+import { useCart } from '@/components/cart/lib/cart.context';
+import { useQuery } from 'react-query';
+import client from '@/data/client';
+import { getAuthToken } from '@/data/client/token.utils';
+import toast from 'react-hot-toast';
 
 export default function ProductPopupDetails() {
-  const [loading, setLoading] = useState(false);
   const { data } = useModalState();
   const router = useRouter();
   const [checkedList, setCheckedList] = useState<object>({});
+  const { items, isEmpty, total } = useCart();
+  const token = getAuthToken();
 
   // const { product, isLoading } = useProduct(data.slug);
   const { bundle, isLoading } = useBundleDetails({
@@ -34,6 +40,22 @@ export default function ProductPopupDetails() {
   });
   const id = data.item_id;
   const slug = data.item_id;
+
+  const { isLoading: loading, data: prepper } = useQuery(
+    [items],
+    () =>
+      client.preppers.getDetails({
+        restaurant_id: items[0].restaurant_id,
+        consumer_id: token!,
+        latitude: 52.2880069,
+        longitude: 0.0522349,
+        code: 'EN',
+        searchKey: '',
+      }),
+    {
+      enabled: !isEmpty,
+    }
+  );
 
   if (!bundle && isLoading) return <ProductPopupLoader />;
   if (!bundle) return <div>Not found</div>;
@@ -70,11 +92,19 @@ export default function ProductPopupDetails() {
   });
 
   function handleCheckout() {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    if (prepper?.payload.minimum_order_amount! <= total) {
       router.push(routes.checkout);
-    }, 600);
+    } else {
+      toast.error(
+        <b>
+          Order amount should be more than £
+          {prepper?.payload.minimum_order_amount!}.
+        </b>,
+        {
+          className: '-mt-10 xs:mt-0',
+        }
+      );
+    }
   }
 
   const hadleOptionCheck = (
@@ -285,6 +315,7 @@ export default function ProductPopupDetails() {
               onClick={() => handleCheckout()}
               className="w-full flex-1 text-sm md:h-[52px]"
               variant="outline"
+              disabled={isEmpty || loading}
             >
               Proceed to checkout
             </Button>

@@ -9,22 +9,50 @@ import usePrice from '@/lib/hooks/use-price';
 import { useCart } from '@/components/cart/lib/cart.context';
 import { useDrawer } from '@/components/drawer-views/context';
 import { CloseIcon } from '@/components/icons/close-icon';
+import client from '@/data/client';
+import { getAuthToken } from '@/data/client/token.utils';
+import toast from 'react-hot-toast';
+import { useQuery } from 'react-query';
 
 export default function CartDrawerView() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const { closeDrawer } = useDrawer();
-  const { total, isEmpty } = useCart();
+  const { items, total, isEmpty } = useCart();
   const { price: totalPrice } = usePrice({
     amount: total,
   });
+  const token = getAuthToken();
+
+  const { isLoading: loading, data: prepper } = useQuery(
+    [items],
+    () =>
+      client.preppers.getDetails({
+        restaurant_id: items[0].restaurant_id,
+        consumer_id: token!,
+        latitude: 52.2880069,
+        longitude: 0.0522349,
+        code: 'EN',
+        searchKey: '',
+      }),
+    {
+      enabled: !isEmpty,
+    }
+  );
+
   function handleCheckout() {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    if (prepper?.payload.minimum_order_amount! <= total) {
       router.push(routes.checkout);
-      closeDrawer();
-    }, 600);
+    } else {
+      toast.error(
+        <b>
+          Order amount should be more than £
+          {prepper?.payload.minimum_order_amount!}.
+        </b>,
+        {
+          className: '-mt-10 xs:mt-0',
+        }
+      );
+    }
   }
   return (
     <>
@@ -53,7 +81,7 @@ export default function CartDrawerView() {
         </div>
         <div className="mt-5 md:mt-8">
           <Button
-            disabled={isEmpty}
+            disabled={isEmpty || loading}
             isLoading={loading}
             onClick={() => handleCheckout()}
             className="w-full text-sm md:h-[52px]"
