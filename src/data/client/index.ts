@@ -249,6 +249,10 @@ class Client {
         `${API_ENDPOINTS.DELETE_ALL_FROM_CART}${user_code}`
       );
     },
+    moveFromGuest: ({ guest_id, user_id }: any) =>
+      HttpClient.put<any>(
+        `${API_ENDPOINTS.MOVE_CART_GUEST}${guest_id}/${user_id}`
+      ),
   };
 
   address = {

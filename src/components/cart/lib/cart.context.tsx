@@ -117,14 +117,15 @@ export const CartProvider: React.FC = (props) => {
     console.log('isauth', isAuthorized);
     addingItemToCart(
       {
-        consumer_id: userInfo?.consumer_id || null,
         item_id: item.item_id,
         qty: quantity,
         item_options: item.item_options || [],
         restaurant_id: item.restaurant_id,
         item_instruction: null,
         code: 'EN',
-        ...(!isAuthorized ? { device_id: location.guestInfo } : {}),
+        ...(!isAuthorized
+          ? { device_id: location.guestInfo }
+          : { consumer_id: userInfo?.consumer_id }),
       },
       {
         onSuccess: (res) => {

@@ -27,6 +27,10 @@ export default function LoginUserForm() {
   const { openModal, closeModal } = useModalAction();
   const { authorize } = useAuth();
   const { location, setUserInfo } = useUserContext();
+  const { mutate: moveFromGuest } = useMutation(client.cart.moveFromGuest, {
+    onSuccess: () => {},
+    onError: () => {},
+  });
   const { mutate: login, isLoading } = useMutation(client.users.login, {
     onSuccess: (data) => {
       if (!data.payload.consumer_id) {
@@ -38,6 +42,11 @@ export default function LoginUserForm() {
 
       toast.success(<b>Successfully logged in.</b>, {
         className: '-mt-10 xs:mt-0',
+      });
+
+      moveFromGuest({
+        guest_id: location.guestInfo,
+        user_id: data.payload.consumer_id,
       });
 
       authorize(data.payload.consumer_id);
