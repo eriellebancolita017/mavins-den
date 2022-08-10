@@ -6,8 +6,10 @@ import { useCart } from '@/components/cart/lib/cart.context';
 import usePrice from '@/lib/hooks/use-price';
 import type { Bundle, Product } from '@/types';
 import { generateCartItem } from './lib/generate-cart-item';
-import { useModalAction } from '@/components/modal-views/context';
-
+import {
+  useModalAction,
+  useModalState,
+} from '@/components/modal-views/context';
 interface Props {
   item: Bundle;
   className?: string;
@@ -20,13 +22,14 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
   const [addToCartLoader, setAddToCartLoader] = useState(false);
   const [cartingSuccess, setCartingSuccess] = useState(false);
   const { closeModal } = useModalAction();
+  const { view } = useModalState();
 
   function handleAddToCart() {
     addSuccessfully();
   }
   function addSuccessfully() {
     addItemToCart(generateCartItem(item), 1);
-    closeModal();
+    if (view === 'OPTION_VIEW') closeModal();
   }
 
   function getAddonPrice() {
