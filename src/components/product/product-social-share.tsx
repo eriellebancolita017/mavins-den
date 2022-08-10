@@ -14,13 +14,18 @@ import classNames from 'classnames';
 
 interface Props {
   productSlug: string;
+  item_id?: string;
   className?: string;
 }
 
-export default function ProductSocialShare({ productSlug, className }: Props) {
+export default function ProductSocialShare({
+  productSlug,
+  item_id,
+  className,
+}: Props) {
   const productUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${routes.prepperUrl(
     productSlug
-  )}`;
+  )}?item_id=${item_id}`;
   let [copyButtonStatus, setCopyButtonStatus] = useState('Copy link');
   let [_, copyToClipboard] = useCopyToClipboard();
   const handleCopyToClipboard = () => {

@@ -28,6 +28,8 @@ import placeholder from '@/assets/images/placeholders/product.svg';
 import { formatAddress } from '@/lib/format-address';
 import { useRouter } from 'next/router';
 import { getAuthToken } from '../../data/client/token.utils';
+import { useEffect } from 'react';
+import { useModalAction } from '@/components/modal-views/context';
 
 type ParsedQueryParams = {
   prepperId: string;
@@ -207,8 +209,16 @@ const ShopPage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ prepper }) => {
   const { name, logo, cover_photo } = prepper || {};
+  const { openModal } = useModalAction();
 
   const router = useRouter();
+
+  useEffect(() => {
+    console.log('router', router.query.item_id, prepper);
+    if (router.query.item_id && !!prepper) {
+      openModal('PRODUCT_DETAILS', { item_id: router.query.item_id });
+    }
+  }, []);
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running

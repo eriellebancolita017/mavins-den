@@ -273,7 +273,10 @@ export default function ProductPopupDetails() {
               className="border-t border-light-500 py-5 dark:border-dark-500 lg:py-6 3xl:py-10"
             />
             <div className="border-t border-light-500 pt-5 dark:border-dark-500">
-              <ProductSocialShare productSlug={restaurant_id!} />
+              <ProductSocialShare
+                productSlug={restaurant_id!}
+                item_id={data.item_id}
+              />
             </div>
           </div>
           <div className="flex flex-col-reverse items-center gap-3 xs:flex-row-reverse xs:gap-2.5 xs:pb-4 md:flex-nowrap md:gap-3.5 lg:gap-4 3xl:pb-14">
