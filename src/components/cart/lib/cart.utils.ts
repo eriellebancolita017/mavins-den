@@ -14,6 +14,7 @@ export interface Item {
   stock?: number;
 
   item_options?: any[];
+  restaurant_name?: string;
 }
 export interface VerifiedResponse {
   clientSecret: string;

@@ -30,7 +30,7 @@ type Action =
   | { type: 'REMOVE_ITEM'; id: Item['item_id'] }
   | { type: 'SET_VERIFIED_RESPONSE'; response: VerifiedResponse }
   | { type: 'RESET_CART' }
-  | { type: 'READ_FROM_API'; allItems: any[] };
+  | { type: 'READ_FROM_API'; allItems: any[]; order_pickup_date: string };
 
 export interface State {
   items: Item[];
@@ -40,6 +40,7 @@ export interface State {
   total: number;
   verifiedResponse: VerifiedResponse | null;
   meta?: Metadata | null;
+  order_pickup_date: string;
 }
 export const initialState: State = {
   items: [],
@@ -49,6 +50,7 @@ export const initialState: State = {
   total: 0,
   verifiedResponse: null,
   meta: null,
+  order_pickup_date: '',
 };
 export function cartReducer(state: State, action: Action): State {
   switch (action.type) {
@@ -90,9 +92,10 @@ export function cartReducer(state: State, action: Action): State {
       return initialState;
 
     case 'READ_FROM_API':
-      console.log('all items', action.allItems);
       const items = action.allItems;
-      return generateFinalState(state, items);
+      const order_pickup_date = action.order_pickup_date;
+      console.log({ ...generateFinalState(state, items), order_pickup_date });
+      return { ...generateFinalState(state, items), order_pickup_date };
     default:
       return state;
   }

@@ -12,7 +12,7 @@ import Button from '@/components/ui/button';
 import { verifiedTokenAtom } from '@/components/cart/lib/checkout';
 import { useCart } from '@/components/cart/lib/cart.context';
 
-const StripeForm: React.FC = () => {
+const StripeForm = ({ setPaymentSuccess }: any) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -54,6 +54,7 @@ const StripeForm: React.FC = () => {
       toast.success(<b>Confirmation Done!</b>, {
         className: '-mt-10 xs:mt-0',
       });
+      setPaymentSuccess(true);
     }
     setLoading(false);
   };
@@ -79,16 +80,16 @@ const StripeForm: React.FC = () => {
         disabled={!stripe}
         className="StripePay ms-auto mt-2 bg-indigo-600 transition-colors hover:bg-indigo-700 focus:bg-indigo-700 xs:mt-3"
       >
-        Confirm
+        Place Order
       </Button>
     </form>
   );
 };
 
-export default function StripePayment() {
+export default function StripePayment({ setPaymentSuccess }: any) {
   return (
     <Elements stripe={getStripe()}>
-      <StripeForm />
+      <StripeForm setPaymentSuccess={setPaymentSuccess} />
     </Elements>
   );
 }

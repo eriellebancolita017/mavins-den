@@ -15,8 +15,15 @@ export default function CartItem({
   notAvailable?: boolean;
   closeDrawer: () => void;
 }) {
-  const { item_name, item_cover_photo, item_id, price, qty, restaurant_id } =
-    item;
+  const {
+    item_name,
+    item_cover_photo,
+    item_id,
+    price,
+    qty,
+    restaurant_id,
+    restaurant_name,
+  } = item;
   const { price: itemPrice } = usePrice({
     amount: price!,
   });
@@ -42,7 +49,7 @@ export default function CartItem({
             onClick={() => {
               () => closeDrawer();
               openModal('PRODUCT_DETAILS', {
-                item_id: 'ITM1642451622JYT25521',
+                item_id: item_id,
               });
             }}
             className="cursor-pointer transition-colors hover:text-brand-dark"
@@ -50,12 +57,12 @@ export default function CartItem({
             {item_name}
           </span>
         </h3>
-        <p className="mt-1 mb-2.5">
+        <p className="mt-1 mb-2.5 truncate">
           <AnchorLink
             href={routes.prepperUrl(restaurant_id!)}
             className="text-light-base transition-colors hover:text-brand-dark dark:text-dark-base"
           >
-            {restaurant_id}
+            {restaurant_name || restaurant_id}
           </AnchorLink>
         </p>
         <p className="flex items-center gap-1">

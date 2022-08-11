@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { VerifiedResponse } from '@/components/cart/lib/cart.utils';
 import Input from '@/components/ui/forms/input';
 import toast from 'react-hot-toast';
+import cn from 'classnames';
 
 const CheckoutPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -27,6 +28,7 @@ const CheckoutPage: NextPageWithLayout = () => {
   const [couponValue, setCouponValue] = useState(0);
   const [couponInfo, setCouponInfo] = useState({});
   const [couponText, setCouponText] = useState('');
+  const [verifySuccess, setVerifySuccess] = useState(false);
   const {
     items,
     total,
@@ -60,6 +62,10 @@ const CheckoutPage: NextPageWithLayout = () => {
               )
             : 0
         );
+        setVerifySuccess(true);
+        setTimeout(() => {
+          setVerifySuccess(false);
+        }, 2000);
         toast.success(<b>Successfully verified.</b>, {
           className: '-mt-10 xs:mt-0',
         });
@@ -157,18 +163,49 @@ const CheckoutPage: NextPageWithLayout = () => {
               <div className="sticky bottom-11 z-[5] mt-10 border-t border-light-400 bg-light pt-6 pb-7 dark:border-dark-400 dark:bg-dark-250 sm:bottom-0 sm:mt-12 sm:pt-8 sm:pb-9">
                 <div className="flex items-end">
                   <Input
-                    label="Coupon code"
+                    label="Enter coupon code below"
                     type="text"
                     className="mr-4 flex-1"
                     value={couponText}
                     onChange={(e) => setCouponText(e.target.value)}
                   />
                   <Button
-                    variant="outline"
+                    variant="solid"
                     onClick={verifyCouponClick}
-                    disabled={verifying}
+                    isLoading={verifying}
+                    className={cn(
+                      'relative',
+                      verifySuccess
+                        ? 'is-carting pointer-events-none cursor-not-allowed'
+                        : 'pointer-events-auto cursor-pointer',
+                      'min-w-[140px]'
+                    )}
                   >
-                    Verify Coupon code
+                    Add
+                    <svg
+                      viewBox="0 0 37 37"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="absolute top-auto bottom-auto right-3 h-auto w-5 xs:right-4 xs:w-6"
+                    >
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinejoin="round"
+                        strokeMiterlimit="10"
+                        strokeWidth="2.3"
+                        d="M30.5 6.5h0c6.6 6.6 6.6 17.4 0 24h0c-6.6 6.6-17.4 6.6-24 0h0c-6.6-6.6-6.6-17.4 0-24h0c6.6-6.7 17.4-6.7 24 0z"
+                        className="circle path"
+                      />
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinejoin="round"
+                        strokeMiterlimit="10"
+                        strokeWidth="2.3"
+                        d="M11.6 20L15.9 24.2 26.4 13.8"
+                        className="tick path"
+                      />
+                    </svg>
                   </Button>
                 </div>
                 <hr className="my-6" />

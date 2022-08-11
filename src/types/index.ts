@@ -15,23 +15,23 @@ export interface BundleQueryOptions {
 }
 
 export interface Bundles {
-  restaurant_name: 'Tastily';
-  restaurant_id: 'RES1642268117ZOH24189';
+  restaurant_name: string;
+  restaurant_id: string;
   data: Bundle[];
 }
 
 export interface Bundle {
-  price: 30;
-  cover_photo: 'http://res.cloudinary.com/tiffineat/image/upload/v1642376853/marvinsden/items/16423768538468.jpg';
-  status?: 'active';
+  price: number;
+  cover_photo: string;
+  status?: string;
   item_options?: any[];
-  title: 'Taster Package - 4 Meals Bundle';
-  description: "We pick 4 meals so that you can save. We'll follow your guidance, dietary reqs & preferences in the notes";
-  ingredients?: 'x';
-  item_id: 'ITM1642376854MMN50389';
-  sort_id?: 0;
-  avg_rating: 0;
-  badge_count?: 0;
+  title: string;
+  description: string;
+  ingredients?: string;
+  item_id: string;
+  sort_id?: number;
+  avg_rating: number;
+  badge_count?: number;
 
   preparation_time?: string;
   image?: string;
@@ -147,9 +147,9 @@ export interface Couision {
 }
 
 export interface ItemCategory {
-  categoryTitle: 'Mystery Meal Bundles (1-2 Day Delivery)';
-  category_status: 'active';
-  item_category_id: 'ITC1642372865TAU26853';
+  categoryTitle: string;
+  category_status: string;
+  item_category_id: string;
   itemList: Bundle[];
 }
 

@@ -94,6 +94,7 @@ export const CartProvider: React.FC = (props) => {
         dispatch({
           type: 'READ_FROM_API',
           allItems: data?.payload.cartItems || [],
+          order_pickup_date: data?.payload.order_pickup_date || '',
         });
       }, 500);
     }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { useAtom } from 'jotai';
@@ -37,6 +38,7 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   const [selectedAddress, setSelectedAddress] = useState<any>({});
   const [showAll, setShowAll] = useState(false);
   const [addNew, setAddNew] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   const { total, couponValue, credit, couponInfo } = priceInfo;
 
@@ -45,7 +47,7 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
       router.push(routes.orderUrl(res.payload.order_id));
     },
     onError: (err: any) => {
-      toast.error(<b>Something went wrong!</b>);
+      toast.error(<b>Something went wrong! Contact support please.</b>);
       console.log(err.response.data.message);
     },
   });
@@ -92,6 +94,58 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
 
   const available_items = items;
 
+  useEffect(() => {
+    function createOrder() {
+      // if (
+      //   (use_wallet && Boolean(payableAmount) && !token) ||
+      //   (!use_wallet && !token)
+      // ) {
+      //   toast.error(<b>Please verify payment card</b>, {
+      //     className: '-mt-10 xs:mt-0',
+      //   });
+      //   return;
+      // }
+      if (!phoneNumber) {
+        toast.error(<b>Please enter your contact number</b>);
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        return;
+      }
+      mutate({
+        code: 'EN',
+        place_order_json: JSON.stringify({
+          consumer_id: userInfo.consumer_id,
+          coupon_id: couponInfo.coupon_id || '',
+          coupon_discount: couponValue,
+          coupon_type: couponInfo.discount_type || '',
+          coupon_value: couponValue,
+          credit_deduct_amount: credit,
+          deliver_to: selectedAddress.address,
+          deliver_to_latitude: selectedAddress.latitude,
+          deliver_to_longitude: selectedAddress.longitude,
+          delivery_fee: 0.0,
+          discount_type: 'percentage',
+          discount_value: 0.0,
+          floor: selectedAddress.floor || 0,
+          food_allergies_note: '',
+          gross_amount: total.toString(),
+          code: 'EN',
+          address_title: '',
+          address_type: selectedAddress.type || 'other',
+          landmark: ' ',
+          net_amount: +(total - credit - couponValue).toFixed(2),
+          restaurant_discount: 0.0,
+          restaurant_id: items[0].restaurant_id,
+          // "restaurant_id": "RES1655826172HZA99933",
+          special_instruction: '',
+          tax_details: [],
+          total_tax_amount: 0.0,
+        }),
+      });
+    }
+
+    if (paymentSuccess) createOrder();
+  }, [paymentSuccess]);
+
   // const { price: tax } = usePrice(
   //   verifiedResponse && {
   //     amount: verifiedResponse.total_tax ?? 0,
@@ -106,53 +160,6 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   );
 
   const { phoneNumber } = usePhoneInput();
-  function createOrder() {
-    // if (
-    //   (use_wallet && Boolean(payableAmount) && !token) ||
-    //   (!use_wallet && !token)
-    // ) {
-    //   toast.error(<b>Please verify payment card</b>, {
-    //     className: '-mt-10 xs:mt-0',
-    //   });
-    //   return;
-    // }
-    if (!phoneNumber) {
-      toast.error(<b>Please enter your contact number</b>);
-      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-      return;
-    }
-    console.log({
-      code: 'EN',
-      place_order_json: JSON.stringify({
-        consumer_id: userInfo.consumer_id,
-        coupon_id: couponInfo.coupon_id || '',
-        coupon_discount: couponValue,
-        coupon_type: couponInfo.discount_type || '',
-        coupon_value: couponValue,
-        credit_deduct_amount: credit,
-        deliver_to: selectedAddress.address,
-        deliver_to_latitude: selectedAddress.latitude,
-        deliver_to_longitude: selectedAddress.longitude,
-        delivery_fee: 0.0,
-        discount_type: 'percentage',
-        discount_value: 0.0,
-        floor: selectedAddress.floor || 0,
-        food_allergies_note: '',
-        gross_amount: total.toString(),
-        code: 'EN',
-        address_title: '',
-        address_type: selectedAddress.type || 'other',
-        landmark: ' ',
-        net_amount: +(total - credit - couponValue).toFixed(2),
-        restaurant_discount: 0.0,
-        restaurant_id: items[0].restaurant_id,
-        // "restaurant_id": "RES1655826172HZA99933",
-        special_instruction: '',
-        tax_details: [],
-        total_tax_amount: 0.0,
-      }),
-    });
-  }
 
   const cancelAddress = () => {
     setSelectedAddress({});
@@ -212,8 +219,6 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
           </strong>
         </div>
       </div>
-
-      <StripePayment />
 
       <p className="!mb-4 text-base font-medium text-dark dark:text-light">
         Select delivery address
@@ -420,14 +425,18 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         </div>
       )}
 
-      <Button
-        disabled={isLoading || !token || !selectedAddress}
+      {Object.keys(selectedAddress).length !== 0 && (
+        <StripePayment setPaymentSuccess={setPaymentSuccess} />
+      )}
+
+      {/* <Button
+        disabled={!token || !selectedAddress}
         isLoading={isLoading}
         onClick={createOrder}
         className="w-full md:h-[50px] md:text-sm"
       >
         Place Order
-      </Button>
+      </Button> */}
     </div>
   );
 }

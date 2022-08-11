@@ -11,17 +11,21 @@ export default function CartItemList({
   className?: string;
   closeDrawer: () => void;
 }) {
-  const { items, clearItemFromCart, verifiedResponse } = useCart();
+  const { items, order_pickup_date, clearItemFromCart } = useCart();
   function handleClearItemFromCart(id: number | string) {
     clearItemFromCart(id as string);
     // toast.success(<b>Successfully remove from the cart!</b>);
   }
+  console.log('order date', order_pickup_date);
   return (
     <ul role="list" className={cn('-my-6 w-full', className)}>
+      <div>
+        <p className="truncate text-sm text-dark dark:text-light">
+          Estimated delivery date: {order_pickup_date}
+        </p>
+      </div>
+      <hr className="mb-4" />
       {items.map((item) => {
-        const notAvailable = verifiedResponse?.unavailable_products?.find(
-          (id) => id === item.item_id
-        );
         return (
           <li
             key={item.item_id}
@@ -36,7 +40,7 @@ export default function CartItemList({
             </button>
             <CartItem
               item={item}
-              notAvailable={!!notAvailable}
+              notAvailable={false}
               closeDrawer={closeDrawer}
             />
           </li>
