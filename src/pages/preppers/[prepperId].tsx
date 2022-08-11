@@ -129,7 +129,7 @@ function AboutShop({ prepper }: { prepper: Prepper }) {
   return (
     <motion.div
       variants={fadeInBottom()}
-      className="mx-auto flex max-w-[480px] flex-col justify-between md:max-w-[1000px] md:flex-row 2xl:max-w-[1280px]"
+      className="mx-auto flex max-w-[480px] flex-col justify-between p-4 md:max-w-[1000px] md:flex-row 2xl:max-w-[1280px]"
     >
       <div className="flex-shrink-0 md:w-6/12 lg:w-7/12 xl:w-7/12">
         <h2 className="mb-3 text-sm font-medium text-dark dark:text-light lg:text-15px">

@@ -113,14 +113,14 @@ export default function Card({ prepper }: { prepper: Prepper }) {
           </h3>
           <AnchorLink
             href={routes.prepperUrl(restaurant_id)}
-            className="font-medium text-light-base hover:text-brand dark:text-dark-800 dark:hover:text-brand"
+            className="font-medium tracking-tight text-light-base hover:text-brand dark:text-dark-800 dark:hover:text-brand"
           >
             {/* <p dangerouslySetInnerHTML={{ __html: description }} className="truncate"></p> */}
-            Next Delivery: {order_pickup_date}
+            <span className="text-xs">Next Delivery:</span> {order_pickup_date}
           </AnchorLink>
         </div>
 
-        <div className="flex flex-shrink-0 flex-col items-end pl-2.5">
+        <div className="items- flex flex-shrink-0 flex-col">
           <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-oldBrand dark:bg-dark-300 dark:text-oldBrand-dark">
             {avg_rating_by_consumer} ⭐
           </span>
