@@ -3,11 +3,17 @@ import toast from 'react-hot-toast';
 import { useCart } from '@/components/cart/lib/cart.context';
 import { CloseIcon } from '@/components/icons/close-icon';
 import CartItem from '@/components/cart/cart-item';
+import AnchorLink from '@/components/ui/links/anchor-link';
 
+import routes from '@/config/routes';
 export default function CartItemList({
+  name,
+  deliveryCharge,
   className,
   closeDrawer,
 }: {
+  name?: string;
+  deliveryCharge?: number;
   className?: string;
   closeDrawer: () => void;
 }) {
@@ -20,8 +26,21 @@ export default function CartItemList({
   return (
     <ul role="list" className={cn('-my-6 w-full', className)}>
       <div>
-        <p className="truncate text-sm text-dark dark:text-light">
+        {name && (
+          <h2 className="mb-2 text-lg font-semibold">
+            <AnchorLink
+              href={routes.prepperUrl(items[0].restaurant_id!)}
+              className="text-light-base transition-colors hover:text-brand-dark dark:text-dark-base"
+            >
+              {name}
+            </AnchorLink>
+          </h2>
+        )}
+        <p className="mb-1 truncate text-sm text-dark dark:text-light">
           Estimated delivery date: {order_pickup_date}
+        </p>
+        <p className="!mb-0.5 truncate text-sm text-dark dark:text-light">
+          Delivery Charge: £{deliveryCharge?.toFixed(2)}
         </p>
       </div>
       <hr className="mb-4" />
@@ -42,6 +61,7 @@ export default function CartItemList({
               item={item}
               notAvailable={false}
               closeDrawer={closeDrawer}
+              name={name}
             />
           </li>
         );

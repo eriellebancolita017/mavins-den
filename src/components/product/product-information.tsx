@@ -36,7 +36,7 @@ export default function ProductInformation({
           Price:
         </strong>
         <span className="font-medium">
-          {currency} {price}
+          {currency} {price.toFixed(2)}
         </span>
       </div>
       <div className="flex items-start text-dark dark:text-light">

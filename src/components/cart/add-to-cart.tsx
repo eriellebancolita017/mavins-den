@@ -55,7 +55,7 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
         className
       )}
     >
-      Add to Basket ( {currency} {price + getAddonPrice()} )
+      Add to Basket ( {currency} {(price + getAddonPrice()).toFixed(2)} )
       <svg
         viewBox="0 0 37 37"
         xmlns="http://www.w3.org/2000/svg"

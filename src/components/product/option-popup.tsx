@@ -114,7 +114,7 @@ export default function ProductPopupDetails() {
                             <CheckBox
                               name={item.item_option_id}
                               label={`${item.title} - ${currency}
-                            ${item.price}`}
+                            ${item.price.toFixed(2)}`}
                               onChange={() =>
                                 hadleOptionCheck(
                                   item.item_option_id,
@@ -136,7 +136,7 @@ export default function ProductPopupDetails() {
                             <RadioButton
                               name={option.item_option_category_id}
                               label={`${item.title} - ${currency}
-                            ${item.price}`}
+                            ${item.price.toFixed(2)}`}
                               onChange={() =>
                                 hadleOptionCheck(
                                   item.item_option_id,

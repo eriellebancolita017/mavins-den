@@ -157,7 +157,7 @@ export default function Card({ bundle }: { bundle: Bundle }) {
 
         <div className="flex flex-shrink-0 flex-col items-end pl-2.5">
           <span className="rounded-2xl bg-light-500 px-1.5 py-0.5 text-13px font-semibold uppercase text-oldBrand dark:bg-dark-300 dark:text-oldBrand-dark">
-            £ {price}
+            £ {price.toFixed(2)}
           </span>
         </div>
       </div>

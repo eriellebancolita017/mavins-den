@@ -40,7 +40,7 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   const [addNew, setAddNew] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-  const { total, couponValue, credit, couponInfo } = priceInfo;
+  const { total, couponValue, credit, couponInfo, deliveryCharge } = priceInfo;
 
   const { mutate, isLoading } = useMutation(client.orders.create, {
     onSuccess: (res) => {
@@ -122,17 +122,19 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
           deliver_to: selectedAddress.address,
           deliver_to_latitude: selectedAddress.latitude,
           deliver_to_longitude: selectedAddress.longitude,
-          delivery_fee: 0.0,
+          delivery_fee: deliveryCharge,
           discount_type: 'percentage',
           discount_value: 0.0,
           floor: selectedAddress.floor || 0,
           food_allergies_note: '',
-          gross_amount: total.toString(),
+          gross_amount: (total + deliveryCharge).toString(),
           code: 'EN',
           address_title: '',
           address_type: selectedAddress.type || 'other',
           landmark: ' ',
-          net_amount: +(total - credit - couponValue).toFixed(2),
+          net_amount: +(total - credit - couponValue + deliveryCharge).toFixed(
+            2
+          ),
           restaurant_discount: 0.0,
           restaurant_id: items[0].restaurant_id,
           // "restaurant_id": "RES1655826172HZA99933",
@@ -201,21 +203,27 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
       <div className="mb-6 flex flex-col gap-3 text-dark dark:text-light sm:mb-7">
         <div className="flex justify-between">
           <p>Sub Total</p>
-          <strong className="font-semibold">£{total}</strong>
+          <strong className="font-semibold">£{total.toFixed(2)}</strong>
+        </div>
+        <div className="flex justify-between">
+          <p>Delivery Charge</p>
+          <strong className="font-semibold">
+            £{deliveryCharge.toFixed(2)}
+          </strong>
         </div>
         <div className="flex justify-between">
           <p>Credit Amount</p>
-          <strong className="font-semibold">£{credit}</strong>
+          <strong className="font-semibold">£{credit.toFixed(2)}</strong>
         </div>
         <div className="flex justify-between">
           <p>Coupon Discount Amount</p>
-          <strong className="font-semibold">£{couponValue}</strong>
+          <strong className="font-semibold">£{couponValue.toFixed(2)}</strong>
         </div>
         <hr />
         <div className="flex justify-between">
           <p>Total</p>
           <strong className="font-semibold">
-            £{(total - credit - couponValue).toFixed(2)}
+            £{(total - credit - couponValue + deliveryCharge).toFixed(2)}
           </strong>
         </div>
       </div>

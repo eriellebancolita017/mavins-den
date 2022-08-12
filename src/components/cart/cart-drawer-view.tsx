@@ -72,7 +72,15 @@ export default function CartDrawerView() {
         </div>
       </div>
       <Scrollbar className="cart-scrollbar w-full flex-1 py-6 px-6 sm:px-7">
-        {!isEmpty ? <CartItemList closeDrawer={closeDrawer} /> : <CartEmpty />}
+        {!isEmpty ? (
+          <CartItemList
+            closeDrawer={closeDrawer}
+            deliveryCharge={prepper?.payload.delivery_charge || 0}
+            name={prepper?.payload.name}
+          />
+        ) : (
+          <CartEmpty />
+        )}
       </Scrollbar>
       <div className="border-t border-light-300 px-5 py-6 dark:border-dark-500 sm:px-7 sm:pb-8 sm:pt-7">
         <div className="flex justify-between text-sm font-medium text-dark dark:text-light">

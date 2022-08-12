@@ -7,6 +7,7 @@ import placeholder from '@/assets/images/placeholders/product.svg';
 import { useModalAction } from '@/components/modal-views/context';
 
 export default function CartItem({
+  name,
   item,
   notAvailable,
   closeDrawer,
@@ -14,6 +15,7 @@ export default function CartItem({
   item: Item;
   notAvailable?: boolean;
   closeDrawer: () => void;
+  name?: string;
 }) {
   const {
     item_name,
@@ -23,9 +25,10 @@ export default function CartItem({
     qty,
     restaurant_id,
     restaurant_name,
+    total_price,
   } = item;
   const { price: itemPrice } = usePrice({
-    amount: price!,
+    amount: total_price! / qty!,
   });
   const { openModal } = useModalAction();
   return (
@@ -62,7 +65,7 @@ export default function CartItem({
             href={routes.prepperUrl(restaurant_id!)}
             className="text-light-base transition-colors hover:text-brand-dark dark:text-dark-base"
           >
-            {restaurant_name || restaurant_id}
+            {name || restaurant_id}
           </AnchorLink>
         </p>
         <p className="flex items-center gap-1">

@@ -11,7 +11,7 @@ import usePrice from '@/lib/hooks/use-price';
 import Seo from '@/layouts/_seo';
 import { LongArrowIcon } from '@/components/icons/long-arrow-icon';
 import client from '@/data/client';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import CartCheckout from '@/components/cart/cart-checkout';
 import { useMe } from '@/data/user';
 import { useUserContext } from '@/components/preppers/context';
@@ -40,6 +40,25 @@ const CheckoutPage: NextPageWithLayout = () => {
   const { price: totalPrice } = usePrice({
     amount: total,
   });
+
+  const { isLoading: loading, data: prepper } = useQuery(
+    [items],
+    () =>
+      client.preppers.getDetails({
+        restaurant_id: items[0].restaurant_id,
+        consumer_id: '',
+        latitude: 52.2880069,
+        longitude: 0.0522349,
+        code: 'EN',
+        searchKey: '',
+      }),
+    {
+      enabled: !isEmpty,
+    }
+  );
+
+  const deliveryCharge = prepper?.payload.delivery_charge || 0;
+
   const { mutate, isLoading } = useMutation(client.orders.verify, {
     onSuccess: (res) => {
       setVerifiedResponse(res.payload);
@@ -83,9 +102,8 @@ const CheckoutPage: NextPageWithLayout = () => {
     }
   );
 
-  console.log('me', me, couponInfo);
   function verify() {
-    if (total - me?.credit - couponValue < 0.3) {
+    if (total - me?.credit - couponValue + deliveryCharge < 0.3) {
       toast.error(
         <b>
           You need to order more than your credit amount. Your credit amount is:
@@ -98,19 +116,23 @@ const CheckoutPage: NextPageWithLayout = () => {
       return;
     }
     mutate({
-      amount: +((total - me?.credit - couponValue) * 100).toFixed(),
+      amount: +(
+        (total - me?.credit - couponValue + deliveryCharge) *
+        100
+      ).toFixed(),
       consumer_id: userInfo.consumer_id,
       restaurant_id: items[0].restaurant_id!,
     });
   }
 
   const verifyCouponClick = () => {
-    verifyCoupon({
-      user_id: userInfo.consumer_id,
-      coupon_code: couponText,
-      amount: total,
-      code: 'EN',
-    });
+    if (couponText)
+      verifyCoupon({
+        user_id: userInfo.consumer_id,
+        coupon_code: couponText,
+        amount: total,
+        code: 'EN',
+      });
   };
   useEffect(() => {
     return () => {
@@ -143,7 +165,12 @@ const CheckoutPage: NextPageWithLayout = () => {
           </h2>
           <div className="px-5 pt-9 sm:px-7 sm:pt-11">
             {!isEmpty ? (
-              <CartItemList closeDrawer={() => {}} className="pl-3" />
+              <CartItemList
+                closeDrawer={() => {}}
+                deliveryCharge={deliveryCharge}
+                name={prepper?.payload.name}
+                className="pl-3"
+              />
             ) : (
               <>
                 <CartEmpty />
@@ -173,6 +200,7 @@ const CheckoutPage: NextPageWithLayout = () => {
                     variant="solid"
                     onClick={verifyCouponClick}
                     isLoading={verifying}
+                    disabled={!couponText}
                     className={cn(
                       'relative',
                       verifySuccess
@@ -215,18 +243,34 @@ const CheckoutPage: NextPageWithLayout = () => {
                     <strong className="font-semibold">{totalPrice}</strong>
                   </div>
                   <div className="flex justify-between">
+                    <p>Delivery Charge</p>
+                    <strong className="font-semibold">
+                      £{deliveryCharge.toFixed(2)}
+                    </strong>
+                  </div>
+                  <div className="flex justify-between">
                     <p>Credit Amount</p>
-                    <strong className="font-semibold">£{me?.credit}</strong>
+                    <strong className="font-semibold">
+                      £{me?.credit.toFixed(2)}
+                    </strong>
                   </div>
                   <div className="flex justify-between">
                     <p>Coupon Discount Amount</p>
-                    <strong className="font-semibold">£{couponValue}</strong>
+                    <strong className="font-semibold">
+                      £{couponValue.toFixed(2)}
+                    </strong>
                   </div>
                   <hr />
                   <div className="flex justify-between">
                     <p>Total</p>
                     <strong className="font-semibold">
-                      £{(total - (me?.credit || 0) - couponValue).toFixed(2)}
+                      £
+                      {(
+                        total -
+                        (me?.credit || 0) -
+                        couponValue +
+                        deliveryCharge
+                      ).toFixed(2)}
                     </strong>
                   </div>
                   {/* <div className="flex justify-between">
@@ -250,6 +294,7 @@ const CheckoutPage: NextPageWithLayout = () => {
                 priceInfo={{
                   total,
                   couponValue,
+                  deliveryCharge,
                   credit: me?.credit,
                   couponInfo,
                 }}
