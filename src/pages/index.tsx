@@ -99,7 +99,7 @@ const Home: NextPageWithLayout = () => {
   return (
     <>
       <Seo
-        title="Meal Bundles"
+        title="Bundles & Plans"
         description="We partnered up with the best meal prep providers and meal delivery companies in the UK."
         url={routes.home}
       />

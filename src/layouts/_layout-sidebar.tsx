@@ -13,6 +13,7 @@ import { PeopleIcon } from '@/components/icons/people-icon';
 import { PaperPlaneIcon } from '@/components/icons/paper-plane-icon';
 import Scrollbar from '@/components/ui/scrollbar';
 import Copyright from '@/layouts/_copyright';
+import { PackageIcon } from '@/components/icons/package-icon';
 
 interface NavLinkProps {
   href: string;
@@ -73,10 +74,10 @@ export function Sidebar({
               icon={<PeopleIcon className="h-[18px] w-[18px] text-current" />}
             />
             <NavLink
-              title={'Meal Bundles'}
+              title={'Bundles & Plans'}
               href={routes.home}
               isCollapse={isCollapse}
-              icon={<HomeIcon className="h-[18px] w-[18px] text-current" />}
+              icon={<PackageIcon className="h-[18px] w-[18px] text-current" />}
             />
             <NavLink
               title={'Explore'}
