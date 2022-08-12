@@ -120,8 +120,8 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             // setPageLoading(true);
 
             setLocation({
-              latitude: 0.0001,
-              longitude: 0.0001,
+              latitude: 51.5256224,
+              longitude: -0.0836253,
               address: '_',
               guestInfo: new Date().toString(),
               postcode: 'EC2A 4NE',

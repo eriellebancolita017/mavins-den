@@ -198,10 +198,16 @@ function AboutShop({ prepper }: { prepper: Prepper }) {
 
 function ShopProducts({ prepper }: { prepper: Prepper }) {
   return (
-    <Grid
-      bundles={prepper.itemCategoryDetails?.map((i) => i.itemList).flat()}
-      isLoading={false}
-    />
+    <>
+      {prepper.itemCategoryDetails?.map((category) => (
+        <div key={category.item_category_id}>
+          <h3 className="text-center text-lg font-semibold">
+            {category.categoryTitle}
+          </h3>
+          <Grid bundles={category.itemList} isLoading={false} />
+        </div>
+      ))}
+    </>
   );
 }
 
