@@ -151,8 +151,8 @@ export const CartProvider: React.FC = (props) => {
                 <div className="mt-4 mb-2">
                   <b className="mb-3 block">Replace cart item?</b>
                   <span>
-                    Your cart contains dishes from other restaurant. Do you want
-                    to replace them?
+                    Your cart contains dishes from another meal prepper. Do you
+                    want to replace them?
                   </span>
                   <div className="mt-2 mr-3 flex justify-end gap-3">
                     <button

@@ -120,6 +120,10 @@ export interface Prepper {
   currency?: string;
   is_mobile_update?: boolean;
   itemCategoryDetails?: ItemCategory[];
+
+  facebookURL?: string;
+  instagramURL?: string;
+  youtubeURL?: string;
 }
 
 export interface Area {

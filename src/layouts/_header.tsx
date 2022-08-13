@@ -153,7 +153,7 @@ export default function Header({
           Show me meal preppers that deliver to: {location.postcode} <br />
           <small className="text-dark dark:text-light">Tap to change</small>
         </button>
-        <SearchButton className="hidden sm:flex" />
+        {/* <SearchButton className="hidden sm:flex" /> */}
         <ThemeSwitcher />
         <GridSwitcher />
         {asPath !== routes.checkout && (

@@ -103,19 +103,22 @@ function AboutShop({ prepper }: { prepper: Prepper }) {
     minimum_order_amount,
     itemCategoryDetails,
     currency,
+    facebookURL,
+    instagramURL,
+    youtubeURL,
   } = prepper;
 
   const socials = [
     {
-      url: 'https://www.facebook.com/MarvinsDen/',
+      url: facebookURL,
       icon: 'FacebookIcon',
     },
     {
-      url: 'https://instagram.com/marvinsden',
+      url: instagramURL,
       icon: 'InstagramIcon',
     },
     {
-      url: 'https://www.youtube.com/channel/UCkwDI1i7FNj9YVAWa--6YmQ',
+      url: youtubeURL,
       icon: 'YouTubeIcon',
     },
   ];
@@ -171,25 +174,27 @@ function AboutShop({ prepper }: { prepper: Prepper }) {
           </div>
         </div>
         <div className="space-y-3 border-t border-light-300 pt-5 dark:border-dark-500">
-          {socials.map(({ icon, url }, idx) => (
-            <a
-              key={idx}
-              href={url}
-              target="_blank"
-              rel="noreferrer"
-              className="group flex items-center"
-            >
-              {getIcon({
-                iconList: socialIcons,
-                iconName: icon,
-                className:
-                  'w-3.5 h-3.5 text-dark-800 dark:text-light-900 shrink-0',
-              })}
-              <span className="pl-2 transition-colors group-hover:text-dark dark:group-hover:text-light">
-                {url.slice(12, -1).split('/').slice(0, 1)}
-              </span>
-            </a>
-          ))}
+          {socials
+            .filter((s) => !!s.url)
+            .map(({ icon, url }, idx) => (
+              <a
+                key={idx}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex items-center"
+              >
+                {getIcon({
+                  iconList: socialIcons,
+                  iconName: icon,
+                  className:
+                    'w-3.5 h-3.5 text-dark-800 dark:text-light-900 shrink-0',
+                })}
+                <span className="pl-2 transition-colors group-hover:text-dark dark:group-hover:text-light">
+                  {url!.slice(12, -1).split('/').slice(0, 1)}
+                </span>
+              </a>
+            ))}
         </div>
       </div>
     </motion.div>
@@ -220,7 +225,6 @@ const ShopPage: NextPageWithLayout<
   const router = useRouter();
 
   useEffect(() => {
-    console.log('router', router.query.item_id, prepper);
     if (router.query.item_id && !!prepper) {
       openModal('PRODUCT_DETAILS', { item_id: router.query.item_id });
     }
