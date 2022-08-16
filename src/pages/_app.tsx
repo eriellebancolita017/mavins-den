@@ -24,6 +24,9 @@ import { SpinnerIcon } from '@/components/icons/spinner-icon';
 import toast from 'react-hot-toast';
 import { PopupButton } from '@typeform/embed-react';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
+import TagManager from 'react-gtm-module';
+import { analytics } from '@/lib/firebase';
+import { logEvent } from 'firebase/analytics';
 
 import dynamic from 'next/dynamic';
 import { TYPEFORM_KEY } from '@/lib/constants';
@@ -138,6 +141,27 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   }, []);
 
   const [typeformKey, saveTypeformKey] = useLocalStorage(TYPEFORM_KEY, '');
+
+  useEffect(() => {
+    // if (process.env.NODE_ENV === 'production') {
+    // TagManager.initialize({ gtmId: 'GTM-TFJ56L7' });
+    const logEventC = (url: any) => {
+      logEvent(analytics, 'screen_view', {
+        firebase_screen: url,
+        firebase_screen_class: url,
+      });
+    };
+
+    router.events.on('routeChangeComplete', logEventC);
+    //For First Page
+    logEventC(window.location.pathname);
+
+    //Remvove Event Listener after un-mount
+    return () => {
+      router.events.off('routeChangeComplete', logEventC);
+    };
+    // }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
