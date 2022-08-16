@@ -17,6 +17,8 @@ import toast from 'react-hot-toast';
 import { API_ENDPOINTS } from '@/data/client/endpoints';
 import useAuth from '@/components/auth/use-auth';
 
+import { analytics } from '@/lib/firebase';
+import { logEvent } from 'firebase/analytics';
 interface CartProviderState extends State {
   addItemToCart: (item: Optional<Item, 'qty'>, quantity: number) => void;
   removeItemFromCart: (id: Item['item_id']) => void;
@@ -139,6 +141,13 @@ export const CartProvider: React.FC = (props) => {
           dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', item, quantity });
           refetch();
 
+          // google analytics
+          logEvent(analytics, 'add_to_cart', {
+            currency: 'GBP',
+            value: item.price,
+            items: [{ ...item }],
+          });
+
           toast.success(<b>Successfully added to the basket!</b>, {
             className: '-mt-10 xs:mt-0',
           });
@@ -224,6 +233,13 @@ export const CartProvider: React.FC = (props) => {
             className: '-mt-10 xs:mt-0',
           });
           refetch();
+
+          // google analytics
+          logEvent(analytics, 'remove_from_cart', {
+            // currency: "GBP",
+            // value: item.price,
+            items: [{ ...state.items.find((i) => i.item_id === id) }],
+          });
         },
         onError: (error: any) => {
           console.log('error', error, error.response);

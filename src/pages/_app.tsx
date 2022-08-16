@@ -84,7 +84,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                 const postcode =
                   responseJson.results[0].address_components.find(
                     (addr: any) => addr.types[0] === 'postal_code'
-                  ).short_name;
+                  )?.short_name || 'no-code';
                 setLocation({
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,
@@ -145,7 +145,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   useEffect(() => {
     // if (process.env.NODE_ENV === 'production') {
-    // TagManager.initialize({ gtmId: 'GTM-TFJ56L7' });
+    TagManager.initialize({ gtmId: 'GTM-TFJ56L7' });
     const logEventC = (url: any) => {
       logEvent(analytics, 'screen_view', {
         firebase_screen: url,
