@@ -104,19 +104,17 @@ const Home: NextPageWithLayout = () => {
         url={routes.home}
       />
       {!!bundles && (
-        <>
-          <CategoryFilter
-            bundles={bundles as Bundles[]}
-            index={index}
-            setIndex={setIndex}
-          />
-          <Products
-            index={index}
-            bundles={bundles as Bundles[]}
-            isLoading={isLoading}
-          />
-        </>
+        <CategoryFilter
+          bundles={bundles as Bundles[]}
+          index={index}
+          setIndex={setIndex}
+        />
       )}
+      <Products
+        index={index}
+        bundles={bundles || ([] as Bundles[])}
+        isLoading={isLoading}
+      />
     </>
   );
 };
