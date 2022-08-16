@@ -22,8 +22,11 @@ import Layout from '@/layouts/_general-layout';
 import UserContextProvider from '@/components/preppers/context';
 import { SpinnerIcon } from '@/components/icons/spinner-icon';
 import toast from 'react-hot-toast';
+import { PopupButton } from '@typeform/embed-react';
+import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 
 import dynamic from 'next/dynamic';
+import { TYPEFORM_KEY } from '@/lib/constants';
 const PrivateRoute = dynamic(() => import('@/layouts/_private-route'), {
   ssr: false,
 });
@@ -134,6 +137,8 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
     getMyLocation();
   }, []);
 
+  const [typeformKey, saveTypeformKey] = useLocalStorage(TYPEFORM_KEY, '');
+
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
@@ -186,6 +191,19 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
+
+                      <PopupButton
+                        id={'jtWs4On7'}
+                        style={{ position: 'fixed', visibility: 'hidden' }}
+                        size={66}
+                        open={typeformKey !== 'loaded' ? 'load' : undefined}
+                        onClose={() => saveTypeformKey('loaded')}
+                      >
+                        <span role="img" aria-label="check">
+                          ️✅
+                        </span>
+                        <span style={{ marginLeft: 10 }}>open popup</span>
+                      </PopupButton>
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
