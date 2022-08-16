@@ -33,6 +33,7 @@ import { TYPEFORM_KEY } from '@/lib/constants';
 const PrivateRoute = dynamic(() => import('@/layouts/_private-route'), {
   ssr: false,
 });
+const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
 validateEnvironmentVariables();
 
@@ -162,6 +163,18 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
     };
     // }
   }, []);
+
+  useEffect(() => {
+    import('react-facebook-pixel')
+      .then((x) => x.default)
+      .then((ReactPixel) => {
+        ReactPixel.init(FB_PIXEL_ID!);
+        ReactPixel.pageView();
+        router.events.on('routeChangeComplete', () => {
+          ReactPixel.pageView();
+        });
+      });
+  }, [router.events]);
 
   return (
     <QueryClientProvider client={queryClient}>
