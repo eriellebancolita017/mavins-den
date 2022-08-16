@@ -193,3 +193,7 @@ html.dark .StripeElement {
   @apply absolute w-4 h-4 border-[3px] border-light bg-brand rounded-full content-[''] top-[1px] left-[1px];
   /* transform: rotate(-45deg) translate(2px, -1px); */
 }
+
+body {
+  overflow: auto !important;
+}

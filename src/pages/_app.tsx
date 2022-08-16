@@ -22,11 +22,18 @@ import Layout from '@/layouts/_general-layout';
 import UserContextProvider from '@/components/preppers/context';
 import { SpinnerIcon } from '@/components/icons/spinner-icon';
 import toast from 'react-hot-toast';
+import { PopupButton } from '@typeform/embed-react';
+import { useLocalStorage } from '@/lib/hooks/use-local-storage';
+import TagManager from 'react-gtm-module';
+import { analytics } from '@/lib/firebase';
+import { logEvent } from 'firebase/analytics';
 
 import dynamic from 'next/dynamic';
+import { TYPEFORM_KEY } from '@/lib/constants';
 const PrivateRoute = dynamic(() => import('@/layouts/_private-route'), {
   ssr: false,
 });
+const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
 validateEnvironmentVariables();
 
@@ -92,7 +99,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                 const postcode =
                   responseJson.results[0].address_components.find(
                     (addr: any) => addr.types[0] === 'postal_code'
-                  ).short_name;
+                  )?.short_name || 'no-code';
                 setLocation({
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,
@@ -149,6 +156,41 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
     getMyLocation();
   }, []);
 
+  const [typeformKey, saveTypeformKey] = useLocalStorage(TYPEFORM_KEY, '');
+
+  useEffect(() => {
+    // if (process.env.NODE_ENV === 'production') {
+    TagManager.initialize({ gtmId: 'GTM-TFJ56L7' });
+    const logEventC = (url: any) => {
+      logEvent(analytics, 'screen_view', {
+        firebase_screen: url,
+        firebase_screen_class: url,
+      });
+    };
+
+    router.events.on('routeChangeComplete', logEventC);
+    //For First Page
+    logEventC(window.location.pathname);
+
+    //Remvove Event Listener after un-mount
+    return () => {
+      router.events.off('routeChangeComplete', logEventC);
+    };
+    // }
+  }, []);
+
+  useEffect(() => {
+    import('react-facebook-pixel')
+      .then((x) => x.default)
+      .then((ReactPixel) => {
+        ReactPixel.init(FB_PIXEL_ID!);
+        ReactPixel.pageView();
+        router.events.on('routeChangeComplete', () => {
+          ReactPixel.pageView();
+        });
+      });
+  }, [router.events]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
@@ -201,6 +243,19 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
+
+                      <PopupButton
+                        id={'jtWs4On7'}
+                        style={{ position: 'fixed', visibility: 'hidden' }}
+                        size={86}
+                        open={typeformKey !== 'loaded' ? 'load' : undefined}
+                        onClose={() => saveTypeformKey('loaded')}
+                      >
+                        <span role="img" aria-label="check">
+                          ️✅
+                        </span>
+                        <span style={{ marginLeft: 10 }}>open popup</span>
+                      </PopupButton>
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />

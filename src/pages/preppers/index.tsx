@@ -78,15 +78,13 @@ const PreppersPage: NextPageWithLayout = () => {
         url={routes.preppers}
       />
       {!!preppers && (
-        <>
-          <CategoryFilter
-            preppers={preppers}
-            index={index}
-            setIndex={setIndex}
-          />
-          <Preppers preppers={preppers} index={index} isLoading={isLoading} />
-        </>
+        <CategoryFilter preppers={preppers} index={index} setIndex={setIndex} />
       )}
+      <Preppers
+        preppers={preppers || ([] as Preppers[])}
+        index={index}
+        isLoading={isLoading}
+      />
     </>
   );
 };
