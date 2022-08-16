@@ -24,6 +24,6 @@
     "additional.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx"
-  ],
+, "src/lib/fpixel.js"  ],
   "exclude": ["node_modules"]
 }

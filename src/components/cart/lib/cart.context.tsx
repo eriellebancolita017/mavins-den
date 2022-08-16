@@ -19,6 +19,8 @@ import useAuth from '@/components/auth/use-auth';
 
 import { analytics } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
+import * as fbq from '../../../lib/fpixel';
+
 interface CartProviderState extends State {
   addItemToCart: (item: Optional<Item, 'qty'>, quantity: number) => void;
   removeItemFromCart: (id: Item['item_id']) => void;
@@ -148,6 +150,13 @@ export const CartProvider: React.FC = (props) => {
             items: [{ ...item }],
           });
 
+          //FB ANALYTICS
+          fbq.event('AddToCart', {
+            currency: 'GBP',
+            value: item.price,
+            contents: [{ ...item }],
+          });
+
           toast.success(<b>Successfully added to the basket!</b>, {
             className: '-mt-10 xs:mt-0',
           });
@@ -239,6 +248,10 @@ export const CartProvider: React.FC = (props) => {
             // currency: "GBP",
             // value: item.price,
             items: [{ ...state.items.find((i) => i.item_id === id) }],
+          });
+          //FB ANALYTICS
+          fbq.event('RemoveFromCart', {
+            contents: [{ ...state.items.find((i) => i.item_id === id) }],
           });
         },
         onError: (error: any) => {

@@ -13,6 +13,8 @@ import ModalsContainer from '@/components/modal-views/container';
 import DrawersContainer from '@/components/drawer-views/container';
 import SearchView from '@/components/search/search-view';
 import DefaultSeo from '@/layouts/_default-seo';
+import Script from 'next/script';
+
 // base css file
 import '@/assets/css/scrollbar.css';
 import '@/assets/css/swiper-carousel.css';
@@ -30,6 +32,8 @@ import { logEvent } from 'firebase/analytics';
 
 import dynamic from 'next/dynamic';
 import { TYPEFORM_KEY } from '@/lib/constants';
+import * as fbq from '../lib/fpixel';
+
 const PrivateRoute = dynamic(() => import('@/layouts/_private-route'), {
   ssr: false,
 });
@@ -51,16 +55,17 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
   useEffect(() => {
-    import('react-facebook-pixel')
-      .then((x) => x.default)
-      .then((ReactPixel) => {
-        ReactPixel.init(FB_PIXEL_ID!);
-        ReactPixel.pageView();
+    // This pageview only triggers the first time (it's important for Pixel to have real information)
+    fbq.pageview();
 
-        router.events.on('routeChangeComplete', () => {
-          ReactPixel.pageView();
-        });
-      });
+    const handleRouteChange = () => {
+      fbq.pageview();
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
   }, [router.events]);
 
   useEffect(() => {
@@ -193,6 +198,24 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      {/* Global Site Code Pixel - Facebook Pixel */}
+      <Script
+        id="fb-pixel"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', ${fbq.FB_PIXEL_ID});
+          `,
+        }}
+      />
       <Hydrate state={pageProps.dehydratedState}>
         <ThemeProvider
           attribute="class"
