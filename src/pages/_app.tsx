@@ -195,7 +195,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       <PopupButton
                         id={'jtWs4On7'}
                         style={{ position: 'fixed', visibility: 'hidden' }}
-                        size={66}
+                        size={86}
                         open={typeformKey !== 'loaded' ? 'load' : undefined}
                         onClose={() => saveTypeformKey('loaded')}
                       >
