@@ -251,7 +251,7 @@ const CheckoutPage: NextPageWithLayout = () => {
                   <div className="flex justify-between">
                     <p>Credit Amount</p>
                     <strong className="font-semibold">
-                      £{me?.credit.toFixed(2)}
+                      £{me?.credit?.toFixed(2)}
                     </strong>
                   </div>
                   <div className="flex justify-between">
