@@ -30,6 +30,9 @@ import { LocationIcon } from '../icons/contact/location-icon';
 import AddressAuto from '../auth/address-auto';
 import Input from '../ui/forms/input';
 import RadioButton from '../ui/forms/radio-button';
+import * as fbq from '../../lib/fpixel';
+import { analytics } from '@/lib/firebase';
+import { logEvent } from 'firebase/analytics';
 
 export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   const router = useRouter();
@@ -44,6 +47,19 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
 
   const { mutate, isLoading } = useMutation(client.orders.create, {
     onSuccess: (res) => {
+      //FB ANALYTICS
+      fbq.event('Purchase', {
+        currency: 'GBP',
+        value: total + deliveryCharge,
+      });
+
+      // google analytics
+      logEvent(analytics, 'purchase', {
+        currency: 'GBP',
+        value: total + deliveryCharge,
+        transaction_id: res.payload.order_id,
+      });
+
       router.push(routes.orderUrl(res.payload.order_id));
     },
     onError: (err: any) => {
@@ -110,6 +126,7 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         return;
       }
+
       mutate({
         code: 'EN',
         place_order_json: JSON.stringify({

@@ -15,6 +15,9 @@ import useAuth from './use-auth';
 import PhoneInput, { usePhoneInput } from '@/components/ui/forms/phone-input';
 import { useUserContext } from '../preppers/context';
 import { ServerErrors } from '@/components/ui/forms/form';
+import * as fbq from '../../lib/fpixel';
+import { analytics } from '@/lib/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const registerUserValidationSchema = yup.object().shape({
   name: yup.string().max(20).required(),
@@ -54,6 +57,17 @@ export default function RegisterUserForm() {
       }
       toast.success(<b>Successfully Signed up.</b>, {
         className: '-mt-10 xs:mt-0',
+      });
+
+      //FB ANALYTICS
+      fbq.event('CompleteRegistration', {
+        content_name: 'consumer_id',
+        value: res.payload.consumer_id,
+      });
+      // google analytics
+      logEvent(analytics, 'sign_up', {
+        content_name: 'consumer_id',
+        value: res.payload.consumer_id,
       });
 
       authorize(res.payload.consumer_id);
