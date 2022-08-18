@@ -267,12 +267,12 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-                      <Popover
+                      {/* <Popover
                         id="jtWs4On7"
                         chat
                         height={750}
                         tooltip="Hi! Would you like a complimentary bespoke plan from a nutritionist?"
-                      />
+                      /> */}
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
