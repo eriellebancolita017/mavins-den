@@ -33,6 +33,7 @@ import { logEvent } from 'firebase/analytics';
 import dynamic from 'next/dynamic';
 import { TYPEFORM_KEY } from '@/lib/constants';
 import * as fbq from '../lib/fpixel';
+import { Popover } from '@typeform/embed-react';
 
 const PrivateRoute = dynamic(() => import('@/layouts/_private-route'), {
   ssr: false,
@@ -266,19 +267,11 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-
-                      <PopupButton
-                        id={'jtWs4On7'}
-                        style={{ position: 'fixed', visibility: 'hidden' }}
-                        size={86}
-                        open={typeformKey !== 'loaded' ? 'load' : undefined}
-                        onClose={() => saveTypeformKey('loaded')}
-                      >
-                        <span role="img" aria-label="check">
-                          ️✅
-                        </span>
-                        <span style={{ marginLeft: 10 }}>open popup</span>
-                      </PopupButton>
+                      <Popover
+                        id="jtWs4On7"
+                        height={800}
+                        tooltip="Hi! Would you like a complimentary bespoke plan from a nutritionist?"
+                      />
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
