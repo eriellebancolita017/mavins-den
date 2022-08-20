@@ -55,6 +55,12 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const [pageLoading, setPageLoading] = useState<boolean>(false);
   const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
+  const isMac =
+    typeof window !== 'undefined'
+      ? // navigator.platform.toUpperCase().indexOf('MAC') >= 0 ||
+        navigator.platform.toUpperCase().indexOf('IPHONE') >= 0
+      : true;
+
   useEffect(() => {
     // This pageview only triggers the first time (it's important for Pixel to have real information)
     fbq.pageview();
@@ -276,7 +282,9 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
-                      <Toaster containerClassName="!top-16 sm:!top-3.5 !bottom-16 sm:!bottom-3.5" />
+                      {!isMac && (
+                        <Toaster containerClassName="!top-16 sm:!top-3.5 !bottom-16 sm:!bottom-3.5" />
+                      )}
                     </>
                   )}
                 </AnimatePresence>
