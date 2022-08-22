@@ -6,7 +6,6 @@
     "clean": "rimraf \"{node_modules,.next,.cache}\"",
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install"
