@@ -6,6 +6,7 @@
     "clean": "rimraf \"{node_modules,.next,.cache}\"",
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install"
@@ -30,7 +31,7 @@
     "next": "12.1.0",
     "next-pwa": "5.4.4",
     "next-seo": "5.1.0",
-    "next-sitemap": "2.4.3",
+    "next-sitemap": "^3.1.21",
     "next-themes": "0.0.15",
     "overlayscrollbars": "1.13.1",
     "overlayscrollbars-react": "0.2.3",

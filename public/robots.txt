@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://shop.marvinsden.com
+
+# Sitemaps
+Sitemap: https://shop.marvinsden.com/sitemap.xml
