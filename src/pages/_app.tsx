@@ -53,6 +53,8 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState<boolean>(false);
+  const [pageLoaded, setPageLoaded] = useState<boolean>(false);
+
   const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
   const isMac =
@@ -81,11 +83,12 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
     };
     const handleComplete = () => {
       setPageLoading(false);
+      setPageLoaded(true);
     };
 
     router.events.on('routeChangeStart', handleStart);
     router.events.on('routeChangeComplete', handleComplete);
-    router.events.on('routeChangeError', handleComplete);
+    // router.events.on('routeChangeError', handleComplete);
   }, [router]);
 
   const [location, setLocation] = useState({});
@@ -273,6 +276,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
+                      if (pageLoaded){' '}
                       {
                         <PopupButton
                           id={'jtWs4On7'}
