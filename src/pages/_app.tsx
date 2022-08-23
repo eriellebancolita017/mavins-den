@@ -53,7 +53,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState<boolean>(false);
-  const [pageLoaded, setPageLoaded] = useState<boolean>(false);
 
   const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
@@ -83,7 +82,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
     };
     const handleComplete = () => {
       setPageLoading(false);
-      setPageLoaded(true);
     };
 
     router.events.on('routeChangeStart', handleStart);
@@ -276,17 +274,17 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-                      if (pageLoaded)
-                      {
-                        <PopupButton
-                          id={'jtWs4On7'}
-                          style={{ position: 'fixed' }}
-                          size={86}
-                          open={typeformKey !== 'loaded' ? 'time' : undefined}
-                          openValue={15000}
-                          onClose={() => saveTypeformKey('loaded')}
-                        ></PopupButton>
-                      }
+                      <PopupButton
+                        id={'jtWs4On7'}
+                        style={{ position: 'fixed' }}
+                        size={86}
+                        autoResize
+                        open={typeformKey !== 'loaded' ? 'time' : undefined}
+                        openValue={15000}
+                        onReady={() => saveTypeformKey('loaded')}
+                        onClose={() => saveTypeformKey('loaded')}
+                      ></PopupButton>
+
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
