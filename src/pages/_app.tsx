@@ -273,12 +273,16 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-                      {/* <Popover
-                        id="jtWs4On7"
-                        chat
-                        height={750}
-                        tooltip="Hi! Would you like a complimentary bespoke plan from a nutritionist?"
-                      /> */}
+                      {
+                        <PopupButton
+                          id={'jtWs4On7'}
+                          style={{ position: 'fixed' }}
+                          size={86}
+                          open={typeformKey !== 'loaded' ? 'time' : undefined}
+                          openValue={15000}
+                          onClose={() => saveTypeformKey('loaded')}
+                        ></PopupButton>
+                      }
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
