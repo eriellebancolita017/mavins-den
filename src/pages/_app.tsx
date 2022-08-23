@@ -276,7 +276,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-                      if (pageLoaded){' '}
+                      if (pageLoaded)
                       {
                         <PopupButton
                           id={'jtWs4On7'}
