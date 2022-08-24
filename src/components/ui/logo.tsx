@@ -15,7 +15,7 @@ export default function Logo({
   const { lightLogo, darkLogo } = siteSettings;
   return (
     <AnchorLink
-      href={routes.home}
+      href={'https://www.marvinsden.com'}
       className={cn(
         'relative flex items-center text-dark focus:outline-none dark:text-light',
         className
@@ -23,10 +23,10 @@ export default function Logo({
       {...props}
     >
       {isMounted && isDarkMode && (
-        <Image src={darkLogo} alt="Logo" width={30} height={30} />
+        <Image src={darkLogo} alt="Logo" width={42} height={42} />
       )}
       {isMounted && !isDarkMode && (
-        <Image src={lightLogo} alt="Logo" width={30} height={30} />
+        <Image src={lightLogo} alt="Logo" width={42} height={42} />
       )}
     </AnchorLink>
   );
