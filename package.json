@@ -19,7 +19,9 @@
     "@tailwindcss/typography": "0.5.2",
     "@typeform/embed-react": "^1.19.0",
     "axios": "0.26.0",
+    "branch-sdk": "^2.64.0",
     "classnames": "2.3.1",
+    "csstype": "^3.1.0",
     "dayjs": "1.10.7",
     "firebase": "^9.9.2",
     "framer-motion": "6.2.3",
@@ -44,7 +46,7 @@
     "react-facebook-pixel": "^1.0.4",
     "react-gtm-module": "^2.0.11",
     "react-hook-form": "7.27.1",
-    "react-hot-toast": "2.2.0",
+    "react-hot-toast": "^2.3.0",
     "react-phone-input-2": "2.15.0",
     "react-places-autocomplete": "^7.3.0",
     "react-query": "3.34.15",
@@ -53,6 +55,7 @@
     "sharp": "0.30.1",
     "swiper": "8.0.6",
     "tiny-invariant": "1.2.0",
+    "webpack": "^5.74.0",
     "yup": "0.32.11"
   },
   "devDependencies": {

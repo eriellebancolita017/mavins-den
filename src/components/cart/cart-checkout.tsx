@@ -31,6 +31,7 @@ import AddressAuto from '../auth/address-auto';
 import Input from '../ui/forms/input';
 import RadioButton from '../ui/forms/radio-button';
 import * as fbq from '../../lib/fpixel';
+import * as branchio from '../../lib/branchio';
 import { analytics } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
 
@@ -51,6 +52,14 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
       fbq.event('Purchase', {
         currency: 'GBP',
         value: total + deliveryCharge,
+      });
+
+      // Branch IO
+      branchio.logPurchaseEvent({
+        transaction_id: res.payload.order_id,
+        coupon: couponInfo,
+        amount: total + deliveryCharge,
+        content_items: items,
       });
 
       // google analytics

@@ -33,6 +33,7 @@ import { logEvent } from 'firebase/analytics';
 import dynamic from 'next/dynamic';
 import { TYPEFORM_KEY } from '@/lib/constants';
 import * as fbq from '../lib/fpixel';
+import * as branchio from '../lib/branchio';
 import { Popover } from '@typeform/embed-react';
 
 const PrivateRoute = dynamic(() => import('@/layouts/_private-route'), {
@@ -203,6 +204,10 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
         });
       });
   }, [router.events]);
+
+  useEffect(() => {
+    branchio.initAndFetch();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
