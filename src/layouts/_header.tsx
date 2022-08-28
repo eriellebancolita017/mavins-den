@@ -134,32 +134,39 @@ export default function Header({
   const { location } = useUserContext();
   useSwapBodyClassOnScrollDirection();
   return (
-    <header className="app-header sticky top-0 left-0 z-30 flex h-16 w-full items-center justify-between border-b border-light-300 bg-light py-1 px-4 dark:border-dark-300 dark:bg-dark-250 sm:h-[70px] sm:px-6">
-      <div className="flex items-center gap-4">
-        {showHamburger && (
-          <Hamburger
-            isToggle={isCollapse}
-            onClick={onClickHamburger}
-            className="hidden sm:flex"
-          />
-        )}
-        <Logo />
+    <header className="app-header h-34 sticky top-0 left-0 z-30 flex w-full flex-col sm:h-[70px] sm:px-6">
+      <div className="mx-auto max-h-16 w-full justify-between bg-brand px-4 py-2 shadow dark:border-dark-500 md:flex md:items-center md:px-8">
+        <h2 className="flex flex-col items-center font-semibold text-dark-400">
+          Use coupon code ‘15NOW’ at checkout for 15% off your first order.
+        </h2>
       </div>
-      <div className="relative flex items-center gap-5 pr-0.5 xs:gap-6 sm:gap-7">
-        <button
-          onClick={() => openModal('ADDRESS_VIEW')}
-          className="relative top-1.5 flex flex-col items-center font-semibold text-brand hover:text-dark-400 hover:dark:text-light-500"
-        >
-          Show me meal preppers that deliver to: {location.postcode} <br />
-          <small className="text-dark dark:text-light">Tap to change</small>
-        </button>
-        {/* <SearchButton className="hidden sm:flex" /> */}
-        <ThemeSwitcher />
-        <GridSwitcher />
-        {asPath !== routes.checkout && (
-          <CartButton className="hidden sm:flex" />
-        )}
-        <LoginMenu />
+      <div className="flex items-center justify-between border-b border-light-300 bg-light py-1 px-4 dark:border-dark-300 dark:bg-dark-250">
+        <div className="flex items-center gap-4">
+          {showHamburger && (
+            <Hamburger
+              isToggle={isCollapse}
+              onClick={onClickHamburger}
+              className="hidden sm:flex"
+            />
+          )}
+          <Logo />
+        </div>
+        <div className="relative flex items-center gap-5 pr-0.5 xs:gap-6 sm:gap-7">
+          <button
+            onClick={() => openModal('ADDRESS_VIEW')}
+            className="relative top-1.5 flex flex-col items-center font-semibold text-brand hover:text-dark-400 hover:dark:text-light-500"
+          >
+            Show me meal preppers that deliver to: {location.postcode} <br />
+            <small className="text-dark dark:text-light">Tap to change</small>
+          </button>
+          {/* <SearchButton className="hidden sm:flex" /> */}
+          <ThemeSwitcher />
+          <GridSwitcher />
+          {asPath !== routes.checkout && (
+            <CartButton className="hidden sm:flex" />
+          )}
+          <LoginMenu />
+        </div>
       </div>
     </header>
   );
