@@ -5,6 +5,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
+import { Portal } from 'react-portal';
 import { ThemeProvider } from 'next-themes';
 import { validateEnvironmentVariables } from '@/config/validate-environment-variables';
 import { CartProvider } from '@/components/cart/lib/cart.context';
@@ -274,9 +275,9 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
-                      {!isMac && (
+                      <Portal>
                         <Toaster containerClassName="!top-16 sm:!top-3.5 !bottom-16 sm:!bottom-3.5" />
-                      )}
+                      </Portal>
                     </>
                   )}
                 </AnimatePresence>
