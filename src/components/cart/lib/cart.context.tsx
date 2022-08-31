@@ -159,6 +159,7 @@ export const CartProvider: React.FC = (props) => {
 
           toast.success(<b>Successfully added to the basket!</b>, {
             className: '-mt-10 xs:mt-0',
+            duration: 3000,
           });
         },
         onError: (error: any) => {
@@ -240,6 +241,7 @@ export const CartProvider: React.FC = (props) => {
           dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id });
           toast.success(<b>Successfully removed from basket!</b>, {
             className: '-mt-10 xs:mt-0',
+            duration: 3000,
           });
           refetch();
 
