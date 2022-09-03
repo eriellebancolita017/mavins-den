@@ -176,7 +176,10 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   useEffect(() => {
     // if (process.env.NODE_ENV === 'production') {
-    TagManager.initialize({ gtmId: 'GTM-TFJ56L7' });
+    TagManager.initialize({
+      gtmId: 'GTM-TFJ56L7',
+      dataLayerName: 'PageDataLayer',
+    });
     const logEventC = (url: any) => {
       logEvent(analytics, 'screen_view', {
         firebase_screen: url,
