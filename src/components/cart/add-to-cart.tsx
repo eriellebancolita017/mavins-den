@@ -29,7 +29,7 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
   }
   function addSuccessfully() {
     addItemToCart(generateCartItem(item), 1);
-    if (view === 'OPTION_VIEW') closeModal();
+    if (view === 'OPTION_VIEW' || view === 'PRODUCT_DETAILS') closeModal();
   }
 
   function getAddonPrice() {
