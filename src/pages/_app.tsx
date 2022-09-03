@@ -261,7 +261,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-                      <PopupButton
+                      {/* <PopupButton
                         id={'jtWs4On7'}
                         style={{ position: 'fixed' }}
                         size={86}
@@ -270,7 +270,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                         openValue={15000}
                         onReady={() => saveTypeformKey('loaded')}
                         onClose={() => saveTypeformKey('loaded')}
-                      ></PopupButton>
+                      ></PopupButton> */}
 
                       <SearchView />
                       <ModalsContainer />
