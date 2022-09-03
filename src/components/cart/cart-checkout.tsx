@@ -34,6 +34,7 @@ import * as fbq from '../../lib/fpixel';
 import * as branchio from '../../lib/branchio';
 import { analytics } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
+import TagManager from 'react-gtm-module';
 
 export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   const router = useRouter();
@@ -69,6 +70,19 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         transaction_id: res.payload.order_id,
       });
 
+      const tagManagerArgs = {
+        dataLayer: [
+          {
+            transactionTotal: total + deliveryCharge,
+            transactionCurrency: 'GBP',
+            transactionID: res.payload.order_id,
+            transactionPromoCode: couponInfo,
+            event: 'awin.dl.ready',
+          },
+        ],
+        dataLayerName: 'PageDataLayer',
+      };
+      TagManager.dataLayer(tagManagerArgs);
       router.push(routes.orderUrl(res.payload.order_id));
     },
     onError: (err: any) => {
