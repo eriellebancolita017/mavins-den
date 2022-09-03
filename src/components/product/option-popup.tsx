@@ -3,6 +3,7 @@ import AddToCart from '@/components/cart/add-to-cart';
 import { useState } from 'react';
 import CheckBox from '@/components/ui/forms/checkbox';
 import RadioButton from '../ui/forms/radio-button';
+import Button from '../ui/button';
 
 export default function ProductPopupDetails() {
   const { data } = useModalState();
@@ -79,6 +80,15 @@ export default function ProductPopupDetails() {
     return list;
   };
 
+  const isChecked = (option: any, item: any) => {
+    let isChecked = checkedList[option.item_option_category_id as keyof object]
+      ? checkedList[option.item_option_category_id as keyof object][
+          item.item_option_id
+        ]
+      : false;
+    return isChecked;
+  };
+
   return (
     <div className="flex max-w-full flex-col bg-light text-left dark:bg-dark-250 xs:max-w-[430px] sm:max-w-[550px] md:max-w-[600px] lg:max-w-[960px] xl:max-w-[1200px] 3xl:max-w-[1460px]">
       <div className="-mx-2.5 flex flex-wrap items-center bg-light-300 py-3 pl-4 pr-16 dark:bg-dark-100 md:py-4 md:pl-6 lg:-mx-4 lg:py-5 xl:pl-8">
@@ -111,27 +121,47 @@ export default function ProductPopupDetails() {
                           className="my-1 inline-block"
                         >
                           {!!option.is_multi ? (
-                            <CheckBox
-                              name={item.item_option_id}
-                              label={`${item.title} - ${currency}
+                            <div>
+                              <CheckBox
+                                name={item.item_option_id}
+                                label={`${item.title} - ${currency}
                             ${item.price.toFixed(2)}`}
-                              onChange={() =>
-                                hadleOptionCheck(
-                                  item.item_option_id,
-                                  option.item_option_category_id
-                                )
-                              }
-                              checked={
-                                checkedList[
-                                  option.item_option_category_id as keyof object
-                                ]
-                                  ? checkedList[
-                                      option.item_option_category_id as keyof object
-                                    ][item.item_option_id]
-                                  : false
-                              }
-                              disabled={option.status !== 'active'}
-                            />
+                                onChange={() =>
+                                  hadleOptionCheck(
+                                    item.item_option_id,
+                                    option.item_option_category_id
+                                  )
+                                }
+                                checked={isChecked(option, item)}
+                                disabled={option.status !== 'active'}
+                              />
+                              {isChecked(option, item) ? (
+                                <div className="flex flex-row">
+                                  <Button
+                                    onClick={() =>
+                                      hadleOptionCheck(
+                                        item.item_option_id,
+                                        option.item_option_category_id
+                                      )
+                                    }
+                                  >
+                                    +
+                                  </Button>
+                                  <h3>Quantity : </h3>
+                                  <h3>1</h3>
+                                  <Button
+                                    onClick={() =>
+                                      hadleOptionCheck(
+                                        item.item_option_id,
+                                        option.item_option_category_id
+                                      )
+                                    }
+                                  >
+                                    -
+                                  </Button>
+                                </div>
+                              ) : null}
+                            </div>
                           ) : (
                             <RadioButton
                               name={option.item_option_category_id}
@@ -144,15 +174,7 @@ export default function ProductPopupDetails() {
                                   'radio'
                                 )
                               }
-                              checked={
-                                checkedList[
-                                  option.item_option_category_id as keyof object
-                                ]
-                                  ? checkedList[
-                                      option.item_option_category_id as keyof object
-                                    ][item.item_option_id]
-                                  : false
-                              }
+                              checked={isChecked(option, item)}
                               disabled={option.status !== 'active'}
                             />
                           )}
