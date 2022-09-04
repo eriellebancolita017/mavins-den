@@ -17,28 +17,80 @@ export default function ProductPopupDetails() {
   const { title, item_options } = bundle ?? {};
   const currency = bundle.currency || '£';
 
+  const handleOptionQtyUpdate = (
+    increase: Boolean,
+    option_id: string,
+    item_option_category_id: string
+  ) => {
+    let qty = checkedList[item_option_category_id as keyof object]
+      ? checkedList[item_option_category_id as keyof object][option_id]['qty']
+      : 0;
+
+    if (increase) {
+      qty = qty + 1;
+    } else {
+      if (qty > 1) {
+        qty = qty - 1;
+      }
+    }
+    const tempList: {
+      [index: string]: { [index: string]: { [index: string]: any } };
+    } = {
+      ...checkedList,
+    };
+    tempList[item_option_category_id as keyof object] =
+      (tempList[item_option_category_id as keyof object] as {
+        [index: string]: { [index: string]: any };
+      }) || ({} as { [index: string]: { [index: string]: any } });
+    tempList[item_option_category_id as keyof object][option_id]['qty'] = qty;
+    console.log(tempList);
+    setCheckedList(tempList);
+  };
+
   const hadleOptionCheck = (
     opiton_id: string,
     item_option_category_id: string,
     type = 'checkbox'
   ) => {
-    const tempList: { [index: string]: { [index: string]: boolean } } = {
+    const tempList: {
+      [index: string]: { [index: string]: { [index: string]: any } };
+    } = {
       ...checkedList,
     };
-
-    if (type === 'radio') {
-      tempList[item_option_category_id as keyof object] = {} as {
-        [index: string]: boolean;
-      };
-      tempList[item_option_category_id as keyof object][opiton_id] =
-        !tempList[item_option_category_id as keyof object][opiton_id];
+    if (tempList[item_option_category_id as keyof object] == undefined) {
+      tempList[item_option_category_id as keyof object] = {};
+    }
+    if (
+      tempList[item_option_category_id as keyof object][
+        opiton_id as keyof object
+      ] == undefined
+    ) {
+      tempList[item_option_category_id as keyof object][
+        opiton_id as keyof object
+      ] = { selected: true, qty: 1 };
     } else {
-      tempList[item_option_category_id as keyof object] =
-        (tempList[item_option_category_id as keyof object] as {
-          [index: string]: boolean;
-        }) || ({} as { [index: string]: boolean });
-      tempList[item_option_category_id as keyof object][opiton_id] =
-        !tempList[item_option_category_id as keyof object][opiton_id];
+      if (type === 'radio') {
+        tempList[item_option_category_id as keyof object][opiton_id][
+          'selected'
+        ] =
+          !tempList[item_option_category_id as keyof object][opiton_id][
+            'selected'
+          ];
+      } else {
+        // (tempList[item_option_category_id as keyof object] as { [index: string]:  { [index: string]: any }  }) || ({} as { [index: string]:  { [index: string]: any }  });
+        console.log(tempList[item_option_category_id as keyof object]);
+        let selected = tempList[item_option_category_id][opiton_id]['selected'];
+        let selectedNow = !selected;
+        tempList[item_option_category_id as keyof object][opiton_id][
+          'selected'
+        ] = selectedNow;
+        let newQty = 0;
+        if (selectedNow) {
+          newQty = 1;
+        }
+        tempList[item_option_category_id as keyof object][opiton_id]['qty'] =
+          newQty;
+      }
     }
 
     console.log(tempList);
@@ -53,7 +105,10 @@ export default function ProductPopupDetails() {
           checkedList[options.item_option_category_id as keyof object] &&
           checkedList[options.item_option_category_id as keyof object][
             item.item_option_id
-          ]
+          ] &&
+          checkedList[options.item_option_category_id as keyof object][
+            item.item_option_id
+          ]['selected']
         ) {
           if (
             !!list.find(
@@ -81,12 +136,26 @@ export default function ProductPopupDetails() {
   };
 
   const isChecked = (option: any, item: any) => {
-    let isChecked = checkedList[option.item_option_category_id as keyof object]
-      ? checkedList[option.item_option_category_id as keyof object][
-          item.item_option_id
-        ]
-      : false;
+    let isChecked =
+      checkedList[option.item_option_category_id as keyof object] !==
+        undefined &&
+      checkedList[option.item_option_category_id as keyof object][
+        item.item_option_id
+      ] !== undefined
+        ? checkedList[option.item_option_category_id as keyof object][
+            item.item_option_id
+          ]['selected']
+        : false;
     return isChecked;
+  };
+
+  const getQty = (option_id: any, cateogry_id: any) => {
+    let qty = checkedList[cateogry_id as keyof object]
+      ? checkedList[cateogry_id as keyof object][option_id as keyof object][
+          'qty'
+        ]
+      : 0;
+    return qty;
   };
 
   return (
@@ -136,22 +205,30 @@ export default function ProductPopupDetails() {
                                 disabled={option.status !== 'active'}
                               />
                               {isChecked(option, item) ? (
-                                <div className="flex flex-row">
+                                <div className="m-1 flex flex-row items-center py-1">
                                   <Button
+                                    className="text-lg"
                                     onClick={() =>
-                                      hadleOptionCheck(
+                                      handleOptionQtyUpdate(
+                                        true,
                                         item.item_option_id,
                                         option.item_option_category_id
                                       )
                                     }
                                   >
-                                    +
+                                    <span>+</span>
                                   </Button>
-                                  <h3>Quantity : </h3>
-                                  <h3>1</h3>
+                                  <h2 className="px-5">
+                                    {getQty(
+                                      item.item_option_id,
+                                      option.item_option_category_id
+                                    )}
+                                  </h2>
                                   <Button
+                                    className="text-lg"
                                     onClick={() =>
-                                      hadleOptionCheck(
+                                      handleOptionQtyUpdate(
+                                        false,
                                         item.item_option_id,
                                         option.item_option_category_id
                                       )
