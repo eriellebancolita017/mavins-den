@@ -22,7 +22,7 @@ const Order: NextPageWithLayout = () => {
         transactionTotal: lastOrder!!.transactionTotal,
         transactionCurrency: 'GBP',
         transactionID: lastOrder!!.transactionID,
-        transactionPromoCode: lastOrder!!.couponInfo.coupon_code,
+        transactionPromoCode: lastOrder!!.couponInfo,
         event: 'awin.dl.ready',
       },
       dataLayerName: 'PageDataLayer',

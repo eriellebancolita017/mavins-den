@@ -84,6 +84,9 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         value: total + deliveryCharge,
         transaction_id: res.payload.order_id,
       });
+      if (couponInfo.coupon_code == undefined) {
+        couponInfo.coupon_code = 'No Discount';
+      }
       const lastOrderValue = {
         transactionTotal: total + deliveryCharge,
         transactionID: res.payload.order_id,
