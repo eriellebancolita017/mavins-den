@@ -34,6 +34,22 @@ import * as fbq from '../../lib/fpixel';
 import * as branchio from '../../lib/branchio';
 import { analytics } from '@/lib/firebase';
 import { logEvent } from 'firebase/analytics';
+import React, { useCallback } from 'react';
+
+interface LastOrderProviderState {
+  transactionTotal: number;
+  transactionID: String;
+  couponInfo: any;
+}
+
+export let lastOrder: LastOrderProviderState | undefined;
+
+export const useCheckout = () => {
+  return lastOrder;
+};
+export const clearLastOrder = () => {
+  lastOrder = undefined;
+};
 
 export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   const router = useRouter();
@@ -57,9 +73,9 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
       // Branch IO
       branchio.logPurchaseEvent({
         transaction_id: res.payload.order_id,
-        coupon: couponInfo,
+        coupon: couponInfo.coupon_code,
         amount: total + deliveryCharge,
-        content_items: items,
+        // content_items: items,
       });
 
       // google analytics
@@ -68,7 +84,15 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         value: total + deliveryCharge,
         transaction_id: res.payload.order_id,
       });
-
+      if (couponInfo.coupon_code == undefined) {
+        couponInfo.coupon_code = 'No Discount';
+      }
+      const lastOrderValue = {
+        transactionTotal: total + deliveryCharge,
+        transactionID: res.payload.order_id,
+        couponInfo: couponInfo.coupon_code,
+      };
+      lastOrder = lastOrderValue;
       router.push(routes.orderUrl(res.payload.order_id));
     },
     onError: (err: any) => {
