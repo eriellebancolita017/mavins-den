@@ -6,12 +6,31 @@ import GeneralLayout from '@/layouts/_general-layout';
 import Button from '@/components/ui/button';
 import { useWindowSize } from '@/lib/hooks/use-window-size';
 import { useCart } from '@/components/cart/lib/cart.context';
+import { useCheckout, clearLastOrder } from '@/components/cart/cart-checkout';
 import routes from '@/config/routes';
+import TagManager from 'react-gtm-module';
 
 const Order: NextPageWithLayout = () => {
   const router = useRouter();
   const { width, height } = useWindowSize();
   const { resetCart } = useCart();
+  const { transactionTotal, transactionID, couponInfo } = useCheckout();
+  //GTM
+  const tagManagerArgs = {
+    dataLayer: [
+      {
+        transactionTotal: transactionTotal,
+        transactionCurrency: 'GBP',
+        transactionID: transactionID,
+        transactionPromoCode: couponInfo,
+        event: 'awin.dl.ready',
+      },
+    ],
+    dataLayerName: 'PageDataLayer',
+  };
+  console.log('dataLayer : ' + JSON.stringify(tagManagerArgs.dataLayer));
+  TagManager.dataLayer(tagManagerArgs);
+  clearLastOrder();
   useEffect(() => {
     resetCart();
   }, [resetCart]);
