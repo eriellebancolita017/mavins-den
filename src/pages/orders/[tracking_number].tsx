@@ -14,23 +14,23 @@ const Order: NextPageWithLayout = () => {
   const router = useRouter();
   const { width, height } = useWindowSize();
   const { resetCart } = useCart();
-  const { transactionTotal, transactionID, couponInfo } = useCheckout();
-  //GTM
-  const tagManagerArgs = {
-    dataLayer: [
-      {
-        transactionTotal: transactionTotal,
+  const lastOrder = useCheckout();
+  if (lastOrder !== undefined) {
+    //GTM
+    const tagManagerArgs = {
+      dataLayer: {
+        transactionTotal: lastOrder!!.transactionTotal,
         transactionCurrency: 'GBP',
-        transactionID: transactionID,
-        transactionPromoCode: couponInfo,
+        transactionID: lastOrder!!.transactionID,
+        transactionPromoCode: lastOrder!!.couponInfo.coupon_code,
         event: 'awin.dl.ready',
       },
-    ],
-    dataLayerName: 'PageDataLayer',
-  };
-  console.log('dataLayer : ' + JSON.stringify(tagManagerArgs.dataLayer));
-  TagManager.dataLayer(tagManagerArgs);
-  clearLastOrder();
+      dataLayerName: 'PageDataLayer',
+    };
+    console.log('dataLayer : ' + JSON.stringify(tagManagerArgs.dataLayer));
+    TagManager.dataLayer(tagManagerArgs);
+    clearLastOrder();
+  }
   useEffect(() => {
     resetCart();
   }, [resetCart]);

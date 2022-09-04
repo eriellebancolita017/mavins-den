@@ -42,17 +42,13 @@ interface LastOrderProviderState {
   couponInfo: any;
 }
 
-export let lastOrder: LastOrderProviderState;
+export let lastOrder: LastOrderProviderState | undefined;
 
 export const useCheckout = () => {
   return lastOrder;
 };
 export const clearLastOrder = () => {
-  lastOrder = {
-    transactionTotal: 0,
-    transactionID: 'UNNOWN',
-    couponInfo: 'UNKNOWN',
-  };
+  lastOrder = undefined;
 };
 
 export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
