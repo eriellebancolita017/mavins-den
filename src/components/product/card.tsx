@@ -87,7 +87,7 @@ export default function Card({ bundle }: { bundle: Bundle }) {
         />
         <div
           onClick={() => openModal('PRODUCT_DETAILS', { item_id })}
-          className="absolute top-0 left-0 z-10 flex h-full w-full cursor-pointer items-center justify-center gap-9 bg-dark/60 p-4 opacity-0 backdrop-blur-sm transition-all group-hover:gap-5 group-hover:opacity-100 dark:bg-dark/70"
+          className="absolute top-0 left-0 z-10 flex h-full w-full cursor-pointer items-center justify-center gap-9 bg-dark/60 p-4 opacity-0 backdrop-blur-sm transition-all group-hover:gap-5 group-hover:opacity-100 dark:bg-dark/70 sm:backdrop-filter-none"
         >
           <button
             onClick={addToBasket}
@@ -98,7 +98,7 @@ export default function Card({ bundle }: { bundle: Bundle }) {
           >
             <div
               className={cn(
-                'mb-2 flex items-center justify-center rounded-full bg-dark-800 text-light backdrop-blur-sm transition-all hover:bg-brand',
+                'mb-2 flex items-center justify-center rounded-full bg-dark-800 text-light backdrop-blur-sm transition-all hover:bg-brand sm:backdrop-filter-none',
                 isGridCompact ? 'h-11 w-11' : 'h-[50px] w-[50px]'
               )}
             >

@@ -247,7 +247,7 @@ const ShopPage: NextPageWithLayout<
             src={cover_photo ?? placeholder}
           />
         </div>
-        <div className="relative z-10 h-full w-full bg-white/[0.85] px-4 pt-10 pb-16 text-center backdrop-blur-sm dark:bg-dark/[0.85] lg:px-8 lg:pt-14 lg:pb-20">
+        <div className="relative z-10 h-full w-full bg-white/[0.85] px-4 pt-10 pb-16 text-center backdrop-blur-sm dark:bg-dark/[0.85] sm:backdrop-filter-none lg:px-8 lg:pt-14 lg:pb-20">
           <div className="relative mx-auto h-[90px]">
             <Image
               alt={name}

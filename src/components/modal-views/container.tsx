@@ -72,7 +72,7 @@ export default function ModalsContainer() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 z-40 cursor-pointer bg-dark bg-opacity-0 sm:bg-opacity-60 sm:backdrop-blur sm:dark:bg-opacity-80" />
+            <Dialog.Overlay className="fixed inset-0 z-40 cursor-pointer bg-dark bg-opacity-0 sm:bg-opacity-60 sm:backdrop-blur sm:backdrop-filter-none sm:dark:bg-opacity-80" />
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
