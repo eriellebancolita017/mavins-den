@@ -4,6 +4,8 @@ import { useState } from 'react';
 import CheckBox from '@/components/ui/forms/checkbox';
 import RadioButton from '../ui/forms/radio-button';
 import Button from '../ui/button';
+import { array } from 'yup';
+import toast from 'react-hot-toast';
 
 export default function ProductPopupDetails() {
   const { data } = useModalState();
@@ -20,11 +22,27 @@ export default function ProductPopupDetails() {
   const handleOptionQtyUpdate = (
     increase: Boolean,
     option_id: string,
+    option: any,
     item_option_category_id: string
   ) => {
     let qty = checkedList[item_option_category_id as keyof object]
       ? checkedList[item_option_category_id as keyof object][option_id]['qty']
       : 0;
+    if (
+      increase &&
+      totalMealsPicked(item_option_category_id) >= getTotalQty(option)
+    ) {
+      toast.success(
+        <b>
+          You have already picked your meals. To add a new meal, remove any one
+          of the already selected meals.
+        </b>,
+        {
+          className: '-mt-10 xs:mt-0',
+        }
+      );
+      return;
+    }
 
     if (increase) {
       qty = qty + 1;
@@ -45,10 +63,23 @@ export default function ProductPopupDetails() {
     tempList[item_option_category_id as keyof object][option_id]['qty'] = qty;
     console.log(tempList);
     setCheckedList(tempList);
+    if (totalMealsPicked(item_option_category_id) == getTotalQty(option)) {
+      toast.success(
+        <b>
+          You have successfully picked your meals, click &quot;Add to
+          Basket&quot; to add the meals to your basket.
+        </b>,
+        {
+          className: '-mt-10 xs:mt-0',
+        }
+      );
+      return;
+    }
   };
 
   const hadleOptionCheck = (
     opiton_id: string,
+    option: any,
     item_option_category_id: string,
     type = 'checkbox'
   ) => {
@@ -65,6 +96,19 @@ export default function ProductPopupDetails() {
         opiton_id as keyof object
       ] == undefined
     ) {
+      if (totalMealsPicked(item_option_category_id) >= getTotalQty(option)) {
+        toast.success(
+          <b>
+            You have already picked your meals. To add a new meal, unselect any
+            one of the already selected meals.
+          </b>,
+          {
+            className: '-mt-10 xs:mt-0',
+          }
+        );
+        return;
+      }
+
       tempList[item_option_category_id as keyof object][
         opiton_id as keyof object
       ] = { selected: true, qty: 1 };
@@ -81,6 +125,22 @@ export default function ProductPopupDetails() {
         console.log(tempList[item_option_category_id as keyof object]);
         let selected = tempList[item_option_category_id][opiton_id]['selected'];
         let selectedNow = !selected;
+
+        if (
+          selectedNow &&
+          totalMealsPicked(item_option_category_id) >= getTotalQty(option)
+        ) {
+          toast.success(
+            <b>
+              You have already picked your meals. To add a new meal, unselect
+              any one of the already selected meals.
+            </b>,
+            {
+              className: '-mt-10 xs:mt-0',
+            }
+          );
+          return;
+        }
         tempList[item_option_category_id as keyof object][opiton_id][
           'selected'
         ] = selectedNow;
@@ -113,7 +173,7 @@ export default function ProductPopupDetails() {
           if (
             !!list.find(
               (l) =>
-                l.item_option_category_id === options.item_option_category_id
+                l.sitem_option_category_id === options.item_option_category_id
             )
           ) {
             list
@@ -158,6 +218,32 @@ export default function ProductPopupDetails() {
     return qty;
   };
 
+  const totalMealsPicked = (cateogry_id: any) => {
+    let category_options = checkedList[cateogry_id as keyof object];
+    let total = 0;
+    if (category_options != undefined) {
+      Object.keys(category_options).forEach(function (key) {
+        const option_qty = category_options[key]['qty'];
+        if (option_qty != undefined) {
+          total = total + option_qty;
+        }
+      });
+    }
+    return total;
+  };
+
+  const getTotalQty = (option: any) => {
+    // Check if the number of meals added so far is equal to the minimum qty needed
+    if (option.title_cat != undefined) {
+      const re = new RegExp('([0-9]+)');
+      const myArray = option.title_cat.match(re);
+      if (myArray != null) {
+        return myArray[0];
+      }
+    }
+    return null;
+  };
+
   return (
     <div className="flex max-w-full flex-col bg-light text-left dark:bg-dark-250 xs:max-w-[430px] sm:max-w-[550px] md:max-w-[600px] lg:max-w-[960px] xl:max-w-[1200px] 3xl:max-w-[1460px]">
       <div className="-mx-2.5 flex flex-wrap items-center bg-light-300 py-3 pl-4 pr-16 dark:bg-dark-100 md:py-4 md:pl-6 lg:-mx-4 lg:py-5 xl:pl-8">
@@ -182,6 +268,13 @@ export default function ProductPopupDetails() {
                   <div key={option.item_option_category_id}>
                     <p className="my-2 text-sm font-semibold">
                       {option.title_cat}
+                      {option.is_multi
+                        ? ' : ' +
+                          totalMealsPicked(option.item_option_category_id) +
+                          '/' +
+                          getTotalQty(option) +
+                          ' selected'
+                        : ''}
                     </p>
                     <ul className="flex list-none flex-col items-start pl-6">
                       {option.item_option_list?.map((item: any) => (
@@ -198,6 +291,7 @@ export default function ProductPopupDetails() {
                                 onChange={() =>
                                   hadleOptionCheck(
                                     item.item_option_id,
+                                    option,
                                     option.item_option_category_id
                                   )
                                 }
@@ -210,13 +304,14 @@ export default function ProductPopupDetails() {
                                     className="text-lg"
                                     onClick={() =>
                                       handleOptionQtyUpdate(
-                                        true,
+                                        false,
                                         item.item_option_id,
+                                        option,
                                         option.item_option_category_id
                                       )
                                     }
                                   >
-                                    <span>+</span>
+                                    -
                                   </Button>
                                   <h2 className="px-5">
                                     {getQty(
@@ -228,13 +323,14 @@ export default function ProductPopupDetails() {
                                     className="text-lg"
                                     onClick={() =>
                                       handleOptionQtyUpdate(
-                                        false,
+                                        true,
                                         item.item_option_id,
+                                        option,
                                         option.item_option_category_id
                                       )
                                     }
                                   >
-                                    -
+                                    <span>+</span>
                                   </Button>
                                 </div>
                               ) : null}
@@ -247,6 +343,7 @@ export default function ProductPopupDetails() {
                               onChange={() =>
                                 hadleOptionCheck(
                                   item.item_option_id,
+                                  option,
                                   option.item_option_category_id,
                                   'radio'
                                 )
