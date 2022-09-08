@@ -96,7 +96,10 @@ export default function ProductPopupDetails() {
         opiton_id as keyof object
       ] == undefined
     ) {
-      if (totalMealsPicked(item_option_category_id) >= getTotalQty(option)) {
+      if (
+        type !== 'radio' &&
+        totalMealsPicked(item_option_category_id) >= getTotalQty(option)
+      ) {
         toast.success(
           <b>
             You have already picked your meals. To add a new meal, unselect any
