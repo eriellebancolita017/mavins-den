@@ -30,6 +30,7 @@ export default function ProductPopupDetails() {
       : 0;
     if (
       increase &&
+      getTotalQty(option) != null &&
       totalMealsPicked(item_option_category_id) >= getTotalQty(option)
     ) {
       toast.success(
@@ -63,7 +64,10 @@ export default function ProductPopupDetails() {
     tempList[item_option_category_id as keyof object][option_id]['qty'] = qty;
     console.log(tempList);
     setCheckedList(tempList);
-    if (totalMealsPicked(item_option_category_id) == getTotalQty(option)) {
+    if (
+      getTotalQty(option) != null &&
+      totalMealsPicked(item_option_category_id) == getTotalQty(option)
+    ) {
       toast.success(
         <b>
           You have successfully picked your meals, click &quot;Add to
@@ -98,6 +102,7 @@ export default function ProductPopupDetails() {
     ) {
       if (
         type !== 'radio' &&
+        getTotalQty(option) != null &&
         totalMealsPicked(item_option_category_id) >= getTotalQty(option)
       ) {
         toast.success(
@@ -131,6 +136,7 @@ export default function ProductPopupDetails() {
 
         if (
           selectedNow &&
+          getTotalQty(option) != null &&
           totalMealsPicked(item_option_category_id) >= getTotalQty(option)
         ) {
           toast.success(
@@ -173,10 +179,15 @@ export default function ProductPopupDetails() {
             item.item_option_id
           ]['selected']
         ) {
+          item['qty'] =
+            checkedList[options.item_option_category_id as keyof object][
+              item.item_option_id
+            ]['qty'];
+
           if (
-            !!list.find(
+            list.find(
               (l) =>
-                l.sitem_option_category_id === options.item_option_category_id
+                l.item_option_category_id === options.item_option_category_id
             )
           ) {
             list
@@ -194,7 +205,8 @@ export default function ProductPopupDetails() {
         }
       });
     });
-
+    console.log('Updated options list : ');
+    console.log(list);
     return list;
   };
 
@@ -246,6 +258,13 @@ export default function ProductPopupDetails() {
     }
     return null;
   };
+  const getTotalQtyText = (option: any) => {
+    let qty = getTotalQty(option);
+    if (qty == null) {
+      return ' ';
+    }
+    return ' / ' + qty;
+  };
 
   return (
     <div className="flex max-w-full flex-col bg-light text-left dark:bg-dark-250 xs:max-w-[430px] sm:max-w-[550px] md:max-w-[600px] lg:max-w-[960px] xl:max-w-[1200px] 3xl:max-w-[1460px]">
@@ -274,8 +293,7 @@ export default function ProductPopupDetails() {
                       {option.is_multi
                         ? ' : ' +
                           totalMealsPicked(option.item_option_category_id) +
-                          '/' +
-                          getTotalQty(option) +
+                          getTotalQtyText(option) +
                           ' selected'
                         : ''}
                     </p>
