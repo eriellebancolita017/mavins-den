@@ -5,7 +5,7 @@ import { getAuthToken, removeAuthToken } from './token.utils';
 
 const Axios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },

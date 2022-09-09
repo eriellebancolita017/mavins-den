@@ -37,7 +37,8 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
     if (item_options?.length! > 0) {
       item_options?.map((options) => {
         options.item_option_list.map((option: any) => {
-          addonPrice += option.price || 0;
+          let qty = option.qty || 1;
+          addonPrice += (option.price || 0) * qty;
         });
       });
     }
