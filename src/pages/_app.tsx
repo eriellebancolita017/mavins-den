@@ -25,7 +25,7 @@ import Layout from '@/layouts/_general-layout';
 import UserContextProvider from '@/components/preppers/context';
 import { SpinnerIcon } from '@/components/icons/spinner-icon';
 import { toast } from 'react-hot-toast';
-import { PopupButton } from '@typeform/embed-react';
+import { PopupButton, Sidetab } from '@typeform/embed-react';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 import TagManager from 'react-gtm-module';
 import { analytics } from '@/lib/firebase';
@@ -264,16 +264,15 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-                      {/* <PopupButton
-                        id={'jtWs4On7'}
-                        style={{ position: 'fixed' }}
-                        size={86}
-                        autoResize
-                        open={typeformKey !== 'loaded' ? 'time' : undefined}
-                        openValue={15000}
-                        onReady={() => saveTypeformKey('loaded')}
-                        onClose={() => saveTypeformKey('loaded')}
-                      ></PopupButton> */}
+                      {typeformKey != 'loaded' ? (
+                        <Sidetab
+                          id={'jtWs4On7'}
+                          autoResize
+                          buttonColor="#FCAC02"
+                          buttonText="Want our recommendation?"
+                          onClose={() => saveTypeformKey('loaded')}
+                        ></Sidetab>
+                      ) : null}
 
                       <SearchView />
                       <ModalsContainer />
