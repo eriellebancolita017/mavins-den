@@ -34,9 +34,11 @@ const DefaultSeo = () => {
         settings?.seo?.metaTitle || "Marvin's Den - healthy meals marketplace"
       }
       titleTemplate={`${
-        settings?.seo?.metaTitle || settings?.siteTitle || 'Digital Download'
+        settings?.seo?.metaTitle ||
+        settings?.siteTitle ||
+        'Meal prep delivery services'
       } | %s`}
-      defaultTitle="Pixer"
+      defaultTitle="Marvin's Den Ready Meals"
       description={settings?.seo?.metaDescription || settings?.siteSubtitle}
       canonical={settings?.seo?.canonicalUrl}
       openGraph={{

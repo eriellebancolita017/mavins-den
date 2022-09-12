@@ -1,5 +1,5 @@
 {
-  "name": "Pixer - Digital Product E-commerce",
+  "name": "Marvin's Den - Meal Prep services",
   "short_name": "pixer",
   "theme_color": "#348155",
   "background_color": "#595552",
@@ -7,7 +7,7 @@
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
-  "description": "Digital Product E-commerce",
+  "description": "Meal Prep delivery",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
