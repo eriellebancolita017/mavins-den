@@ -82,7 +82,7 @@ export default function Card({ bundle }: { bundle: Bundle }) {
           layout="fill"
           quality={100}
           objectFit="cover"
-          src={cover_photo ?? placeholder}
+          src={cover_photo || placeholder}
           className="bg-light-500 dark:bg-dark-400"
         />
         <div
