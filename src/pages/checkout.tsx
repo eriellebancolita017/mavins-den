@@ -149,7 +149,7 @@ const CheckoutPage: NextPageWithLayout = () => {
         url={routes?.checkout}
       />
       <div className="mx-auto flex h-full w-full max-w-screen-sm flex-col p-4 pt-6 sm:p-5 sm:pt-8 md:pt-10 3xl:pt-12">
-        {!isEmpty && Boolean(verifiedResponse) ? (
+        {!isEmpty && (Boolean(verifiedResponse) || Boolean(freeCheckout)) ? (
           <div className="mb-4 bg-light shadow-card dark:bg-dark-250 dark:shadow-none md:mb-5 3xl:mb-6">
             <h2 className="flex items-center justify-between border-b border-light-400 px-5 py-4 text-sm font-medium text-dark dark:border-dark-400 dark:text-light sm:py-5 sm:px-7 md:text-base">
               Contact Number
