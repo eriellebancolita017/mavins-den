@@ -180,7 +180,10 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
           coupon_discount: couponValue,
           coupon_type: couponInfo.discount_type || '',
           coupon_value: couponValue,
-          credit_deduct_amount: credit,
+          credit_deduct_amount: Math.min(
+            +(total - couponValue + deliveryCharge),
+            credit
+          ).toFixed(2),
           deliver_to: selectedAddress.address,
           deliver_to_latitude: selectedAddress.latitude,
           deliver_to_longitude: selectedAddress.longitude,
