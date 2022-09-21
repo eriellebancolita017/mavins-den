@@ -59,36 +59,44 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   const [showAll, setShowAll] = useState(false);
   const [addNew, setAddNew] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [deliveryInstructions, setDeliveryInstructions] = useState('');
 
-  const { total, couponValue, credit, couponInfo, deliveryCharge } = priceInfo;
+  const {
+    total,
+    couponValue,
+    credit,
+    couponInfo,
+    deliveryCharge,
+    freeCheckout,
+  } = priceInfo;
 
   const { mutate, isLoading } = useMutation(client.orders.create, {
     onSuccess: (res) => {
       //FB ANALYTICS
       fbq.event('Purchase', {
         currency: 'GBP',
-        value: total + deliveryCharge,
+        value: Math.max(total + deliveryCharge, 0),
       });
 
       // Branch IO
       branchio.logPurchaseEvent({
         transaction_id: res.payload.order_id,
         coupon: couponInfo.coupon_code,
-        amount: total + deliveryCharge,
+        amount: Math.max(total + deliveryCharge, 0),
         // content_items: items,
       });
 
       // google analytics
       logEvent(analytics, 'purchase', {
         currency: 'GBP',
-        value: total + deliveryCharge,
+        value: Math.max(total + deliveryCharge, 0),
         transaction_id: res.payload.order_id,
       });
       if (couponInfo.coupon_code == undefined) {
         couponInfo.coupon_code = 'No Discount';
       }
       const lastOrderValue = {
-        transactionTotal: total + deliveryCharge,
+        transactionTotal: Math.max(total + deliveryCharge, 0),
         transactionID: res.payload.order_id,
         couponInfo: couponInfo.coupon_code,
       };
@@ -143,6 +151,10 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
 
   const available_items = items;
 
+  function placeFreeOrder() {
+    setPaymentSuccess(true);
+  }
+
   useEffect(() => {
     function createOrder() {
       // if (
@@ -177,18 +189,18 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
           discount_value: 0.0,
           floor: selectedAddress.floor || 0,
           food_allergies_note: '',
-          gross_amount: (total + deliveryCharge).toString(),
+          gross_amount: Math.max(total + deliveryCharge, 0.0).toString(),
           code: 'EN',
           address_title: '',
           address_type: selectedAddress.type || 'other',
           landmark: ' ',
-          net_amount: +(total - credit - couponValue + deliveryCharge).toFixed(
-            2
-          ),
+          net_amount: Math.max(
+            +(total - credit - couponValue + deliveryCharge),
+            0.0
+          ).toFixed(2),
           restaurant_discount: 0.0,
           restaurant_id: items[0].restaurant_id,
-          // "restaurant_id": "RES1655826172HZA99933",
-          special_instruction: '',
+          special_instruction: deliveryInstructions,
           tax_details: [],
           total_tax_amount: 0.0,
         }),
@@ -273,7 +285,11 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         <div className="flex justify-between">
           <p>Total</p>
           <strong className="font-semibold">
-            £{(total - credit - couponValue + deliveryCharge).toFixed(2)}
+            £
+            {Math.max(
+              total - credit - couponValue + deliveryCharge,
+              0.0
+            ).toFixed(2)}
           </strong>
         </div>
       </div>
@@ -482,9 +498,24 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
           <hr className="mt-6" />
         </div>
       )}
-
-      {Object.keys(selectedAddress).length !== 0 && (
+      <Input
+        label="Do you have any special requests or want to provide any delivery instructions?"
+        type="text"
+        className="my-2 mr-4 flex-1"
+        value={deliveryInstructions}
+        onChange={(e) => setDeliveryInstructions(e.target.value)}
+      />
+      {Object.keys(selectedAddress).length !== 0 && !freeCheckout && (
         <StripePayment setPaymentSuccess={setPaymentSuccess} />
+      )}
+      {Object.keys(selectedAddress).length !== 0 && freeCheckout && (
+        <Button
+          className="w-full md:h-[50px] md:text-sm"
+          disabled={!selectedAddress.latitude}
+          onClick={placeFreeOrder}
+        >
+          Place Order (No payment required)
+        </Button>
       )}
 
       {/* <Button

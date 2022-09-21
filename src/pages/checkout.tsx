@@ -28,6 +28,7 @@ const CheckoutPage: NextPageWithLayout = () => {
   const [couponValue, setCouponValue] = useState(0);
   const [couponInfo, setCouponInfo] = useState({});
   const [couponText, setCouponText] = useState('');
+  const [freeCheckout, setFreeCheckOut] = useState(false);
   const [verifySuccess, setVerifySuccess] = useState(false);
   const {
     items,
@@ -104,15 +105,16 @@ const CheckoutPage: NextPageWithLayout = () => {
 
   function verify() {
     if (total - me?.credit - couponValue + deliveryCharge < 0.3) {
-      toast.error(
+      toast.success(
         <b>
-          You need to order more than your credit amount. Your credit amount is:
-          £{me.credit}
+          You have unlocked payment free ordering. Your credit amount is: £
+          {me.credit}
         </b>,
         {
           className: '-mt-10 xs:mt-0',
         }
       );
+      setFreeCheckOut(true);
       return;
     }
     mutate({
@@ -186,7 +188,7 @@ const CheckoutPage: NextPageWithLayout = () => {
               </>
             )}
 
-            {!isEmpty && !Boolean(verifiedResponse) && (
+            {!isEmpty && !Boolean(verifiedResponse) && !Boolean(freeCheckout) && (
               <div className="sticky bottom-11 z-[5] mt-10 border-t border-light-400 bg-light pt-6 pb-7 dark:border-dark-400 dark:bg-dark-250 sm:bottom-0 sm:mt-12 sm:pt-8 sm:pb-9">
                 <div className="flex items-end">
                   <Input
@@ -265,11 +267,12 @@ const CheckoutPage: NextPageWithLayout = () => {
                     <p>Total</p>
                     <strong className="font-semibold">
                       £
-                      {(
+                      {Math.max(
                         total -
-                        (me?.credit || 0) -
-                        couponValue +
-                        deliveryCharge
+                          (me?.credit || 0) -
+                          couponValue +
+                          deliveryCharge,
+                        0.0
                       ).toFixed(2)}
                     </strong>
                   </div>
@@ -289,7 +292,7 @@ const CheckoutPage: NextPageWithLayout = () => {
                 </Button>
               </div>
             )}
-            {!isEmpty && Boolean(verifiedResponse) && (
+            {!isEmpty && (Boolean(verifiedResponse) || Boolean(freeCheckout)) && (
               <CartCheckout
                 priceInfo={{
                   total,
@@ -297,6 +300,7 @@ const CheckoutPage: NextPageWithLayout = () => {
                   deliveryCharge,
                   credit: me?.credit,
                   couponInfo,
+                  freeCheckout,
                 }}
               />
             )}
