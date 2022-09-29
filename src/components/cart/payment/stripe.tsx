@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Elements,
   CardElement,
+  PaymentElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
@@ -14,6 +15,7 @@ import { useCart } from '@/components/cart/lib/cart.context';
 
 const StripeForm = ({ setPaymentSuccess }: any) => {
   const stripe = useStripe();
+  const [loadingStripe, setLoadingStripe] = useState(false);
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [_, setVerifiedToken] = useAtom(verifiedTokenAtom);
@@ -33,24 +35,21 @@ const StripeForm = ({ setPaymentSuccess }: any) => {
     // each type of element.
     const cardElement = elements.getElement(CardElement)!;
     // Use your card Element with other Stripe.js APIs
-    const payload = await stripe.confirmCardPayment(
-      verifiedResponse!.clientSecret,
-      // "pi_3LRLNbFf8reu2sN81WWRVDgT_secret_DVVYGpepKml0JsBCSmwgeg83D",
-      {
-        payment_method: {
-          card: cardElement,
-        },
-      }
-    );
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: 'https://shop.marvinsden.com/purchases',
+      },
+      redirect: 'if_required',
+    });
 
-    if (payload.error) {
+    if (error) {
       setLoading(false);
-      toast.error(<b>{payload.error.message}</b>, {
+      toast.error(<b>{error.message}</b>, {
         className: '-mt-10 xs:mt-0',
       });
       return;
     } else {
-      setVerifiedToken(payload.paymentIntent.receipt_email);
       toast.success(<b>Confirmation Done!</b>, {
         className: '-mt-10 xs:mt-0',
       });
@@ -64,16 +63,7 @@ const StripeForm = ({ setPaymentSuccess }: any) => {
       onSubmit={handleSubmit}
       className="mt-3 mb-5 flex flex-col rounded-lg border-light-500 dark:border-dark-500 xs:mb-7 xs:border xs:p-5"
     >
-      <CardElement
-        options={{
-          hidePostalCode: true,
-          style: {
-            base: {
-              fontSize: '13px',
-            },
-          },
-        }}
-      />
+      <PaymentElement className="option-fit object-contain" />
       <Button
         type="submit"
         isLoading={loading}
@@ -86,9 +76,15 @@ const StripeForm = ({ setPaymentSuccess }: any) => {
   );
 };
 
-export default function StripePayment({ setPaymentSuccess }: any) {
+export default function StripePayment({
+  setPaymentSuccess,
+  verifiedResponse,
+}: any) {
   return (
-    <Elements stripe={getStripe()}>
+    <Elements
+      stripe={getStripe()}
+      options={{ clientSecret: verifiedResponse!.clientSecret }}
+    >
       <StripeForm setPaymentSuccess={setPaymentSuccess} />
     </Elements>
   );

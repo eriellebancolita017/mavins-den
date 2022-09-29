@@ -508,9 +508,14 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         value={deliveryInstructions}
         onChange={(e) => setDeliveryInstructions(e.target.value)}
       />
-      {Object.keys(selectedAddress).length !== 0 && !freeCheckout && (
-        <StripePayment setPaymentSuccess={setPaymentSuccess} />
-      )}
+      {Object.keys(selectedAddress).length !== 0 &&
+        !freeCheckout &&
+        verifiedResponse?.clientSecret != undefined && (
+          <StripePayment
+            setPaymentSuccess={setPaymentSuccess}
+            verifiedResponse={verifiedResponse}
+          />
+        )}
       {Object.keys(selectedAddress).length !== 0 && freeCheckout && (
         <Button
           className="w-full md:h-[50px] md:text-sm"
