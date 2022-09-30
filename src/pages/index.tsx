@@ -90,8 +90,8 @@ const Home: NextPageWithLayout = () => {
   const [index, setIndex] = useState<number | string>('all');
   const { location } = useUserContext();
   const { bundles, isLoading } = useBundles({
-    latitude: location.latitude,
-    longitude: location.longitude,
+    latitude: location.latitude || 51.52562,
+    longitude: location.longitude || -0.0836,
     code: 'EN',
     searchKeyword: 'bundle',
     store_type: 'restaurant',

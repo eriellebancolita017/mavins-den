@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import client from './client';
 import { API_ENDPOINTS } from './client/endpoints';
 import { useUserContext } from '@/components/preppers/context';
+import { useState, useEffect } from 'react';
 
 export function useMe() {
   const { isAuthorized, getToken } = useAuth();
@@ -20,7 +21,10 @@ export function useMe() {
       enabled: isAuthorized,
     }
   );
-  setUserInfo(data?.payload || null);
+  useEffect(() => {
+    setUserInfo(data?.payload || null);
+  }, []);
+
   return {
     me: !!userInfo
       ? { ...userInfo, ...location }
