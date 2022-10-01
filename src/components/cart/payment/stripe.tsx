@@ -63,7 +63,8 @@ const StripeForm = ({ setPaymentSuccess }: any) => {
       onSubmit={handleSubmit}
       className="mt-3 mb-5 flex flex-col rounded-lg border-light-500 dark:border-dark-500 xs:mb-7 xs:border xs:p-5"
     >
-      <PaymentElement className="object-contain" />
+      <PaymentElement className="h-[280px] min-h-[260px] overflow-auto object-contain" />
+
       <Button
         type="submit"
         isLoading={loading}

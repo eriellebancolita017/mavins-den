@@ -278,7 +278,7 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         </div>
         <div className="flex justify-between">
           <p>Credit Amount</p>
-          <strong className="font-semibold">£{credit.toFixed(2)}</strong>
+          <strong className="font-semibold">£{credit?.toFixed(2)}</strong>
         </div>
         <div className="flex justify-between">
           <p>Coupon Discount Amount</p>
