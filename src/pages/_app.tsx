@@ -55,7 +55,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const authenticationRequired = Component.authorization ?? false;
 
   const router = useRouter();
-  const [pageLoading, setPageLoading] = useState<boolean>(false);
+  const [pageLoading, setPageLoading] = useState<boolean>(true);
 
   const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
@@ -79,6 +79,9 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
     };
   }, [router.events]);
 
+  useEffect(() => {
+    setPageLoading(false);
+  });
   useEffect(() => {
     const handleStart = () => {
       setPageLoading(true);
