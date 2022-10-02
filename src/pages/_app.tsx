@@ -80,7 +80,11 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   }, [router.events]);
 
   useEffect(() => {
-    setPageLoading(false);
+    if (router.pathname == '/') {
+      setTimeout(function () {
+        setPageLoading(false);
+      }, 1500);
+    }
   });
   useEffect(() => {
     const handleStart = () => {
@@ -251,6 +255,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                   initial={false}
                   onExitComplete={() => window.scrollTo(0, 0)}
                 >
+                  <DefaultSeo />
                   {pageLoading ? (
                     <Layout>
                       <div className="flex h-full min-h-[calc(100vh-200px)] items-center justify-center">
@@ -259,7 +264,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                     </Layout>
                   ) : (
                     <>
-                      <DefaultSeo />
                       {authenticationRequired ? (
                         <PrivateRoute>
                           {getLayout(<Component {...pageProps} />)}
@@ -276,7 +280,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                           onClose={() => saveTypeformKey('loaded')}
                         ></Sidetab>
                       ) : null}
-
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
