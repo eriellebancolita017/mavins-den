@@ -82,11 +82,9 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   useEffect(() => {
     console.log('Running in mode: ');
     console.log(process.env.NODE_ENV);
-    if (router.pathname == '/') {
-      setTimeout(function () {
-        setPageLoading(false);
-      }, 1500);
-    }
+    setTimeout(function () {
+      setPageLoading(false);
+    }, 1500);
   });
   useEffect(() => {
     const handleStart = () => {
@@ -240,6 +238,19 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
             fbq('init', ${fbq.FB_PIXEL_ID});
+          `,
+        }}
+      />
+      <Script
+        id="mailerLite"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `   
+          (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+          .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+          n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+          (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+          ml('account', '45958');
           `,
         }}
       />
