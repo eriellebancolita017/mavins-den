@@ -80,6 +80,8 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   }, [router.events]);
 
   useEffect(() => {
+    console.log('Running in mode: ');
+    console.log(process.env.NODE_ENV);
     if (router.pathname == '/') {
       setTimeout(function () {
         setPageLoading(false);
