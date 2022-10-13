@@ -112,6 +112,11 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
   const { mutate: getAddressList } = useMutation(client.address.manageAddress, {
     onSuccess: (res) => {
       setSavedAddress(res.payload || []);
+      if (res.payload.length) {
+        {
+          setSelectedAddress(res.payload[0]);
+        }
+      }
     },
   });
 
@@ -297,6 +302,14 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
         </div>
       </div>
 
+      <Input
+        label="Do you have any special requests or want to provide any delivery instructions?"
+        type="text"
+        className="my-2 mr-4 flex-1"
+        value={deliveryInstructions}
+        onChange={(e) => setDeliveryInstructions(e.target.value)}
+      />
+
       <p className="!mb-4 text-base font-medium text-dark dark:text-light">
         Select delivery address
       </p>
@@ -374,12 +387,8 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
       )}
 
       {!addNew ? (
-        <Button
-          variant="outline"
-          className="mb-6 w-full"
-          onClick={() => setAddNew(!addNew)}
-        >
-          Add or Update Address
+        <Button className="mb-6 w-full" onClick={() => setAddNew(!addNew)}>
+          Add new delivery address
         </Button>
       ) : (
         <div className="my-6 w-full">
@@ -501,13 +510,7 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
           <hr className="mt-6" />
         </div>
       )}
-      <Input
-        label="Do you have any special requests or want to provide any delivery instructions?"
-        type="text"
-        className="my-2 mr-4 flex-1"
-        value={deliveryInstructions}
-        onChange={(e) => setDeliveryInstructions(e.target.value)}
-      />
+
       {Object.keys(selectedAddress).length !== 0 &&
         !freeCheckout &&
         verifiedResponse?.clientSecret != undefined && (

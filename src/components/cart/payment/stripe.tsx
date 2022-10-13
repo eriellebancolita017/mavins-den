@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Elements,
   CardElement,
@@ -12,6 +12,11 @@ import getStripe from '@/lib/get-stripejs';
 import Button from '@/components/ui/button';
 import { verifiedTokenAtom } from '@/components/cart/lib/checkout';
 import { useCart } from '@/components/cart/lib/cart.context';
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  usePayPalScriptReducer,
+} from '@paypal/react-paypal-js';
 
 const StripeForm = ({ setPaymentSuccess }: any) => {
   const stripe = useStripe();
@@ -77,16 +82,96 @@ const StripeForm = ({ setPaymentSuccess }: any) => {
   );
 };
 
+const currency = 'GBP';
+const style = { layout: 'horizontal', tagline: 'false' };
+
+// Custom component to wrap the PayPalButtons and handle currency changes
+const ButtonWrapper = ({ currency, showSpinner, setPaymentSuccess }) => {
+  // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
+  // This is the main reason to wrap the PayPalButtons in a new component
+  const amount = '1';
+  const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
+
+  useEffect(() => {
+    dispatch({
+      type: 'resetOptions',
+      value: {
+        ...options,
+        currency: currency,
+      },
+    });
+  }, [currency, showSpinner]);
+
+  return (
+    <>
+      {showSpinner && isPending && <div className="spinner" />}
+      <PayPalButtons
+        style={style}
+        disabled={false}
+        forceReRender={[amount, currency, style]}
+        fundingSource={undefined}
+        createOrder={(data, actions) => {
+          return actions.order
+            .create({
+              purchase_units: [
+                {
+                  amount: {
+                    currency_code: currency,
+                    value: amount,
+                  },
+                },
+              ],
+            })
+            .then((orderId) => {
+              // Your code here after create the order
+              return orderId;
+            });
+        }}
+        onApprove={function (data, actions) {
+          return actions.order.capture().then(function () {
+            setPaymentSuccess(true);
+          });
+        }}
+      />
+    </>
+  );
+};
+
+const PaypalForm = ({ setPaymentSuccess }: any) => {
+  {
+    return (
+      <div style={{ maxWidth: '750px' }}>
+        <PayPalScriptProvider
+          options={{
+            'client-id': process.env.NEXT_PUBLIC_PAYPAL_KEY,
+            components: 'buttons',
+            currency: 'GBP',
+          }}
+        >
+          <ButtonWrapper
+            currency={currency}
+            showSpinner={false}
+            setPaymentSuccess={setPaymentSuccess}
+          />
+        </PayPalScriptProvider>
+      </div>
+    );
+  }
+};
+
 export default function StripePayment({
   setPaymentSuccess,
   verifiedResponse,
 }: any) {
   return (
-    <Elements
-      stripe={getStripe()}
-      options={{ clientSecret: verifiedResponse!.clientSecret }}
-    >
-      <StripeForm setPaymentSuccess={setPaymentSuccess} />
-    </Elements>
+    <div>
+      <PaypalForm setPaymentSuccess={setPaymentSuccess} />
+      <Elements
+        stripe={getStripe()}
+        options={{ clientSecret: verifiedResponse!.clientSecret }}
+      >
+        <StripeForm setPaymentSuccess={setPaymentSuccess} />
+      </Elements>
+    </div>
   );
 }
