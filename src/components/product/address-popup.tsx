@@ -41,13 +41,13 @@ export default function AddressPopup() {
 
             <hr className="my-6" />
 
-            <Input
+            {/* <Input
               label="Address"
               type="text"
               value={data.address}
               onChange={(e) => setData({ ...data, address: e.target.value })}
               disabled={!data.latitude}
-            />
+            /> */}
             <div className="my-4 flex flex-col gap-5 sm:flex-row">
               {/* <Input
                 label="Latitude"
