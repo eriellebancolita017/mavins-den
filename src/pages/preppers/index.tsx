@@ -7,6 +7,7 @@ import routes from '@/config/routes';
 import CategoryFilter from '@/components/preppers/category-filter';
 import Grid from '@/components/preppers/grid';
 import { useUserContext } from '@/components/preppers/context';
+import PromoCarousel from '@/components/product/promo-carousel';
 
 function Preppers({
   index,
@@ -77,6 +78,7 @@ const PreppersPage: NextPageWithLayout = () => {
         description="We partnered up with the best meal prep providers and meal delivery companies in the UK."
         url={routes.preppers}
       />
+      <PromoCarousel />
       {!!preppers && (
         <CategoryFilter preppers={preppers} index={index} setIndex={setIndex} />
       )}

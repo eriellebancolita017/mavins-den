@@ -18,6 +18,7 @@ import CategoryFilter from '@/components/product/category-filter';
 import { useBundles } from '@/data/explore';
 import { useState } from 'react';
 import { useUserContext } from '@/components/preppers/context';
+import PromoCarousel from '@/components/product/promo-carousel';
 
 // export const getStaticProps: GetStaticProps = async () => {
 //   const queryClient = new QueryClient();
@@ -103,6 +104,7 @@ const Home: NextPageWithLayout = () => {
         description="We partnered up with the best meal prep providers and meal delivery companies in the UK."
         url={routes.home}
       />
+      <PromoCarousel />
       {!!bundles && (
         <CategoryFilter
           bundles={bundles as Bundles[]}
