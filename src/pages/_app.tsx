@@ -65,6 +65,12 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
         navigator.platform.toUpperCase().indexOf('IPHONE') >= 0
       : true;
 
+  const isAndroid =
+    typeof window !== 'undefined'
+      ? // navigator.platform.toUpperCase().indexOf('MAC') >= 0 ||
+        navigator.platform.toUpperCase().indexOf('ANDROID') >= 0
+      : true;
+
   useEffect(() => {
     // This pageview only triggers the first time (it's important for Pixel to have real information)
     fbq.pageview();
@@ -284,14 +290,19 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-                      {typeformKey != 'loaded' ? (
-                        <Sidetab
+                      {typeformKey != 'loaded_on_mobile' ? (
+                        <Popover
                           id={'jtWs4On7'}
                           autoResize
                           buttonColor="#FCAC02"
-                          buttonText="Want our recommendation?"
-                          onClose={() => saveTypeformKey('loaded')}
-                        ></Sidetab>
+                          chat
+                          tooltip="Want complimentary beespoke plan from our qualified nutritionist?"
+                          onClose={() => {
+                            if (isMac || isAndroid) {
+                              saveTypeformKey('loaded_on_mobile');
+                            }
+                          }}
+                        ></Popover>
                       ) : null}
                       <SearchView />
                       <ModalsContainer />
