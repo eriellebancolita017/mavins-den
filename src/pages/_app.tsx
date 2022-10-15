@@ -67,7 +67,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const isAndroid =
     typeof window !== 'undefined'
-      ? // navigator.platform.toUpperCase().indexOf('MAC') >= 0 ||
+      ? navigator.platform.toUpperCase().indexOf('LINUX') >= 0 ||
         navigator.platform.toUpperCase().indexOf('ANDROID') >= 0
       : true;
 
