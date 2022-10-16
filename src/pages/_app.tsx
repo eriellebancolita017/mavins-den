@@ -296,7 +296,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                           autoResize
                           buttonColor="#FCAC02"
                           chat
-                          tooltip="Want complimentary beespoke plan from our qualified nutritionist?"
+                          tooltip="Want complimentary bespoke plan from our qualified nutritionist?"
                           onClose={() => {
                             if (isMac || isAndroid) {
                               saveTypeformKey('loaded_on_mobile');
