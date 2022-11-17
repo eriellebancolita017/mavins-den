@@ -15,7 +15,7 @@ export default function Logo({
   const { lightLogo, darkLogo } = siteSettings;
   return (
     <AnchorLink
-      href={'https://www.marvinsden.com'}
+      href={'/'}
       className={cn(
         'relative flex items-center text-dark focus:outline-none dark:text-light',
         className
