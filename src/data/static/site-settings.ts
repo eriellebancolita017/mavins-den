@@ -13,9 +13,16 @@ export const siteSettings = {
     'https://uploads-ssl.webflow.com/620ad29fb46ac6596379e3a5/620d0dde8482383154cce5b6_Less%20Background%20Logo.png',
   promoCarouselImages: [
     promoImgFoodHak,
-    promoImg1,
     promoImg3,
     promoImg4,
+    promoImg1,
     promoImg5,
+  ],
+  promoCarouselLinks: [
+    '/preppers/RES1666108454SIX33686', // Foodhak
+    '/preppers/RES1663343678TUT42260', //Field Doctor
+    'https://qbs4or3rcm8.typeform.com/to/jtWs4On7',
+    'https://marvinsden.com',
+    'https://marvinsden.com/blog',
   ],
 };

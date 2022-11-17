@@ -4,6 +4,8 @@ import { ChevronLeft } from '@/components/icons/chevron-left';
 import { ChevronRight } from '@/components/icons/chevron-right';
 import placeholder from '@/assets/images/placeholders/product.svg';
 import { siteSettings } from '@/data/static/site-settings';
+import Link from 'next/link';
+import AnchorLink from '@/components/ui/links/anchor-link';
 
 const carouselBreakpoints = {
   1024: {
@@ -13,7 +15,7 @@ const carouselBreakpoints = {
 };
 
 export default function PromoCarousel() {
-  const { promoCarouselImages } = siteSettings;
+  const { promoCarouselImages, promoCarouselLinks } = siteSettings;
   return (
     <div className="relative border-b border-light-300 bg-light-100 pl-4 pt-5 dark:border-dark-300 dark:bg-dark-100 md:pl-6 md:pt-6 lg:pl-7 3xl:pl-8">
       <Swiper
@@ -34,12 +36,14 @@ export default function PromoCarousel() {
             key={`promo-carousel-key-${index}`}
             className="relative mb-5 aspect-[37/16] w-full  bg-light-200 dark:bg-dark-250 2xl:mb-6"
           >
-            <Image
-              layout="fill"
-              objectFit="cover"
-              alt={`promo-carousel-${index}`}
-              src={slideImg ?? placeholder}
-            />
+            <AnchorLink href={promoCarouselLinks[index]}>
+              <Image
+                layout="fill"
+                objectFit="cover"
+                alt={`promo-carousel-${index}`}
+                src={slideImg ?? placeholder}
+              />
+            </AnchorLink>
           </SwiperSlide>
         ))}
       </Swiper>
