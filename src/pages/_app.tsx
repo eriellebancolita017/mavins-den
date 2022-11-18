@@ -290,7 +290,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                       ) : (
                         getLayout(<Component {...pageProps} />)
                       )}
-                      {typeformKey != 'loaded_on_mobile' ? (
+                      {/* {typeformKey != 'loaded_on_mobile' ? (
                         <Popover
                           id={'jtWs4On7'}
                           autoResize
@@ -303,7 +303,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                             }
                           }}
                         ></Popover>
-                      ) : null}
+                      ) : null} */}
                       <SearchView />
                       <ModalsContainer />
                       <DrawersContainer />
