@@ -86,10 +86,15 @@ const currency = 'GBP';
 const style = { layout: 'horizontal', tagline: 'false' };
 
 // Custom component to wrap the PayPalButtons and handle currency changes
-const ButtonWrapper = ({ currency, showSpinner, setPaymentSuccess }) => {
+const ButtonWrapper = ({
+  currency,
+  showSpinner,
+  setPaymentSuccess,
+  amount,
+}) => {
   // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
   // This is the main reason to wrap the PayPalButtons in a new component
-  const amount = '1';
+
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
 
   useEffect(() => {
@@ -137,7 +142,7 @@ const ButtonWrapper = ({ currency, showSpinner, setPaymentSuccess }) => {
   );
 };
 
-const PaypalForm = ({ setPaymentSuccess }: any) => {
+const PaypalForm = ({ setPaymentSuccess, amount }: any) => {
   {
     return (
       <div style={{ maxWidth: '750px' }}>
@@ -152,6 +157,7 @@ const PaypalForm = ({ setPaymentSuccess }: any) => {
             currency={currency}
             showSpinner={false}
             setPaymentSuccess={setPaymentSuccess}
+            amount={amount}
           />
         </PayPalScriptProvider>
       </div>
@@ -162,10 +168,11 @@ const PaypalForm = ({ setPaymentSuccess }: any) => {
 export default function StripePayment({
   setPaymentSuccess,
   verifiedResponse,
+  amount,
 }: any) {
   return (
     <div>
-      <PaypalForm setPaymentSuccess={setPaymentSuccess} />
+      <PaypalForm setPaymentSuccess={setPaymentSuccess} amount={amount} />
       <Elements
         stripe={getStripe()}
         options={{ clientSecret: verifiedResponse!.clientSecret }}

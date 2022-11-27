@@ -517,6 +517,10 @@ export default function CartCheckout({ priceInfo }: { priceInfo: any }) {
           <StripePayment
             setPaymentSuccess={setPaymentSuccess}
             verifiedResponse={verifiedResponse}
+            amount={Math.max(
+              +(total - credit - couponValue + deliveryCharge),
+              0.0
+            ).toFixed(2)}
           />
         )}
       {Object.keys(selectedAddress).length !== 0 && freeCheckout && (
