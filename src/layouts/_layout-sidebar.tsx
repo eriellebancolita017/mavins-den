@@ -10,6 +10,9 @@ import { CloseIcon } from '@/components/icons/close-icon';
 import { useDrawer } from '@/components/drawer-views/context';
 import { ProductIcon } from '@/components/icons/product-icon';
 import { PeopleIcon } from '@/components/icons/people-icon';
+import { InformationIcon } from '@/components/icons/information-icon';
+import { HeartIcon } from '@/components/icons/heart-icon';
+import { ChristmasIcon } from '@/components/icons/christmas-icon';
 import { PaperPlaneIcon } from '@/components/icons/paper-plane-icon';
 import Scrollbar from '@/components/ui/scrollbar';
 import Copyright from '@/layouts/_copyright';
@@ -68,6 +71,12 @@ export function Sidebar({
         <div className="flex h-full w-full flex-col">
           <nav className="flex flex-col">
             <NavLink
+              title={'Weight loss meals'}
+              href={'https://lose-weight.marvinsden.com'}
+              isCollapse={isCollapse}
+              icon={<HeartIcon className="h-[18px] w-[18px] text-current" />}
+            />
+            <NavLink
               title={'Meal Preppers'}
               href={routes.preppers}
               isCollapse={isCollapse}
@@ -80,10 +89,26 @@ export function Sidebar({
               icon={<PackageIcon className="h-[18px] w-[18px] text-current" />}
             />
             <NavLink
-              title={'Explore'}
+              title={'Explore all meals'}
               href={routes.explore}
               isCollapse={isCollapse}
               icon={<DiscoverIcon className="h-[18px] w-[18px] text-current" />}
+            />
+            <NavLink
+              title={'Christmas meals'}
+              href={'https://christmas-meals.marvinsden.com'}
+              isCollapse={isCollapse}
+              icon={
+                <ChristmasIcon className="h-[18px] w-[18px] text-current" />
+              }
+            />
+            <NavLink
+              title={"Why Marvin's Den?"}
+              href={'https://marvinsden.com'}
+              isCollapse={isCollapse}
+              icon={
+                <InformationIcon className="h-[18px] w-[18px] text-current" />
+              }
             />
             {/* <NavLink
               title={'Popular Products'}
