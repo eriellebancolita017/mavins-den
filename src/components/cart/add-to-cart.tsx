@@ -44,6 +44,7 @@ export default function AddToCart({ item, className, toastClassName }: Props) {
     }
     return addonPrice;
   }
+
   return (
     <Button
       onClick={() => handleAddToCart()}

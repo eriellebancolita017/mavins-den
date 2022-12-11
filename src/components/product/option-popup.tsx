@@ -92,7 +92,13 @@ export default function ProductPopupDetails() {
     } = {
       ...checkedList,
     };
-    if (tempList[item_option_category_id as keyof object] == undefined) {
+
+    if (
+      tempList[item_option_category_id as keyof object] == undefined ||
+      type === 'radio'
+    ) {
+    }
+    {
       tempList[item_option_category_id as keyof object] = {};
     }
     if (
@@ -309,7 +315,7 @@ export default function ProductPopupDetails() {
                                 name={item.item_option_id}
                                 label={`${item.title} - ${currency}
                             ${item.price.toFixed(2)}`}
-                                onChange={() =>
+                                onClick={() =>
                                   hadleOptionCheck(
                                     item.item_option_id,
                                     option,
