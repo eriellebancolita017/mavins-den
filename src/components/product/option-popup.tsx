@@ -97,8 +97,6 @@ export default function ProductPopupDetails() {
       tempList[item_option_category_id as keyof object] == undefined ||
       type === 'radio'
     ) {
-    }
-    {
       tempList[item_option_category_id as keyof object] = {};
     }
     if (
