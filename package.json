@@ -24,7 +24,7 @@
     "classnames": "2.3.1",
     "csstype": "^3.1.0",
     "dayjs": "1.10.7",
-    "firebase": "^9.9.2",
+    "firebase": "^12.13.0",
     "framer-motion": "6.2.3",
     "jotai": "1.6.0",
     "js-cookie": "3.0.1",
